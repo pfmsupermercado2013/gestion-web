@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/supermercado</property>
+        <property name="hibernate.connection.username">root</property>
+        
+        <property name="show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <mapping class="org.back.hibernate.model.Empleado"/>
+        <mapping class="org.back.hibernate.model.Supermercado"/>
+        <mapping class="org.back.hibernate.model.Estanteria"/>
+        <mapping class="org.back.hibernate.model.Estante"/>
+        <mapping class="org.back.hibernate.model.Seccion"/>
+        <mapping class="org.back.hibernate.model.UbicacionProducto"/>
+        <mapping class="org.back.hibernate.model.Producto"/>
+        <mapping class="org.back.hibernate.model.Proveedor"/>
+        <mapping class="org.back.hibernate.model.Categoria"/>
+        <mapping class="org.back.hibernate.model.CarritoCompra"/>
+        <mapping class="org.back.hibernate.model.CarritoCompraTieneProducto"/>
+        <mapping class="org.back.hibernate.model.Cliente"/>
+        <mapping class="org.back.hibernate.model.LocalizacionAparcamiento"/>
+        <mapping class="org.back.hibernate.model.Pago"/>
+        <mapping class="org.back.hibernate.model.ProveedorSubasta"/>
+        <mapping class="org.back.hibernate.model.Subasta"/>
+        <mapping class="org.back.hibernate.model.TicketAparcamiento"/>
+        
+    </session-factory>
+</hibernate-configuration>
