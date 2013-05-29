@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.back.hibernate.model.Supermercado;
-import org.back.test.EntityFactory;
+import org.back.hibernate.EntityFactory;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

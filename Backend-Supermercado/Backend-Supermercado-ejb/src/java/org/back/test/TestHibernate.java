@@ -8,6 +8,7 @@ package org.back.test;
  *
  * @author ÓscarJavier
  */
+import org.back.hibernate.EntityFactory;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
 import org.hibernate.Session;

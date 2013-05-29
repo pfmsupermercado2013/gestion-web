@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Stateful;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
-import org.back.test.EntityFactory;
+import org.back.hibernate.EntityFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
