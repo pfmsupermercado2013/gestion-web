@@ -11,7 +11,6 @@ package org.back.test;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
  
 /**
@@ -19,15 +18,12 @@ import org.hibernate.Transaction;
  * @author John
  */
 public class TestHibernate {
- 
-    private static SessionFactory sessionFactory = null;
- 
+  
     public static void main(String[] args) {
         Session session = null;
         try {
             try {
-                sessionFactory = EntityFactory.getSessionFactory();
-                session = sessionFactory.openSession();
+                session = EntityFactory.getSession();
  
                 System.out.println("Insertando registro");
                 Transaction tx = session.beginTransaction();
@@ -52,10 +48,10 @@ public class TestHibernate {
                 tx.commit();
                 System.out.println("Finalizado...");
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         } finally {
-            session.close();
+            //session.close();
         }
     }
 }

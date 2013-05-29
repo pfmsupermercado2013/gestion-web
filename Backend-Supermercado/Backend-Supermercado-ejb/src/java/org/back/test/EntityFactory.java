@@ -8,7 +8,9 @@ package org.back.test;
  *
  * @author ÓscarJavier
  */
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
@@ -19,23 +21,16 @@ import org.hibernate.service.ServiceRegistryBuilder;
  */
 public class EntityFactory {
  
-    private static ServiceRegistry serviceRegistry;
-    private static final SessionFactory sessionFactory;
- 
-    static {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure("org/back/hibernate/hibernate.cfg.xml");
-            serviceRegistry = new ServiceRegistryBuilder().applySettings(
-                    configuration.getProperties()).buildServiceRegistry();
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        } catch (Throwable ex) {
-            System.err.println("Failed to create sessionFactory object." + ex);
-            throw new ExceptionInInitializerError(ex);
+    private static final SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private static final ThreadLocal session = new ThreadLocal();
+    
+    public static Session getSession(){
+        Session newSession = (Session) EntityFactory.session.get();
+        if(newSession == null){
+            newSession = sessionFactory.openSession();
+            EntityFactory.session.set(newSession);
         }
-    }
- 
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+        return newSession;
+    }   
+    
 }

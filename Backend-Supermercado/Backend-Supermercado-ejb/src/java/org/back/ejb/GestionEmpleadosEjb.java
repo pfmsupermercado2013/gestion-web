@@ -20,15 +20,12 @@ import org.hibernate.Transaction;
  */
 @Stateful
 public class GestionEmpleadosEjb implements GestionEmpleadosEjbLocal {
-    
-    private static SessionFactory sessionFactory = null;
-    
+        
     @Override
     public boolean CrearEmpleado(Empleado empleado) {
         boolean operacionOk = false;
         Session session = null;
-        sessionFactory = EntityFactory.getSessionFactory();
-        session = sessionFactory.openSession();
+        session = EntityFactory.getSession();
         Transaction tx = session.beginTransaction();
         // Obtenemos el supermercado al que pertenece el empleado
         List listSupermercado = session.createQuery("FROM supermercado").list();
