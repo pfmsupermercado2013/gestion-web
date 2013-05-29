@@ -72,6 +72,13 @@ public class Supermercado implements Serializable {
         this.localidadSupermercado = localidadSupermercado;
         this.provinciaSupermercado = provinciaSupermercado;
     }
+    
+    public Supermercado(String nombreSupermercado, String direccionSupermercado, String localidadSupermercado, String provinciaSupermercado) {
+        this.nombreSupermercado = nombreSupermercado;
+        this.direccionSupermercado = direccionSupermercado;
+        this.localidadSupermercado = localidadSupermercado;
+        this.provinciaSupermercado = provinciaSupermercado;
+    }
 
     public Integer getIdsupermercado() {
         return idsupermercado;

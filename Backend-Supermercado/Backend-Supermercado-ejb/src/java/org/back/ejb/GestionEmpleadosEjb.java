@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Stateful;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
-import org.back.hibernate.EntityFactory;
+import org.back.hibernate.DAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -25,7 +25,7 @@ public class GestionEmpleadosEjb implements GestionEmpleadosEjbLocal {
     public boolean CrearEmpleado(Empleado empleado) {
         boolean operacionOk = false;
         Session session = null;
-        session = EntityFactory.getSession();
+        session = DAO.getSession();
         Transaction tx = session.beginTransaction();
         // Obtenemos el supermercado al que pertenece el empleado
         List listSupermercado = session.createQuery("FROM supermercado").list();
