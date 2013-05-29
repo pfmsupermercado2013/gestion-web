@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<datasources>
-    <datasource
-        jndi-name="java:/backendDS" pool-name="backendDS"
-        enabled="true" jta="true"
-        use-java-context="true" use-ccm="true">
-        <connection-url>
-            jdbc:mysql://localhost:3306/supermercado?zeroDateTimeBehavior=convertToNull
-        </connection-url>
-        <driver>
-            mysql
-        </driver>
-        <security>
-            <user-name>
-                root
-            </user-name>
-            <password>
-            </password>
-        </security>
-        <statement>
-            <prepared-statement-cache-size>
-                100
-            </prepared-statement-cache-size>
-            <share-prepared-statements/>
-        </statement>
-    </datasource>
-</datasources>
+<datasource jta="true" jndi-name="java:jboss/datasources/backendDS" pool-name="backendDS">
+    <connection-url>jdbc:mysql://localhost:3306/supermercado</connection-url>
+    <driver>mysql</driver>
+    <security>
+        <user-name>root</user-name>
+    </security>
+    <statement>
+        <prepared-statement-cache-size>100</prepared-statement-cache-size>
+        <share-prepared-statements>true</share-prepared-statements>
+    </statement>
+</datasource>
+<drivers>
+    <driver name="mysql" module="com.mysql">
+        <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
+    </driver>
+</drivers>

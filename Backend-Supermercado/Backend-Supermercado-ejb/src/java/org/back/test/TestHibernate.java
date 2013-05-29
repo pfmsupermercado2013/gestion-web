@@ -51,7 +51,7 @@ public class TestHibernate {
                 e.printStackTrace();
             }
         } finally {
-            //session.close();
+            session.close();
         }
     }
 }
