@@ -11,11 +11,6 @@ import org.hibernate.cfg.AnnotationConfiguration;
 /**
  *
  * @author ÓscarJavier
-
- 
-/**
- *
- * @author John
  */
 public class EntityFactory {
  
