@@ -6,16 +6,31 @@ package org.back.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.back.ejb.GestionSupermercadoEjb;
+import org.back.ejb.GestionSupermercadoEjbLocal;
+import org.back.hibernate.model.Supermercado;
 
 /**
  *
  * @author ÓscarJavier
  */
 public class GestionSupermercadoServlet extends HttpServlet {
+    GestionSupermercadoEjbLocal gestionSupermercadoEjb = lookupGestionSupermercadoEjbLocal();
+    
+     private static ServletContext sc;
+    
 
     /**
      * Processes requests for both HTTP
@@ -32,16 +47,65 @@ public class GestionSupermercadoServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GestionSupermercadoServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet GestionSupermercadoServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            
+            String nombreSupermercado    = "";
+            String direccionSupermercado = "";
+            String provinciaSupermercado = "";
+            String localidadSupermercado = "";
+            
+            boolean operacion = false;
+            
+            String cmd = request.getParameter("cmd");
+            
+            if(cmd != null && !"".equals(cmd)){
+                
+                if("nuevo-supermercado".equals(cmd)){
+                
+                    response.sendRedirect("nuevo_supermercado.jsp");
+                }
+                
+                if("gestion-supermercado".equals(cmd)){
+                    
+                    List<Supermercado> listaSupermercados = null;
+                    gestionSupermercadoEjb.ListarSupermercados();
+                    
+                    response.sendRedirect("lista_supermercados.jsp");
+                }
+                
+                if("crear-supermercado".equals(cmd)){
+                    
+                    Supermercado supermercado = new Supermercado();
+                    
+                    nombreSupermercado = request.getParameter("nombreSuperm");
+                    direccionSupermercado = request.getParameter("direccionSuperm");
+                    provinciaSupermercado = request.getParameter("provinciaSuperm");
+                    localidadSupermercado = request.getParameter("localidadSuperm");
+                    
+                    supermercado.setNombreSupermercado(nombreSupermercado);
+                    supermercado.setDireccionSupermercado(direccionSupermercado);
+                    supermercado.setProvinciaSupermercado(provinciaSupermercado);
+                    supermercado.setLocalidadSupermercado(localidadSupermercado);
+                    
+                    operacion = gestionSupermercadoEjb.CrearSupermercado(supermercado);
+                    
+                    if(operacion) {
+                        /* TODO output your page here. You may use following sample code. */
+                        out.println("<!DOCTYPE html>");
+                        out.println("<html>");
+                        out.println("<head>");
+                        out.println("<title>Supermercado</title>");            
+                        out.println("</head>");
+                        out.println("<body>");
+                        out.println("<h1>Supermercado creado con éxito</h1>");
+                        out.println("</body>");
+                        out.println("</html>");
+                    }
+                
+                }
+            
+            }
+           
         } finally {            
             out.close();
         }
@@ -87,4 +151,14 @@ public class GestionSupermercadoServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private GestionSupermercadoEjbLocal lookupGestionSupermercadoEjbLocal() {
+        try {
+            Context c = new InitialContext();
+            return (GestionSupermercadoEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionSupermercadoEjb!org.back.ejb.GestionSupermercadoEjbLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
 }

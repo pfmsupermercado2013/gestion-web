@@ -8,6 +8,10 @@
         <servlet-name>GestionEmpleadosServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionEmpleadosServlet</servlet-class>
     </servlet>
+    <servlet>    
+        <servlet-name>GestionSupermercadoServlet</servlet-name>
+        <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>GestionEmpleadosServlet</servlet-name>
         <url-pattern>/GestionEmpleados</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>GestionSupermercadoServlet</servlet-name>
+        <url-pattern>/GestionSupermercado</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
