@@ -21,11 +21,11 @@ import org.back.utils.PasswordEncoder;
  * @author Alejandro Garcia
  */
 public class GestionProveedoresServlet extends HttpServlet {
-    
+
     @EJB
     private GestionProveedoresEjbLocal gestionProveedoresEjb;
     private static ServletContext sc;
-    private static final int  TAMANO_PASSWORD = 6;
+    private static final int TAMANO_PASSWORD = 6;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -34,7 +34,13 @@ public class GestionProveedoresServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd = sc.getRequestDispatcher("/nuevo_proveedor.jsp");
+        rd.forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String operacion = request.getParameter("operacion"); // recibe parametro que indica el tipo de operacion
 
@@ -51,7 +57,7 @@ public class GestionProveedoresServlet extends HttpServlet {
 
     private void doCrearProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            
+
             String nombre = request.getParameter("nombre");
             String cif = request.getParameter("cif");
             String localidad = request.getParameter("localidad");
@@ -59,21 +65,26 @@ public class GestionProveedoresServlet extends HttpServlet {
             String telefono = request.getParameter("telefono");
             String cp = request.getParameter("cp");
             String email = request.getParameter("email");
-            
+
             //Se genera un password aleatorio de TAMANO_PASSWORD caracteres
             String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
-            
+
             //Funcion hash para almacenar el password
             PasswordEncoder passEncoder = PasswordEncoder.getInstance();
             String passEncoded = passEncoder.encode(password, BackConstantes.SALT_KEY);
-            
+
             Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, passEncoded, telefono);
             gestionProveedoresEjb.crearProveedor(proveedor);
-            
+
             //Enviar mail con el password temporal al proveedor
-            EnviarMail.enviarMail(email, password);
+            String subject = "Bienvenido a Subastas Market";
+            String msg = "Usted ha sido dado de alta en Subastas Market."
+                    + "\nA continuación se le adjunta su contraseña temporal de un único uso. "
+                    + "La primera vez que acceda, se le solicitará que introduzca una nueva contraseña."
+                    + "\n\nContraseña: " + password;
+            EnviarMail.enviarMail(email, subject, msg);
             request.setAttribute("creado", true);
-        
+
         } catch (Exception e) {
             request.setAttribute("creado", false);
             e.printStackTrace();

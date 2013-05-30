@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class EnviarMail {
 
-    public static boolean enviarMail(String to, String pwd) {
+    public static boolean enviarMail(String to, String subject, String msg) {
 
         try {
 
@@ -32,11 +32,8 @@ public class EnviarMail {
             message.setFrom(new InternetAddress(props.getProperty("mail.from")));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-            message.setSubject("Bienvenido a Subastas Market");
-            message.setText("Usted ha sido dado de alta en Subastas Market."
-                    + "\nA continuación se le adjunta su contraseña temporal de un único uso. "
-                    + "La primera vez que acceda, se le solicitará que introduzca una nueva contraseña."
-                    + "\n\nContraseña: "+pwd);
+            message.setSubject(subject);
+            message.setText(msg);
 
             Transport.send(message);
             

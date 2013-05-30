@@ -4,7 +4,7 @@
         <non-jta-data-source>java:jboss/datasources/backendDS</non-jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-             <property name="hibernate.hbm2ddl.auto" value="create"/>
+             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 </persistence>
