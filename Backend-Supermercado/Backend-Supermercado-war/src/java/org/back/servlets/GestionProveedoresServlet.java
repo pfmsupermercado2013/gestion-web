@@ -9,10 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.back.constants.BackConstantes;
 import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.hibernate.model.Proveedor;
 import org.back.utils.EnviarMail;
 import org.back.utils.PasswordAleatorio;
+import org.back.utils.PasswordEncoder;
 
 /**
  *
@@ -49,6 +51,7 @@ public class GestionProveedoresServlet extends HttpServlet {
 
     private void doCrearProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            
             String nombre = request.getParameter("nombre");
             String cif = request.getParameter("cif");
             String localidad = request.getParameter("localidad");
@@ -56,13 +59,21 @@ public class GestionProveedoresServlet extends HttpServlet {
             String telefono = request.getParameter("telefono");
             String cp = request.getParameter("cp");
             String email = request.getParameter("email");
+            
             //Se genera un password aleatorio de TAMANO_PASSWORD caracteres
             String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
-            Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, password, telefono);
+            
+            //Funcion hash para almacenar el password
+            PasswordEncoder passEncoder = PasswordEncoder.getInstance();
+            String passEncoded = passEncoder.encode(password, BackConstantes.SALT_KEY);
+            
+            Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, passEncoded, telefono);
             gestionProveedoresEjb.crearProveedor(proveedor);
+            
             //Enviar mail con el password temporal al proveedor
             EnviarMail.enviarMail(email, password);
             request.setAttribute("creado", true);
+        
         } catch (Exception e) {
             request.setAttribute("creado", false);
             e.printStackTrace();

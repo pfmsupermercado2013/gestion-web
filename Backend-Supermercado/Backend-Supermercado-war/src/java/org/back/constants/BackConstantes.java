@@ -15,5 +15,6 @@ public class BackConstantes {
     public static final String EDITAR_EMPLEADO = "editar-empleado";
     public static final String BORRAR_EMPLEADO = "borrar-empleado";
     
+    public static final String SALT_KEY = "716EA45X34";
     
 }
