@@ -9,7 +9,7 @@ import javax.ws.rs.core.Application;
 
 /**
  *
- * @author alejandrogarcia
+ * @author Alejandro Garcia
  */
 @ApplicationPath("/rest")
 public class JaxRsActivator extends Application{
