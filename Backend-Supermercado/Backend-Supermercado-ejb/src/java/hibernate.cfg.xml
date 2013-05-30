@@ -6,7 +6,8 @@
         <property name="hibernate.connection.datasource">java:jboss/datasources/backendDS</property>
 
         <property name="show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property> 
+        <property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
         <mapping class="org.back.hibernate.model.Empleado"/>
         <mapping class="org.back.hibernate.model.Supermercado"/>
         <mapping class="org.back.hibernate.model.Estanteria"/>
