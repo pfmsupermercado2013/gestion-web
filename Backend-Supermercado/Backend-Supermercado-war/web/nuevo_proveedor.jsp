@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="error.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -16,6 +17,21 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+
+            <%
+                if (request.getAttribute("creado") != null && (Boolean) request.getAttribute("creado")) {
+            %>
+            <div id="alerta" class="alert alert-success">
+                Proveedor creado correctamente
+            </div>
+            <%           } else if (request.getAttribute("creado") != null && !((Boolean) request.getAttribute("creado"))) {
+            %>
+            <div id="alerta" class="alert alert-error">
+                Error al crear el proveedor
+            </div>
+            <%                }
+            %>
+
             <form class="form-horizontal" action="GestionProveedoresServlet?operacion=nuevo" method="POST">
                 <fieldset>
 
@@ -88,12 +104,20 @@
                     </div>
 
                 </fieldset>
-                
+
                 <button class="btn btn-large btn-primary" type="submit">Crear proveedor</button>
             </form>
         </div>
         <footer>
             <%@include file="pie.html" %> 
         </footer>
+        <script>
+            jQuery(document).ready(function() {
+                //Desaparecer despues de 3 segundos
+                setTimeout(function() {
+                    jQuery("#alerta").fadeOut("slow");
+                }, 3000);
+            });
+        </script>
     </body>
 </html>

@@ -11,16 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.hibernate.model.Proveedor;
+import org.back.utils.PasswordAleatorio;
 
 /**
  *
  * @author Alejandro Garcia
  */
 public class GestionProveedoresServlet extends HttpServlet {
-
+    
     @EJB
     private GestionProveedoresEjbLocal gestionProveedoresEjb;
     private static ServletContext sc;
+    private static final int  TAMANO_PASSWORD = 6;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -53,8 +55,9 @@ public class GestionProveedoresServlet extends HttpServlet {
             String telefono = request.getParameter("telefono");
             String cp = request.getParameter("cp");
             String email = request.getParameter("email");
-            //TODO:Generar contraseña
-            Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, "test", telefono);
+            //Se genera un password aleatorio de TAMANO_PASSWORD caracteres
+            String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
+            Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, password, telefono);
             gestionProveedoresEjb.crearProveedor(proveedor);
             request.setAttribute("creado", true);
         } catch (Exception e) {
