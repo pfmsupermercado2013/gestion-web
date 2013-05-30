@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findByProvinciaProveedor", query = "SELECT p FROM Proveedor p WHERE p.provinciaProveedor = :provinciaProveedor"),
     @NamedQuery(name = "Proveedor.findByCpProveedor", query = "SELECT p FROM Proveedor p WHERE p.cpProveedor = :cpProveedor"),
     @NamedQuery(name = "Proveedor.findByEmailProveedor", query = "SELECT p FROM Proveedor p WHERE p.emailProveedor = :emailProveedor"),
-    @NamedQuery(name = "Proveedor.findByContrase\u00f1a", query = "SELECT p FROM Proveedor p WHERE p.contrase\u00f1a = :contrase\u00f1a"),
+    @NamedQuery(name = "Proveedor.findByPassword", query = "SELECT p FROM Proveedor p WHERE p.password = :password"),
     @NamedQuery(name = "Proveedor.findByTelefono", query = "SELECT p FROM Proveedor p WHERE p.telefono = :telefono")})
 public class Proveedor implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -64,11 +64,13 @@ public class Proveedor implements Serializable {
     @Column(name = "email_proveedor")
     private String emailProveedor;
     @Basic(optional = false)
-    @Column(name = "contrase\u00f1a")
-    private String contraseña;
+    @Column(name = "password")
+    private String password;
     @Basic(optional = false)
     @Column(name = "telefono")
     private String telefono;
+    @Column(name = "activado")
+    private boolean activado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "proveedor")
     private Collection<ProveedorSubasta> proveedorSubastaCollection;
 
@@ -79,15 +81,16 @@ public class Proveedor implements Serializable {
         this.idProveedor = idProveedor;
     }
 
-    public Proveedor(String cif, String nombreProveedor, String localidadProveedor, String provinciaProveedor, String cpProveedor, String emailProveedor, String contraseña, String telefono) {
+    public Proveedor(String cif, String nombreProveedor, String localidadProveedor, String provinciaProveedor, String cpProveedor, String emailProveedor, String password, String telefono) {
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
         this.localidadProveedor = localidadProveedor;
         this.provinciaProveedor = provinciaProveedor;
         this.cpProveedor = cpProveedor;
         this.emailProveedor = emailProveedor;
-        this.contraseña = contraseña;
+        this.password = password;
         this.telefono = telefono;
+        this.activado = false;
     }
 
     public Integer getIdProveedor() {
@@ -146,12 +149,12 @@ public class Proveedor implements Serializable {
         this.emailProveedor = emailProveedor;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getTelefono() {
@@ -162,6 +165,14 @@ public class Proveedor implements Serializable {
         this.telefono = telefono;
     }
 
+    public boolean isActivado() {
+        return activado;
+    }
+
+    public void setActivado(boolean activado) {
+        this.activado = activado;
+    }
+    
     @XmlTransient
     public Collection<ProveedorSubasta> getProveedorSubastaCollection() {
         return proveedorSubastaCollection;
