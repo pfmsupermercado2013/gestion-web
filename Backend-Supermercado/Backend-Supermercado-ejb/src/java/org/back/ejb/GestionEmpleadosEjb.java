@@ -19,7 +19,7 @@ import org.hibernate.Transaction;
  * @author ÓscarJavier
  */
 @Stateful
-public class GestionEmpleadosEjb implements GestionEmpleadosEjbLocal {
+public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal {
         
     @Override
     public boolean CrearEmpleado(Empleado empleado) {
