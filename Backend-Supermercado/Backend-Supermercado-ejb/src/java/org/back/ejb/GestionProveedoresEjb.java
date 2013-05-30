@@ -14,7 +14,7 @@ public class GestionProveedoresEjb extends DAO implements GestionProveedoresEjbL
 
     @Override
     public Proveedor crearProveedor(Proveedor proveedor) throws Exception{
-        try {
+       try {
             begin();
             getSession().save(proveedor);
             commit();
@@ -27,6 +27,7 @@ public class GestionProveedoresEjb extends DAO implements GestionProveedoresEjbL
 
     @Override
     public boolean eliminarProveedor(Integer idProveedor) {
-        return true;
+        return false;
     }
+   
 }

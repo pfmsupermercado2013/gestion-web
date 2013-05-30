@@ -79,8 +79,7 @@ public class Proveedor implements Serializable {
         this.idProveedor = idProveedor;
     }
 
-    public Proveedor(Integer idProveedor, String cif, String nombreProveedor, String localidadProveedor, String provinciaProveedor, String cpProveedor, String emailProveedor, String contraseña, String telefono) {
-        this.idProveedor = idProveedor;
+    public Proveedor(String cif, String nombreProveedor, String localidadProveedor, String provinciaProveedor, String cpProveedor, String emailProveedor, String contraseña, String telefono) {
         this.cif = cif;
         this.nombreProveedor = nombreProveedor;
         this.localidadProveedor = localidadProveedor;

@@ -32,6 +32,10 @@
         <servlet-name>GestionSupermercadoServlet</servlet-name>
         <url-pattern>/GestionSupermercado</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionProveedoresServlet</servlet-name>
+        <url-pattern>/GestionProveedoresServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

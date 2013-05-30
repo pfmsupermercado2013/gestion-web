@@ -9,8 +9,9 @@ import org.back.hibernate.model.Proveedor;
  */
 @Local
 public interface GestionProveedoresEjbLocal {
- 
+
     Proveedor crearProveedor(Proveedor proveedor) throws Exception;
+
     boolean eliminarProveedor(Integer idProveedor);
-   
+ 
 }

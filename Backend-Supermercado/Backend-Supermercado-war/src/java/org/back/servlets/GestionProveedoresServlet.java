@@ -1,8 +1,10 @@
 package org.back.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,72 +17,57 @@ import org.back.hibernate.model.Proveedor;
  * @author Alejandro Garcia
  */
 public class GestionProveedoresServlet extends HttpServlet {
-    
+
     @EJB
     private GestionProveedoresEjbLocal gestionProveedoresEjb;
-    
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private static ServletContext sc;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        sc = this.getServletContext();
+    }
+
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GestionProveedoresServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet GestionProveedoresServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
-            out.close();
+        String operacion = request.getParameter("operacion"); // recibe parametro que indica el tipo de operacion
+
+        if (operacion != null && !operacion.isEmpty()) {
+            if (operacion.equalsIgnoreCase("nuevo")) {
+                doCrearProveedor(request, response);
+                return;
+            }
         }
+
+        //Accion desconocida
+        doError(request, response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    private void doCrearProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String nombre = request.getParameter("nombre");
+            String cif = request.getParameter("cif");
+            String localidad = request.getParameter("localidad");
+            String provincia = request.getParameter("provincia");
+            String telefono = request.getParameter("telefono");
+            String cp = request.getParameter("cp");
+            String email = request.getParameter("email");
+            //TODO:Generar contraseña
+            Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, "test", telefono);
+            gestionProveedoresEjb.crearProveedor(proveedor);
+            request.setAttribute("creado", true);
+        } catch (Exception e) {
+            request.setAttribute("creado", false);
+            e.printStackTrace();
+        }
+
+        RequestDispatcher rd = sc.getRequestDispatcher("/nuevo_proveedor.jsp");
+        rd.forward(request, response);
     }
 
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-    
-    private Proveedor crearProveedor(Proveedor proveedor) throws Exception{
-        return gestionProveedoresEjb.crearProveedor(proveedor);
+    private void doError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher rd = sc.getRequestDispatcher("/error.jsp");
+        rd.forward(request, response);
     }
 }
