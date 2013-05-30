@@ -8,8 +8,7 @@ import java.util.Random;
  */
 public class PasswordAleatorio {
  
-    private static final String letras = "_-" +
-        "0123456789" +
+    private static final String letras = "0123456789" +
         "abcdefghijklmnopqrstuvwxyz" +
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
