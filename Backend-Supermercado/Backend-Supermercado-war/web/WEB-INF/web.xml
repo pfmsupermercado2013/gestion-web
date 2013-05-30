@@ -16,6 +16,10 @@
         <servlet-name>GestionSupermercadoServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
     </servlet>
+    <servlet>    
+        <servlet-name>GestionSupermercadoServlet</servlet-name>
+        <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
