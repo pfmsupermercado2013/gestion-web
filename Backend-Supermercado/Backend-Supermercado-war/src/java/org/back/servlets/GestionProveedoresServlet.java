@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.hibernate.model.Proveedor;
+import org.back.utils.EnviarMail;
 import org.back.utils.PasswordAleatorio;
 
 /**
@@ -59,6 +60,8 @@ public class GestionProveedoresServlet extends HttpServlet {
             String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
             Proveedor proveedor = new Proveedor(cif, nombre, localidad, provincia, cp, email, password, telefono);
             gestionProveedoresEjb.crearProveedor(proveedor);
+            //Enviar mail con el password temporal al proveedor
+            EnviarMail.enviarMail(email, password);
             request.setAttribute("creado", true);
         } catch (Exception e) {
             request.setAttribute("creado", false);
