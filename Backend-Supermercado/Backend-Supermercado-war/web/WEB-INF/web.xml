@@ -12,13 +12,17 @@
         <servlet-name>GestionProveedoresServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionProveedoresServlet</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>GestionSupermercadoServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>GestionSupermercadoServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestionSubastasServlet</servlet-name>
+        <servlet-class>org.back.servlets.GestionSubastasServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -28,7 +32,7 @@
         <servlet-name>GestionEmpleadosServlet</servlet-name>
         <url-pattern>/GestionEmpleados</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GestionSupermercadoServlet</servlet-name>
         <url-pattern>/GestionSupermercado</url-pattern>
     </servlet-mapping>
@@ -36,10 +40,12 @@
         <servlet-name>GestionProveedoresServlet</servlet-name>
         <url-pattern>/GestionProveedoresServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionSubastasServlet</servlet-name>
+        <url-pattern>/GestionSubastasServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
