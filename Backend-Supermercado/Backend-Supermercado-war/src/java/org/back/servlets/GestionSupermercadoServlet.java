@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.ejb.GestionSupermercadoEjb;
 import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.hibernate.model.Supermercado;
@@ -27,7 +28,8 @@ import org.back.hibernate.model.Supermercado;
  * @author ÓscarJavier
  */
 public class GestionSupermercadoServlet extends HttpServlet {
-    GestionSupermercadoEjbLocal gestionSupermercadoEjb = lookupGestionSupermercadoEjbLocal();
+     @EJB
+     private GestionSupermercadoEjbLocal gestionSupermercadoEjb;
     
      private static ServletContext sc;
     
@@ -68,7 +70,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 if("gestion-supermercado".equals(cmd)){
                     
                     List<Supermercado> listaSupermercados = null;
-                    gestionSupermercadoEjb.ListarSupermercados();
+                    gestionSupermercadoEjb.listarSupermercados();
                     
                     response.sendRedirect("lista_supermercados.jsp");
                 }
@@ -86,8 +88,11 @@ public class GestionSupermercadoServlet extends HttpServlet {
                     supermercado.setDireccionSupermercado(direccionSupermercado);
                     supermercado.setProvinciaSupermercado(provinciaSupermercado);
                     supermercado.setLocalidadSupermercado(localidadSupermercado);
-                    
-                    operacion = gestionSupermercadoEjb.CrearSupermercado(supermercado);
+                    try {
+                        supermercado = gestionSupermercadoEjb.crearSupermercado(supermercado);
+                    } catch (Exception ex) {
+                        Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     if(operacion) {
                         /* TODO output your page here. You may use following sample code. */
@@ -151,14 +156,4 @@ public class GestionSupermercadoServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private GestionSupermercadoEjbLocal lookupGestionSupermercadoEjbLocal() {
-        try {
-            Context c = new InitialContext();
-            return (GestionSupermercadoEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionSupermercadoEjb!org.back.ejb.GestionSupermercadoEjbLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
 }

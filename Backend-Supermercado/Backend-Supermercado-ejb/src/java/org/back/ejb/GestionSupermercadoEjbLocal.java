@@ -15,8 +15,8 @@ import org.back.hibernate.model.Supermercado;
 @Local
 public interface GestionSupermercadoEjbLocal {
 
-    boolean CrearSupermercado(Supermercado supermercado);
+    Supermercado crearSupermercado(Supermercado supermercado)throws Exception;
     
-    List<Supermercado> ListarSupermercados();
+    List<Supermercado> listarSupermercados();
     
 }

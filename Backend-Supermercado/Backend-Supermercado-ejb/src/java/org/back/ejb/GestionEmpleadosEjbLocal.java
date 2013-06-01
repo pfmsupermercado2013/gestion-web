@@ -14,8 +14,12 @@ import org.back.hibernate.model.Empleado;
 @Local
 public interface GestionEmpleadosEjbLocal {
 
-    boolean CrearEmpleado(Empleado empleado);
+    Empleado crearEmpleado(Empleado empleado) throws Exception;
 
-    boolean EditarEmpleado(String idEmpleado);
+    boolean editarEmpleado(String idEmpleado);
+
+    Empleado validarIdentidadEmpleado(String idEmpleado, String password) throws Exception;
+    
+    
     
 }

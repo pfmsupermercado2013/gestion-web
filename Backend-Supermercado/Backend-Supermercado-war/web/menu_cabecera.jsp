@@ -9,8 +9,8 @@
                                                 <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu">
-                                                <li><a href="nuevo_supermercado.jsp">Nuevo supermercado</a></li>
-                                                <li><a href="nuevo_supermercado.jsp">Gestionar supermercados</a></li>
+                                                <li><a href="GestionSupermercado?cmd=nuevo-supermercado">Nuevo supermercado</a></li>
+                                                <li><a href="GestionSupermercado?cmd=gestion-supermercado">Gestionar supermercados</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -29,8 +29,8 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <li><a href="nuevo_trabajador.jsp">Nuevo empleado</a></li>
-                                                <li><a href="#">Gestionar empleados</a></li>
+                                                <li><a href="GestionEmpleado?cmd=nuevo-empleado">Nuevo empleado</a></li>
+                                                <li><a href="GestionEmpleado?cmd=gestion-empleado">Gestionar empleados</a></li>
                                         </ul>
                                 </li>
                                  <li class="dropdown">
@@ -63,7 +63,7 @@
                                         <ul class="dropdown-menu">
                                                 <li><a href="#">Modificar mis datos</a></li>
                                                 <li class="divider"></li>
-                                                <li><a href="login.jsp">Salir</a></li>
+                                                <li><a href="login?cmd=logout">Salir</a></li>
                                         </ul>
                                 </li>
                         </ul>

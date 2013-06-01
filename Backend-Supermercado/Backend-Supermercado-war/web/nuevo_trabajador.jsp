@@ -34,7 +34,7 @@
             <label class="control-label">Nombre</label>
             <div class="controls">
             <input id="nombre" name="nombre" type="text" placeholder="Nombre del empleado"
-                   class="input-xlarge" required="required">
+                   class="input-xlarge" required="required" maxlength="30">
             <p class="help-block"></p>
             </div>
             </div>
@@ -43,7 +43,7 @@
             <label class="control-label">Apellidos</label>
             <div class="controls">
             <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos del empleado"
-            class="input-xlarge" required="required">
+            class="input-xlarge" required="required" maxlength="30">
             <p class="help-block"></p>
             </div>
             </div>
@@ -52,7 +52,7 @@
             <label class="control-label">NIF</label>
             <div class="controls">
             <input id="nif" name="nif" type="text" placeholder="NIF del empleado"
-            class="input-xlarge" required="required">
+            class="input-xlarge" required="required" maxlength="10">
             <p class="help-block"></p>
             </div>
             </div>
@@ -68,7 +68,16 @@
             <p class="help-block">Administador (PAS). No Administrador (Normal)</p>
             </div>
             </div>
-
+            <!-- Password -->
+             <div class="control-group">
+            <label class="control-label">NIF</label>
+            <div class="controls">
+            <input id="nif" name="nif" type="password" placeholder="Password (Mínimo 8 caract.)"
+            class="input-xlarge" required="required" maxlength="20"
+            pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
+            <p class="help-block"></p>
+            </div>
+            </div>
             </div>
 
             </fieldset>

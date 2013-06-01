@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.back.constants.BackConstantes;
 import org.back.ejb.GestionEmpleadosEjbLocal;
 import org.back.exceptions.BackException;
+import org.back.hibernate.model.Empleado;
 
 /**
  *
@@ -52,8 +53,15 @@ public class GestionEmpleadosServlet extends HttpServlet {
             if (comando != null && !"".equals(comando)){
               
                // Invocamos a la operación que crea empleados
-               if(comando.equals(BackConstantes.CREAR_EMPLEADO)) 
-                  CrearEmpleado();
+               if(comando.equals(BackConstantes.CREAR_EMPLEADO)){
+                  Empleado empleado = new Empleado();
+                  empleado.setNif(comando);
+                  empleado.setNombreEmpleado(comando);
+                  empleado.setApellidosEmpleado(comando);
+                  empleado.getRol();
+                  empleado.setPassword(comando);
+                  CrearEmpleado(empleado);
+               }
             
             } else {
                throw new BackException("No se han recibido los parámetros para completar la operación.");
@@ -132,10 +140,13 @@ public class GestionEmpleadosServlet extends HttpServlet {
         }
     }
  */   
-    private void CrearEmpleado(){
-     
-      // Obtenemos la intancia del EJB que realiza la operación de creación de empleado  
-      gestionEmpleadosEjb.CrearEmpleado(null);
+    private void CrearEmpleado(Empleado empleado){
+         try {
+             // Obtenemos la intancia del EJB que realiza la operación de creación de empleado  
+             gestionEmpleadosEjb.crearEmpleado(empleado);
+         } catch (Exception ex) {
+             Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
            
     }
 }

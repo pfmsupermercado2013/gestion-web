@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Empleado.findByNombreEmpleado", query = "SELECT e FROM Empleado e WHERE e.nombreEmpleado = :nombreEmpleado"),
     @NamedQuery(name = "Empleado.findByApellidosEmpleado", query = "SELECT e FROM Empleado e WHERE e.apellidosEmpleado = :apellidosEmpleado"),
     @NamedQuery(name = "Empleado.findByPassword", query = "SELECT e FROM Empleado e WHERE e.password = :password"),
-    @NamedQuery(name = "Empleado.findByRol", query = "SELECT e FROM Empleado e WHERE e.rol = :rol")})
+    @NamedQuery(name = "Empleado.findByRol", query = "SELECT e FROM Empleado e WHERE e.rol = :rol"),
+    @NamedQuery(name = "Empleado.findByEmail", query = "SELECT e FROM Empleado e WHERE e.email = :email")})
 public class Empleado implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,8 +55,11 @@ public class Empleado implements Serializable {
     @Basic(optional = false)
     @Column(name = "rol")
     private String rol;
+    @Basic(optional = false)
+    @Column(name = "email")
+    private String email;
     @JoinColumn(name = "supermercado", referencedColumnName = "idsupermercado")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Supermercado supermercado;
 
     public Empleado() {
@@ -65,12 +69,13 @@ public class Empleado implements Serializable {
         this.idempleado = idempleado;
     }
 
-    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol) {
+    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol, String email) {
         this.idempleado = idempleado;
         this.nif = nif;
         this.nombreEmpleado = nombreEmpleado;
         this.apellidosEmpleado = apellidosEmpleado;
         this.rol = rol;
+        this.email = email;
     }
 
     public Integer getIdempleado() {
@@ -121,6 +126,14 @@ public class Empleado implements Serializable {
         this.rol = rol;
     }
 
+    public String getEmail() {
+        return nombreEmpleado;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public Supermercado getSupermercado() {
         return supermercado;
     }
