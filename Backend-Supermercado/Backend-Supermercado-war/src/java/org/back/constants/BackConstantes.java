@@ -16,13 +16,13 @@ public class BackConstantes {
     public static final String BORRAR_EMPLEADO = "borrar-empleado";
     
     /* Roles */
-    public static final String ROL_SUPER = "pas";
-    public static final String ROL_GUEST = "normal";
+    public static final String ROL_SUPER  = "pas";
+    public static final String ROL_NORMAL = "normal";
     
     /* Comandos Login*/
-    public static final String LOGIN_ADMIN = "login-admin";
-    public static final String LOGIN_GUEST = "login-guest";
-    public static final String LOGOUT      = "logout";
+    public static final String LOGIN_ADMIN  = "login-admin";
+    public static final String LOGIN_NORMAL = "login-normal";
+    public static final String LOGOUT       = "logout";
 
     public static final String SALT_KEY = "716EA45X34";
     

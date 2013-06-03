@@ -49,12 +49,16 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         try{
             begin();
             // Buscamos al empleado de acuerdo a su identificador y password
-            listaEmpleado = getSession().createQuery("FROM Empleado WHERE Empleado.nif = "+ idEmpleado +
-                                                     " Empleado.password = "+password).list();
+            listaEmpleado = getSession().createQuery("FROM Empleado e WHERE e.nif = '"+ idEmpleado +"' ").list();
             
             if(listaEmpleado!= null && !listaEmpleado.isEmpty()){
-                while(listaEmpleado.iterator().hasNext()){
-                    empleado = listaEmpleado.iterator().next();
+                Iterator it = listaEmpleado.iterator();
+                while(it.hasNext()){
+                    empleado = (Empleado)it.next();
+                }
+                // Si las contraseñas no son iguales devolvemos nulo
+                if(!empleado.getPassword().equals(password)){
+                    empleado = null;
                 }
             }
             DAO.close();

@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.ejb.GestionSupermercadoEjb;
 import org.back.ejb.GestionSupermercadoEjbLocal;
@@ -47,72 +48,60 @@ public class GestionSupermercadoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            
-            
-            String nombreSupermercado    = "";
-            String direccionSupermercado = "";
-            String provinciaSupermercado = "";
-            String localidadSupermercado = "";
-            
-            boolean operacion = false;
-            
-            String cmd = request.getParameter("cmd");
-            
-            if(cmd != null && !"".equals(cmd)){
-                
-                if("nuevo-supermercado".equals(cmd)){
-                
-                    response.sendRedirect("nuevo_supermercado.jsp");
-                }
-                
-                if("gestion-supermercado".equals(cmd)){
-                    
-                    List<Supermercado> listaSupermercados = null;
-                    gestionSupermercadoEjb.listarSupermercados();
-                    
-                    response.sendRedirect("lista_supermercados.jsp");
-                }
-                
-                if("crear-supermercado".equals(cmd)){
-                    
-                    Supermercado supermercado = new Supermercado();
-                    
-                    nombreSupermercado = request.getParameter("nombreSuperm");
-                    direccionSupermercado = request.getParameter("direccionSuperm");
-                    provinciaSupermercado = request.getParameter("provinciaSuperm");
-                    localidadSupermercado = request.getParameter("localidadSuperm");
-                    
-                    supermercado.setNombreSupermercado(nombreSupermercado);
-                    supermercado.setDireccionSupermercado(direccionSupermercado);
-                    supermercado.setProvinciaSupermercado(provinciaSupermercado);
-                    supermercado.setLocalidadSupermercado(localidadSupermercado);
-                    try {
-                        supermercado = gestionSupermercadoEjb.crearSupermercado(supermercado);
-                    } catch (Exception ex) {
-                        Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    if(operacion) {
-                        /* TODO output your page here. You may use following sample code. */
-                        out.println("<!DOCTYPE html>");
-                        out.println("<html>");
-                        out.println("<head>");
-                        out.println("<title>Supermercado</title>");            
-                        out.println("</head>");
-                        out.println("<body>");
-                        out.println("<h1>Supermercado creado con éxito</h1>");
-                        out.println("</body>");
-                        out.println("</html>");
-                    }
-                
-                }
-            
+        HttpSession session = null;
+        boolean hayErrores = false;
+        
+        String nombreSupermercado    = "";
+        String direccionSupermercado = "";
+        String provinciaSupermercado = "";
+        String localidadSupermercado = "";
+        String cmd = request.getParameter("cmd");
+
+        if(cmd != null && !"".equals(cmd)){
+
+            if("nuevo-supermercado".equals(cmd)){
+
+                request.getRequestDispatcher("\"nuevo_supermercado.jsp").forward(request, response);
             }
-           
-        } finally {            
-            out.close();
+
+            if("gestion-supermercado".equals(cmd)){
+
+                List<Supermercado> listaSupermercados = null;
+                try {
+                    listaSupermercados = gestionSupermercadoEjb.listarSupermercados();
+                } catch (Exception ex) {
+                    hayErrores = true;
+                    Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                session = request.getSession(false);
+                session.setAttribute("listaSupermercado", listaSupermercados);
+            }
+
+            if("crear-supermercado".equals(cmd)){
+
+                Supermercado supermercado = new Supermercado();
+
+                nombreSupermercado = request.getParameter("nombreSuperm");
+                direccionSupermercado = request.getParameter("direccionSuperm");
+                provinciaSupermercado = request.getParameter("provinciaSuperm");
+                localidadSupermercado = request.getParameter("localidadSuperm");
+
+                supermercado.setNombreSupermercado(nombreSupermercado);
+                supermercado.setDireccionSupermercado(direccionSupermercado);
+                supermercado.setProvinciaSupermercado(provinciaSupermercado);
+                supermercado.setLocalidadSupermercado(localidadSupermercado);
+                try {
+                    supermercado = gestionSupermercadoEjb.crearSupermercado(supermercado);
+                } catch (Exception ex) {
+                    hayErrores = true;
+                    Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+            if(!hayErrores) {
+               request.getRequestDispatcher("lista_supermercado.jsp").forward(request, response);
+            }
         }
     }
 

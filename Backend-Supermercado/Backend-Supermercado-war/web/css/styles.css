@@ -203,3 +203,10 @@ html {
 	margin-left:255px;
 	float:left
 }
+
+#label_error{
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+    color: #FF0000;
+}

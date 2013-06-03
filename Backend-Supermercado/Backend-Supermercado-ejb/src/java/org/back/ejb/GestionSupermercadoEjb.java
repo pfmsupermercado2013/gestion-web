@@ -39,20 +39,14 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
         }
     }
     
-    public List<Supermercado> listarSupermercados() {
+    public List<Supermercado> listarSupermercados() throws Exception{
         List<Supermercado> listaSupermercados = null;
-        Session session = null;
-        Transaction tx = null;
-        session =  this.getSession();
-        try{
-             tx = session.beginTransaction();
-             // Obtenemos los supermercados existentes
-             listaSupermercados = (List<Supermercado>)session.createQuery("FROM supermercado").list();
-        }catch(Exception ex){
-            if(tx != null) tx.rollback();
-            ex.printStackTrace();
-        } finally {
-            if(session!= null) session.close();
+         try {
+            begin();
+            listaSupermercados = getSession().createQuery("FROM Supermercado").list();
+            DAO.close();
+        } catch (HibernateException e) {
+            throw new Exception("Error al crear el supermercado",e);
         }
         
         return listaSupermercados;

@@ -17,6 +17,6 @@ public interface GestionSupermercadoEjbLocal {
 
     Supermercado crearSupermercado(Supermercado supermercado)throws Exception;
     
-    List<Supermercado> listarSupermercados();
+    List<Supermercado> listarSupermercados() throws Exception;
     
 }
