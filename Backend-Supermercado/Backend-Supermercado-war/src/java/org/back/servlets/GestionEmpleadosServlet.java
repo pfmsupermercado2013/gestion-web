@@ -66,16 +66,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
             } else {
                throw new BackException("No se han recibido los parámetros para completar la operación.");
             }
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet GestionEmpleadosServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet GestionEmpleadosServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
         } finally {            
             out.close();
         }

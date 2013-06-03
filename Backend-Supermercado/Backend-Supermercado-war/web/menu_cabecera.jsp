@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<c:set var="empleado" value="${empleado}" scope="session" />
 <div class="navbar blue blue2 navbar-fixed-top">
         <div class="navbar-inner">
                 <div class="container-fluid">
@@ -9,7 +11,9 @@
                                                 <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu">
+                                                <c:if test="${empleado.rol == 'pas'}" >
                                                 <li><a href="GestionSupermercado?cmd=nuevo-supermercado">Nuevo supermercado</a></li>
+                                                </c:if>
                                                 <li><a href="GestionSupermercado?cmd=gestion-supermercado">Gestionar supermercados</a></li>
                                     </ul>
                                 </li>
@@ -19,7 +23,9 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
+                                                <c:if test="${empleado.rol == 'pas'}" >
                                                 <li><a href="nuevo_producto.jsp">Nuevo producto</a></li>
+                                                </c:if>
                                                 <li><a href="#">Gestionar productos</a></li>
                                         </ul>
                                 </li>
@@ -29,7 +35,9 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
+                                                <c:if test="${empleado.rol == 'pas'}" >
                                                 <li><a href="GestionEmpleado?cmd=nuevo-empleado">Nuevo empleado</a></li>
+                                                </c:if>
                                                 <li><a href="GestionEmpleado?cmd=gestion-empleado">Gestionar empleados</a></li>
                                         </ul>
                                 </li>
@@ -39,7 +47,9 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
+                                                <c:if test="${empleado.rol == 'pas'}" >
                                                 <li><a href="#">Nueva subasta</a></li>
+                                                </c:if>
                                                 <li><a href="#">Gestionar subastas</a></li>
                                         </ul>
                                 </li>
@@ -49,7 +59,9 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
+                                                <c:if test="${empleado.rol == 'pas'}" >
                                                 <li><a href="nuevo_proveedor.jsp">Nuevo proveedor</a></li>
+                                                </c:if>
                                                 <li><a href="#">Gestionar proveedores</a></li>
                                         </ul>
                                 </li>

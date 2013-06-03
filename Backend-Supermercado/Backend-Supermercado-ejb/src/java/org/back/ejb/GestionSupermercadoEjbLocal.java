@@ -18,5 +18,11 @@ public interface GestionSupermercadoEjbLocal {
     Supermercado crearSupermercado(Supermercado supermercado)throws Exception;
     
     List<Supermercado> listarSupermercados() throws Exception;
+
+    Supermercado buscarSupermercado(long idSupermercado) throws Exception;
+
+    Supermercado guardarSupermercado(Supermercado supermercado) throws Exception;
+    
+    
     
 }
