@@ -1,6 +1,8 @@
 package org.back.ejb;
 
+import java.util.List;
 import javax.ejb.Local;
+import org.back.hibernate.model.Producto;
 import org.back.hibernate.model.Subasta;
 
 /**
@@ -11,5 +13,9 @@ import org.back.hibernate.model.Subasta;
 public interface GestionSubastasEjbLocal {
 
     Subasta crearSubasta(Subasta subasta) throws Exception;
+
+    List<Producto> buscarProductos(String query) throws Exception;
+
+    Producto obtenerProductoPorId(Integer productoId);
     
 }

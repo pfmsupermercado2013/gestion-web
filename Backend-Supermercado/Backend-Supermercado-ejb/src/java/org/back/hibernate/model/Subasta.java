@@ -71,10 +71,12 @@ public class Subasta implements Serializable {
         this.idsubasta = idsubasta;
     }
 
-    public Subasta(Integer idsubasta, Date fechaFin, long pujaInicial) {
-        this.idsubasta = idsubasta;
+    public Subasta(Date fechaFin, long pujaInicial, Producto producto) {
         this.fechaFin = fechaFin;
         this.pujaInicial = pujaInicial;
+        this.producto = producto;
+        this.estado = 1;
+        this.fechaInicio = new Date();
     }
 
     public Integer getIdsubasta() {
