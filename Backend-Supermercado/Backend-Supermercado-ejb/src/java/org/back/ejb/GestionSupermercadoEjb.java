@@ -72,16 +72,14 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
         try {
             begin();
             getSession().update(supermercado);
-            supermercadoActualizado = buscarSupermercado(supermercado.getIdsupermercado());
+            commit();
             DAO.close();
+            supermercadoActualizado = buscarSupermercado(supermercado.getIdsupermercado());
         } catch (HibernateException e) {
             throw new Exception("Error al guardar el supermercado "+supermercado.getIdsupermercado(),e);
         }
         
         return supermercadoActualizado;
     }
-    
-    
-    
-    
+   
 }

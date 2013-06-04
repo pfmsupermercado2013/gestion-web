@@ -47,7 +47,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=iso-8859-15");
         HttpSession session = null;
         boolean hayErrores = false;
         Supermercado supermercado = null;
@@ -57,6 +57,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
         String provinciaSupermercado = "";
         String localidadSupermercado = "";
         String cmd = request.getParameter("cmd");
+       
         String idSupermercado = request.getParameter("idSupermercado");
 
         if(cmd != null && !"".equals(cmd)){

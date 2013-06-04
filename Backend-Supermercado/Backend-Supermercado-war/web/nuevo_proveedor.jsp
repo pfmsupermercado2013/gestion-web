@@ -1,10 +1,9 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page errorPage="error.jsp" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <title>Backend Supermercado</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
         <!-- Bootstrap -->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/styles.css" rel="stylesheet" media="screen">
@@ -77,27 +76,27 @@
                     </div>
                     <!-- CP del proveedor-->
                     <div class="control-group">
-                        <label class="control-label">CÃ³digo postal</label>
+                        <label class="control-label">Código postal</label>
                         <div class="controls">
                             <input id="cp" name="cp" type="text" placeholder="CP del proveedor"
                                    class="input-xlarge">
                             <p class="help-block"></p>
                         </div>
                     </div>
-                    <!-- TelÃ©fono del proveedor-->
+                    <!-- Teléfono del proveedor-->
                     <div class="control-group">
-                        <label class="control-label">TelÃ©fono</label>
+                        <label class="control-label">Teléfono</label>
                         <div class="controls">
-                            <input id="telefono" name="telefono" type="text" placeholder="TelÃ©fono del proveedor"
+                            <input id="telefono" name="telefono" type="text" placeholder="Teléfono del proveedor"
                                    class="input-xlarge">
                             <p class="help-block"></p>
                         </div>
                     </div>
-                    <!-- TelÃ©fono del proveedor-->
+                    <!-- Teléfono del proveedor-->
                     <div class="control-group">
-                        <label class="control-label">Correo electrÃ³nico</label>
+                        <label class="control-label">Correo electrónico</label>
                         <div class="controls">
-                            <input id="email" name="email" type="text" placeholder="Correo electrÃ³nico del proveedor"
+                            <input id="email" name="email" type="text" placeholder="Correo electrónico del proveedor"
                                    class="input-xlarge">
                             <p class="help-block"></p>
                         </div>

@@ -1,12 +1,11 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.back.hibernate.model.Supermercado"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
     <title>Backend Supermercado</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
@@ -19,12 +18,12 @@
         <%@include file="menu_cabecera.jsp" %> 
      </header>
      <div class="container">
-        <form class="form-horizontal form-search" name="listadoSupermercadosForm">
-              <h2>GestiÃ³n de Supermercados</h2>
+        <form class="form-horizontal form-search" name="listadoSupermercadosForm" method="post">
+              <h2>Gestión de Supermercados</h2>
               <table id="tabla_supermercados">
                   <thead>
                     <th>Nombre</th>
-                    <th>DirecciÃ³n</th>
+                    <th>Dirección</th>
                     <th>Localidad</th>
                     <th>Provincia</th>
                     <th>&nbsp;</th>
@@ -40,10 +39,19 @@
                             <td>${supermercado.direccionSupermercado}</td>
                             <td>${supermercado.localidadSupermercado}</td>
                             <td>${supermercado.provinciaSupermercado}</td>
-                            <td><button class="btn btn-large btn-primary" type="button" onclick="location.href='GestionSupermercado?cmd=ver-supermercado&idSupermercado=${supermercado.idsupermercado}'">Ver</button></td>
+                            <td><a href='GestionSupermercado?cmd=ver-supermercado&idSupermercado=${supermercado.idsupermercado}'>
+                                    <img src="img/botones/consultar_registro.png" width="20" height="30" alt="Ver registro">
+                                </a>    
+                            </td>
                             <c:if test="${empleado.rol == 'pas'}">
-                            <td><button class="btn btn-large btn-primary" type="button" onclick="location.href='GestionSupermercado?cmd=editar-supermercado&idSupermercado=${supermercado.idsupermercado}'">Editar</button></td>
-                            <td><button class="btn btn-large btn-primary" type="button" onclick="location.href='GestionSupermercado?cmd=borrar-supermercado&idSupermercado=${supermercado.idsupermercado}'">Borrar</button></td>
+                                <td><a href='GestionSupermercado?cmd=editar-supermercado&idSupermercado=${supermercado.idsupermercado}'>
+                                    <img src="img/botones/editar_registro.png" width="20" height="20" alt="Editar registro">
+                                    </a>
+                                </td>
+                                <td><a href='GestionSupermercado?cmd=borrar-supermercado&idSupermercado=${supermercado.idsupermercado}'>
+                                    <img src="img/botones/borrar_registro.png" width="20" height="20" alt="Borrar registro">
+                                    </a>
+                                </td>
                             </c:if>
                         </c:forEach>
                           

@@ -1,17 +1,16 @@
 <%-- 
     Document   : login
     Created on : 22-may-2013, 18:39:00
-    Author     : Ã“scarJavier
+    Author     : ÓscarJavier
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.back.constants.BackConstantes"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <title>Supermercado | Admin</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
  		<link href="css/styles.css" rel="stylesheet" media="screen">
@@ -26,7 +25,7 @@
                 <div class="body">   
                 <label>Id Admin</label>
                 <input id="admin-id" name="admin-id" type="text" size="10" maxlength="10" required="required" >
-                <label>ContraseÃ±a</label>
+                <label>Contraseña</label>
                 <input id="admin-pass" name="admin-pass" type="password" size="20" maxlength="20" required="required"
                        pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
                 </div>

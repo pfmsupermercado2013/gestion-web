@@ -45,7 +45,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, BackException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=iso-8859-15");
         PrintWriter out = response.getWriter();
         try {
             

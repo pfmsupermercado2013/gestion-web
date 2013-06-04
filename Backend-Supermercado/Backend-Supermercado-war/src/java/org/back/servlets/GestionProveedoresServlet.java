@@ -41,7 +41,7 @@ public class GestionProveedoresServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=iso-8859-15");
         String operacion = request.getParameter("operacion"); // recibe parametro que indica el tipo de operacion
 
         if (operacion != null && !operacion.isEmpty()) {

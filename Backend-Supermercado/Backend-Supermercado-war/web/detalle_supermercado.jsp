@@ -1,16 +1,23 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
     <title>Backend Supermercado</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
     <link href="css/datepicker.css" rel="stylesheet" media="screen">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        function submitForm(cmd){
+            var formulario = document.supermercadoDetalleForm;
+            formulario.action = "GestionSupermercado?cmd="+cmd;
+            formulario.submit();
+        }
+    </script>
   </head>
   <body>
      <header>
@@ -21,7 +28,7 @@
      <c:set var="readonly" value="${readonly}" scope="request"/>
      <c:set var="operacion" value="${operacion}" scope="request"/>
      <div class="container">
-        <form class="form-horizontal" name="supermercadoDetalleForm" action="GestionSupermercado">
+         <form class="form-horizontal" name="supermercadoDetalleForm" method="post">
                  <fieldset>
                  <!-- Formulario detalle supermercado -->
                  <h2>Supermercado <c:out value="${supermercado.nombreSupermercado}"/></h2>
@@ -39,9 +46,9 @@
                  </div>
                  <!-- Apellidos del trabajador-->
                  <div class="control-group">
-                 <label class="control-label">DirecciÃ³n</label>
+                 <label class="control-label">Dirección</label>
                  <div class="controls">
-                 <input id="direccionSuperm" name="direccionSuperm" type="text" placeholder="DirecciÃ³n del supermercado"
+                 <input id="direccionSuperm" name="direccionSuperm" type="text" placeholder="Dirección del supermercado"
                  class="input-xlarge" required="required" <c:out value="${readonly}"/> value="${supermercado.direccionSupermercado}">
                  <p class="help-block"></p>
                  </div>
@@ -68,13 +75,13 @@
 
                  </fieldset>
                  <c:if test="${operacion == 'editar-supermercado'}" >             
-                  <button class="btn btn-large btn-primary" type="button" onclick="location.href='GestionSupermercado?cmd=gestion-supermercado'" >Ir a listado</button>
+                  <button class="btn btn-large btn-primary" type="button" onclick="javascript:submitForm('gestion-supermercado');" >Ir a listado</button>
                   <c:if test="${empleado.rol == 'pas'}" >
-                    <button class="btn btn-large btn-primary" onclick="location.href='GestionSupermercado?cmd=guardar-supermercado'" >Guardar cambios</button>    
+                      <button class="btn btn-large btn-primary" type='button' onclick="javascript:submitForm('guardar-supermercado');" >Guardar cambios</button>    
                   </c:if>
                  </c:if> 
                  <c:if test="${operacion == 'ver-supermercado'}" >
-                  <button class="btn btn-large btn-primary" type="button" onclick="location.href='GestionSupermercado?cmd=gestion-supermercado'" >Ir a listado</button>
+                  <button class="btn btn-large btn-primary" type="button" onclick="javascript:submitForm('gestion-supermercado');" >Ir a listado</button>
                  </c:if> 
 
            </form> 

@@ -1,9 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
     <title>Backend Supermercado</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
@@ -50,10 +49,10 @@
               
               <!-- Categoria del producto-->
               <div class="control-group">
-              <label class="control-label">CategorÃ­a</label>
+              <label class="control-label">Categoría</label>
               <div class="controls">
                 <div class="input-append">
-                  <input type="text" placeholder="Buscar categorÃ­a"span2 search-query">
+                  <input type="text" placeholder="Buscar categoría"span2 search-query">
                   <button type="submit" class="btn">Search</button>
                 </div>
               <p class="help-block"></p>

@@ -1,9 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
     <title>Backend Supermercado</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
@@ -72,7 +71,7 @@
              <div class="control-group">
             <label class="control-label">NIF</label>
             <div class="controls">
-            <input id="nif" name="nif" type="password" placeholder="Password (MÃ­nimo 8 caract.)"
+            <input id="nif" name="nif" type="password" placeholder="Password (Mínimo 8 caract.)"
             class="input-xlarge" required="required" maxlength="20"
             pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
             <p class="help-block"></p>

@@ -1,9 +1,8 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
     <title>Backend Supermercado</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
@@ -36,9 +35,9 @@
                  </div>
                  <!-- Apellidos del trabajador-->
                  <div class="control-group">
-                 <label class="control-label">DirecciÃ³n</label>
+                 <label class="control-label">Dirección</label>
                  <div class="controls">
-                 <input id="direccionSuperm" name="direccionSuperm" type="text" placeholder="DirecciÃ³n del supermercado"
+                 <input id="direccionSuperm" name="direccionSuperm" type="text" placeholder="Dirección del supermercado"
                  class="input-xlarge" required="required">
                  <p class="help-block"></p>
                  </div>
