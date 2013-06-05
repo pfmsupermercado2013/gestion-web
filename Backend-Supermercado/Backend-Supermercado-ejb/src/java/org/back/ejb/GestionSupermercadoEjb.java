@@ -52,10 +52,10 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
         Supermercado supermercado = null;
         try {
             begin();
-            supermercado = (Supermercado)getSession().createQuery("FROM Supermercado s WHERE s.idsupermercado ="+idSupermercado).uniqueResult();
+            supermercado = (Supermercado)getSession().createQuery("FROM Supermercado s WHERE s.idsupermercado = :idSupermercado").setParameter("idSupermercado", idSupermercado).uniqueResult();
             DAO.close();
         } catch (HibernateException e) {
-            throw new Exception("Error al buscar el supermercado "+idSupermercado,e);
+            throw new Exception("Error al buscar el supermercado "+idSupermercado);
         }
         
         return supermercado; 
@@ -71,7 +71,7 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
             DAO.close();
             supermercadoActualizado = buscarSupermercado(supermercado.getIdsupermercado());
         } catch (HibernateException e) {
-            throw new Exception("Error al guardar el supermercado "+supermercado.getIdsupermercado(),e);
+            throw new Exception("Error al guardar el supermercado "+supermercado.getIdsupermercado());
         }
         
         return supermercadoActualizado;

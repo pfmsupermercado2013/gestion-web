@@ -78,6 +78,10 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 }
             } 
 
+            if(cmd.equals(BackConstantes.NUEVO_SUPERMERCADO)){
+                redirectJsp = "nuevo_supermercado.jsp";
+            }
+            
             if(cmd.equals(BackConstantes.CREAR_SUPERMERCADO)){
                 nombreSupermercado = request.getParameter("nombreSuperm");
                 direccionSupermercado = request.getParameter("direccionSuperm");

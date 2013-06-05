@@ -12,6 +12,7 @@ public class BackConstantes {
     
     /* Gestión de Empleados */
     public static final String GESTION_EMPLEADOS  = "gestion-empleados";
+    public static final String NUEVO_EMPLEADO     = "nuevo-empleado";
     public static final String CREAR_EMPLEADO     = "crear-empleado";
     public static final String EDITAR_EMPLEADO    = "editar-empleado";
     public static final String BORRAR_EMPLEADO    = "borrar-empleado";
@@ -21,6 +22,7 @@ public class BackConstantes {
     
     /* Gestión de Supermercado */
     public static final String GESTION_SUPERMERCADO = "gestion-supermercado";
+    public static final String NUEVO_SUPERMERCADO   = "nuevo-empleado";
     public static final String CREAR_SUPERMERCADO   = "crear-supermercado";
     public static final String EDITAR_SUPERMERCADO  = "editar-supermercado";
     public static final String BORRAR_SUPERMERCADO  = "borrar-supermercado";

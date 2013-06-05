@@ -83,6 +83,10 @@ public class GestionEmpleadosServlet extends HttpServlet {
                         Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } 
+                
+                if(cmd.equals(BackConstantes.NUEVO_EMPLEADO)){
+                
+                }
                 // Invocamos a la operación que crea empleado
                 if(cmd.equals(BackConstantes.CREAR_EMPLEADO)){
                     nifEmpleado = request.getParameter("nif");
@@ -104,10 +108,10 @@ public class GestionEmpleadosServlet extends HttpServlet {
                     empleado = crearEmpleado(empleado);
                     if (empleado != null){
                         enviarMailEmpleado(password,empleado.getEmail());
-                        redirectJsp = "listado_supermercados.jsp";
+                        redirectJsp = "listado_empleados.jsp";
                     }
                 }
-
+/*
                 if(cmd.equals(BackConstantes.VER_SUPERMERCADO)){
                     try {
                         if(idSupermercado != null && !"".equals(idSupermercado)){
@@ -170,9 +174,9 @@ public class GestionEmpleadosServlet extends HttpServlet {
                 }
 
                 if(cmd.equals(BackConstantes.BORRAR_SUPERMERCADO)){
-                   /*@TODO: */
+                   //@TODO:
                 }
-
+            */
                 if(!hayErrores && !"".equals(redirectJsp)) {
                    request.getRequestDispatcher(redirectJsp).forward(request, response);
                 }
@@ -202,6 +206,8 @@ public class GestionEmpleadosServlet extends HttpServlet {
             processRequest(request, response);
         } catch (BackException ex) {
             Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex){
+            Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -220,6 +226,8 @@ public class GestionEmpleadosServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (BackException ex) {
+            Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex){
             Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

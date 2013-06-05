@@ -4,13 +4,11 @@
  */
 package org.back.ejb;
 
-import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
-import org.back.hibernate.model.Supermercado;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
@@ -41,18 +39,13 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
 
     @Override
     public Empleado validarIdentidadEmpleado(String idEmpleado, String password) throws Exception{
-        List<Empleado> listaEmpleado = null;
         Empleado empleado = null;
         try{
             begin();
             // Buscamos al empleado de acuerdo a su identificador y password
-            listaEmpleado = getSession().createQuery("FROM Empleado e WHERE e.nif = '"+ idEmpleado +"' ").list();
+            empleado = (Empleado)getSession().createQuery("FROM Empleado e WHERE e.nif = :nif").setParameter("nif", idEmpleado).uniqueResult();
             
-            if(listaEmpleado!= null && !listaEmpleado.isEmpty()){
-                Iterator it = listaEmpleado.iterator();
-                while(it.hasNext()){
-                    empleado = (Empleado)it.next();
-                }
+            if(empleado != null){
                 // Si las contraseñas no son iguales devolvemos nulo
                 if(!empleado.getPassword().equals(password)){
                     empleado = null;
@@ -75,7 +68,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
             listaEmpleados = query.list();
             DAO.close();
         } catch (HibernateException e) {
-            throw new Exception("Error al listar empleados",e);
+            throw new Exception("Error al listar empleados.");
         }
         
         return listaEmpleados;
@@ -92,7 +85,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
             listaEmpleados = query.list();
             DAO.close();
         } catch (HibernateException e) {
-            throw new Exception("Error al listar empleados",e);
+            throw new Exception("Error al paginar resultados de empleados.");
         }
         
         return listaEmpleados;
@@ -108,7 +101,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
             DAO.close();
             numPaginas = (int) Math.ceil(numEmpleados / limite);
         } catch (HibernateException e) {
-            throw new Exception("Error al listar empleados",e);
+            throw new Exception("Error al obtener número total de empleados.");
         }
         return numPaginas;
     }
