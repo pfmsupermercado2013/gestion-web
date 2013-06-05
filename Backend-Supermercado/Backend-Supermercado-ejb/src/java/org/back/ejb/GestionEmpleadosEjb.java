@@ -6,16 +6,10 @@ package org.back.ejb;
 
 import java.util.Iterator;
 import java.util.List;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import org.back.hibernate.model.Empleado;
-import org.back.hibernate.model.Supermercado;
 import org.back.hibernate.DAO;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 /**
  *

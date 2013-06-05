@@ -4,16 +4,11 @@
  */
 package org.back.ejb;
 
-import java.util.Iterator;
 import java.util.List;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
-import org.back.hibernate.model.Supermercado;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.back.hibernate.model.Supermercado;
 import org.hibernate.HibernateException;
 

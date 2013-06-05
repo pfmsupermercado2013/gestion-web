@@ -10,6 +10,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
     <link href="css/datepicker.css" rel="stylesheet" media="screen">
+    <link href="css/tablas.css" rel="stylesheet" media="screen">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </head>
@@ -18,43 +19,45 @@
         <%@include file="menu_cabecera.jsp" %> 
      </header>
      <div class="container">
-        <form class="form-horizontal form-search" name="listadoSupermercadosForm" method="post">
-              <h2>Gestión de Supermercados</h2>
-              <table id="tabla_supermercados">
+        <form class="form-horizontal form-search" name="listadoSupermercadosForm" method="post">    
+            <table id="tabla_supermercados" summary="Tabla para gestión de supermercados existentes">
+                  <caption>Gestión de Supermercados</caption>
                   <thead>
-                    <th>Nombre</th>
-                    <th>Dirección</th>
-                    <th>Localidad</th>
-                    <th>Provincia</th>
-                    <th>&nbsp;</th>
-                    <c:if test="${empleado.rol == 'pas'}">
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    </c:if>
+                      <tr>
+                          <th scope="col" colspan="2">NOMBRE</th>
+                          <th scope="col" colspan="2">DIRECCIÓN</th>
+                          <th scope="col" colspan="2">LOCALIDAD</th>
+                          <th scope="col" colspan="2">PROVINCIA</th>
+                          <th scope="col"></th>
+                          <c:if test="${empleado.rol == 'pas'}">
+                          <th scope="col"></th>
+                          <th scope="col"></th>
+                          </c:if> 
+                      </tr>
                   </thead>
                   <tbody>
                     <tr>
                         <c:forEach var="supermercado" items="${listaSupermercados}" >
-                            <td>${supermercado.nombreSupermercado}</td>
-                            <td>${supermercado.direccionSupermercado}</td>
-                            <td>${supermercado.localidadSupermercado}</td>
-                            <td>${supermercado.provinciaSupermercado}</td>
-                            <td><a href='GestionSupermercado?cmd=ver-supermercado&idSupermercado=${supermercado.idsupermercado}'>
-                                    <img src="img/botones/consultar_registro.png" width="20" height="30" alt="Ver registro">
-                                </a>    
-                            </td>
-                            <c:if test="${empleado.rol == 'pas'}">
+                            <td colspan="2">${supermercado.nombreSupermercado}</td>
+                            <td colspan="2">${supermercado.direccionSupermercado}</td>
+                            <td colspan="2">${supermercado.localidadSupermercado}</td>
+                            <td colspan="2">${supermercado.provinciaSupermercado}</td>
+                             <c:if test="${empleado.rol == 'pas'}">
                                 <td><a href='GestionSupermercado?cmd=editar-supermercado&idSupermercado=${supermercado.idsupermercado}'>
-                                    <img src="img/botones/editar_registro.png" width="20" height="20" alt="Editar registro">
+                                    <img src="img/botones/editar_registro.png" width="20" height="20"  title="Editar registro">
                                     </a>
                                 </td>
                                 <td><a href='GestionSupermercado?cmd=borrar-supermercado&idSupermercado=${supermercado.idsupermercado}'>
-                                    <img src="img/botones/borrar_registro.png" width="20" height="20" alt="Borrar registro">
+                                    <img src="img/botones/borrar_registro.png" width="20" height="20" title="Borrar registro">
                                     </a>
                                 </td>
                             </c:if>
-                        </c:forEach>
-                          
+                            <td><a href='GestionSupermercado?cmd=ver-supermercado&idSupermercado=${supermercado.idsupermercado}'>
+                                    <img src="img/botones/consultar_registro.png" width="20" height="30" title="Ver registro">
+                                </a>    
+                            </td>
+                           
+                        </c:forEach> 
                     </tr>
                   </tbody>
               </table>
