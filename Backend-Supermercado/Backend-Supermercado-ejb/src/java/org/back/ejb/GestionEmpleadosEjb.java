@@ -9,7 +9,10 @@ import java.util.List;
 import javax.ejb.Stateless;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.DAO;
+import static org.back.hibernate.DAO.getSession;
+import org.back.hibernate.model.Supermercado;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 
 /**
  *
@@ -61,6 +64,55 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         }
         return empleado;
     }
+
+    @Override
+    public List<Empleado> listarEmpleados(int limite) throws Exception{
+        List<Empleado> listaEmpleados = null;
+        try {
+            begin();
+            Query query = getSession().createQuery("FROM Empleado e ORDER BY e.nombreEmpleado");
+            query.setMaxResults(limite);
+            listaEmpleados = query.list();
+            DAO.close();
+        } catch (HibernateException e) {
+            throw new Exception("Error al listar empleados",e);
+        }
+        
+        return listaEmpleados;
+    }
+
+    @Override
+    public List<Empleado> paginarResultados(int limite, int offset) throws Exception{
+        List<Empleado> listaEmpleados = null;
+        try {
+            begin();
+            Query query = getSession().createQuery("FROM Empleado e ORDER BY e.apellidosEmpleado");
+            query.setMaxResults(limite);
+            query.setFirstResult(limite * offset);
+            listaEmpleados = query.list();
+            DAO.close();
+        } catch (HibernateException e) {
+            throw new Exception("Error al listar empleados",e);
+        }
+        
+        return listaEmpleados;
+    }
+
+    @Override
+    public int obtenerNumeroPaginas(int limite) throws Exception{
+        long numEmpleados = 0;
+        int numPaginas = 0;
+        try {
+            begin();
+            numEmpleados = (Long) getSession().createQuery("SELECT COUNT(*) FROM Empleado").uniqueResult();
+            DAO.close();
+            numPaginas = (int) Math.ceil(numEmpleados / limite);
+        } catch (HibernateException e) {
+            throw new Exception("Error al listar empleados",e);
+        }
+        return numPaginas;
+    }
+    
     
     
     

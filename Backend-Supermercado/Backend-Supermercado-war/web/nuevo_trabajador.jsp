@@ -1,3 +1,4 @@
+<%@page import="org.back.constants.BackConstantes"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -20,7 +21,7 @@
             <fieldset>
             <!-- Formulario nuevo trabajador -->
 
-            <h2>Nuevo trabajador</h2>
+            <h2>Nuevo Empleado</h2>
 
             <div class="control-group" style="float:right;margin-right:200px">
               <img style="width:160px;height:160px" src="img/silueta.gif" class="img-polaroid">
@@ -61,20 +62,21 @@
             <div class="controls">
             <select id="cargo" name="cargo" class="input-xlarge">
             <option value="" selected="selected">Seleccione el cargo del empleado</option>
-            <option value="Normal">Normal</option>
-            <option value="PAS">PAS</option>
+            <option value="normal">Normal</option>
+            <option value="pas">PAS</option>
             </select>
             <p class="help-block">Administador (PAS). No Administrador (Normal)</p>
             </div>
             </div>
-            <!-- Password -->
+            <!-- Password 
              <div class="control-group">
-            <label class="control-label">NIF</label>
+            <label class="control-label">Password</label>
             <div class="controls">
-            <input id="nif" name="nif" type="password" placeholder="Password (Mínimo 8 caract.)"
+            <input id="password" name="nif" type="password" placeholder="Password (Mínimo 8 caract.)"
             class="input-xlarge" required="required" maxlength="20"
             pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
             <p class="help-block"></p>
+            -->
             </div>
             </div>
             </div>

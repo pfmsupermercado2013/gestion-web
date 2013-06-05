@@ -1,18 +1,13 @@
-<%-- 
-    Document   : error500
-    Created on : 24-may-2013, 11:20:04
-    Author     : ÃscarJavier
---%>
-
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
         <title>Servidor no disponible</title>
     </head>
     <body>
-        <h1>Ups :( Se ha presentado un problema con el servidor.</h1>
-        <h2>VuÃ©lvelo a intentar mÃ¡s tarde.</h2>
+        <div id="error_layer">
+            <h1>Ups :( Se ha presentado un problema con el servidor.</h1>
+            <h2>Vuélvelo a intentar más tarde.</h2>
+        </div>
     </body>
 </html>

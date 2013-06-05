@@ -19,9 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.back.constants.BackConstantes;
 import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.ejb.GestionSupermercadoEjb;
 import org.back.ejb.GestionSupermercadoEjbLocal;
+import org.back.exceptions.BackException;
 import org.back.hibernate.model.Supermercado;
 
 /**
@@ -46,7 +48,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, BackException {
         response.setContentType("text/html;charset=iso-8859-15");
         HttpSession session = null;
         boolean hayErrores = false;
@@ -62,7 +64,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
 
         if(cmd != null && !"".equals(cmd)){
             session = request.getSession(false);
-            if("gestion-supermercado".equals(cmd)){
+            if(cmd.equals(BackConstantes.GESTION_SUPERMERCADO)){
                 List<Supermercado> listaSupermercados = null;
                 try {
                     listaSupermercados = gestionSupermercadoEjb.listarSupermercados();
@@ -76,7 +78,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 }
             } 
 
-            if("crear-supermercado".equals(cmd)){
+            if(cmd.equals(BackConstantes.CREAR_SUPERMERCADO)){
                 nombreSupermercado = request.getParameter("nombreSuperm");
                 direccionSupermercado = request.getParameter("direccionSuperm");
                 provinciaSupermercado = request.getParameter("provinciaSuperm");
@@ -96,7 +98,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
 
             }
             
-            if("ver-supermercado".equals(cmd)){
+            if(cmd.equals(BackConstantes.VER_SUPERMERCADO)){
                 try {
                     if(idSupermercado != null && !"".equals(idSupermercado)){
                         supermercado = gestionSupermercadoEjb.buscarSupermercado(Long.parseLong(idSupermercado));
@@ -113,7 +115,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 }
             }
             
-            if("editar-supermercado".equals(cmd)){
+            if(cmd.equals(BackConstantes.EDITAR_SUPERMERCADO)){
                  try {
                     if(idSupermercado != null && !"".equals(idSupermercado)){
                         supermercado = gestionSupermercadoEjb.buscarSupermercado(Long.parseLong(idSupermercado));
@@ -130,11 +132,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 }
             }
             
-            if("borrar-supermercado".equals(cmd)){
-            
-            }
-            
-            if("guardar-supermercado".equals(cmd)){
+            if(cmd.equals(BackConstantes.GUARDAR_SUPERMERCADO)){
                 nombreSupermercado    = request.getParameter("nombreSuperm");
                 direccionSupermercado = request.getParameter("direccionSuperm");
                 provinciaSupermercado = request.getParameter("provinciaSuperm");
@@ -161,9 +159,15 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 }
             }
             
+            if(cmd.equals(BackConstantes.BORRAR_SUPERMERCADO)){
+               /*@TODO: */
+            }
+            
             if(!hayErrores && !"".equals(redirectJsp)) {
                request.getRequestDispatcher(redirectJsp).forward(request, response);
             }
+        } else {
+               throw new BackException("No se han recibido los parámetros para completar la operación. "+this.getServletName());
         }
     }
 
@@ -180,7 +184,11 @@ public class GestionSupermercadoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         try {
+             processRequest(request, response);
+         } catch (BackException ex) {
+             Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
     /**
@@ -195,16 +203,11 @@ public class GestionSupermercadoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         try {
+             processRequest(request, response);
+         } catch (BackException ex) {
+             Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 }

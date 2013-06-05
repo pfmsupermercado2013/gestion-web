@@ -210,3 +210,10 @@ html {
     text-align: center;
     color: #FF0000;
 }
+
+#error_layer h1 h2{
+    background-color: orangered;
+    font-size: 20px;
+    text-align: center;
+    color: #FF0000;
+}

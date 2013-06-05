@@ -4,6 +4,7 @@
  */
 package org.back.ejb;
 
+import java.util.List;
 import javax.ejb.Local;
 import org.back.hibernate.model.Empleado;
 
@@ -19,6 +20,14 @@ public interface GestionEmpleadosEjbLocal {
     boolean editarEmpleado(String idEmpleado);
 
     Empleado validarIdentidadEmpleado(String idEmpleado, String password) throws Exception;
+
+    List<Empleado> listarEmpleados(int limite) throws Exception;
+
+    List<Empleado> paginarResultados(int limite, int offset) throws Exception;
+
+    int obtenerNumeroPaginas(int limite) throws Exception;
+    
+    
     
     
     
