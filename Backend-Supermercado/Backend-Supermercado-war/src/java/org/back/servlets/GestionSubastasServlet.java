@@ -38,26 +38,12 @@ public class GestionSubastasServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String productoQuery = request.getParameter("query");
-        if (productoQuery != null && !productoQuery.isEmpty()) { //Buscar producto para el campo de autocompletado
-            try {
-                List<Producto> productos = gestionSubastasEjb.buscarProductos(productoQuery);
-                List<JsonObject> respuesta = new ArrayList<JsonObject>();
-                for (Producto p : productos) {
-                    JsonObject json = new JsonObject();
-                    json.addProperty("id", p.getIdproducto());
-                    json.addProperty("name", p.getNombreProducto());
-                    respuesta.add(json);
-                }
-                response.setContentType("text/html;charset=UTF-8");
-                response.getWriter().write(respuesta.toString());
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Error buscando productos");
-                return;
-            }
+        //Buscar producto para el campo de autocompletado
+        if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) { 
+           doBusquedaProducto(request, response);
+           return;
         }
+        
         RequestDispatcher rd = sc.getRequestDispatcher("/nueva_subasta.jsp");
         rd.forward(request, response);
     }
@@ -83,15 +69,45 @@ public class GestionSubastasServlet extends HttpServlet {
     private void doCrearSubasta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
 
-            Integer productoId = Integer.valueOf(request.getParameter("producto_id"));
+            Integer productoId;
+            try {
+                productoId = Integer.valueOf(request.getParameter("producto_id"));
+            } catch (Exception e) {
+                doError(request, response, "El producto introducido no existe. Escoja un producto de la lista.");
+                return;
+            }
+            if (gestionSubastasEjb.esteProductoEnSubasta(productoId)) {
+                doError(request, response, "El producto ya se encuentra en subasta");
+                return;
+            }
+
             String fechaFin = request.getParameter("fecha_fin");
+            Date fechaFinDate;
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                fechaFinDate = format.parse(fechaFin);
+            } catch (Exception e) {
+                doError(request, response, "Introduzca una fecha de finalización correcta.");
+                return;
+            }
+
             String pujaInicial = request.getParameter("precio_inicial");
-            System.out.println("Parametros: " + productoId + " " + fechaFin + " " + pujaInicial);
+            try {
+                Float.parseFloat(pujaInicial);
+            } catch (Exception e) {
+                doError(request, response, "Introduzca una cantidad de puja correcta.");
+                return;
+            }
+
+            String descripcion = request.getParameter("descripcion");
 
             Producto producto = gestionSubastasEjb.obtenerProductoPorId(productoId);
-            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-            Date fechaFinDate = format.parse(fechaFin);
-            Subasta subasta = new Subasta(fechaFinDate, Long.parseLong(pujaInicial), producto);
+            if (producto == null) {
+                doError(request, response, "El producto introducido no existe. Escoja un producto de la lista.");
+                return;
+            }
+
+            Subasta subasta = new Subasta(fechaFinDate, Float.parseFloat(pujaInicial), producto, descripcion);
             gestionSubastasEjb.crearSubasta(subasta);
             request.setAttribute("creado", true);
 
@@ -102,5 +118,30 @@ public class GestionSubastasServlet extends HttpServlet {
 
         RequestDispatcher rd = sc.getRequestDispatcher("/nueva_subasta.jsp");
         rd.forward(request, response);
+    }
+
+    private void doError(HttpServletRequest request, HttpServletResponse response, String mensaje) throws ServletException, IOException {
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher rd = sc.getRequestDispatcher("/nueva_subasta.jsp");
+        rd.forward(request, response);
+    }
+
+    private void doBusquedaProducto(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String productoQuery = request.getParameter("query");
+            List<Producto> productos = gestionSubastasEjb.buscarProductos(productoQuery);
+            List<JsonObject> respuesta = new ArrayList<JsonObject>();
+            for (Producto p : productos) {
+                JsonObject json = new JsonObject();
+                json.addProperty("id", p.getIdproducto());
+                json.addProperty("name", p.getNombreProducto());
+                respuesta.add(json);
+            }
+            response.setContentType("text/html;charset=UTF-8");
+            response.getWriter().write(respuesta.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error buscando productos");
+        }
     }
 }

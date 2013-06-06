@@ -30,23 +30,58 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
     }
 
     @Override
+    public List<Subasta> getSubastasActivas() {
+        begin();
+        Query query = getSession().getNamedQuery("Subasta.findByEstado");
+        query.setParameter("estado", 1);
+        List<Subasta> subastas = query.list();
+        commit();
+        DAO.close();
+        return subastas;
+    }
+
+    //TODO: Mover a Productos EJB
+    @Override
     public List<Producto> buscarProductos(String str) throws Exception {
         try {
             begin();
             Query query = getSession().createQuery("FROM Producto p WHERE p.nombreProducto like :nombreProducto");
-            query.setParameter("nombreProducto", "%"+str+"%");
+            query.setParameter("nombreProducto", "%" + str + "%");
             return query.list();
         } catch (Exception e) {
             throw new Exception("Error al buscar productos", e);
         }
     }
 
+    //TODO: Mover a Productos EJB
     @Override
     public Producto obtenerProductoPorId(Integer productoId) {
-        begin();
-        Query query = getSession().getNamedQuery("Producto.findByIdproducto");
-        query.setParameter("idproducto", productoId);
-        return (Producto)query.uniqueResult();
+        try {
+            begin();
+            Query query = getSession().getNamedQuery("Producto.findByIdproducto");
+            query.setParameter("idproducto", productoId);
+            Producto producto = (Producto) query.uniqueResult();
+            commit();
+            DAO.close();
+            return producto;
+        } catch (Exception e) {
+            return null;
+        }
     }
-    
+
+    @Override
+    public boolean esteProductoEnSubasta(Integer productoId) {
+        try {
+            begin();
+            Query query = getSession().createQuery("FROM Producto p WHERE p.producto like :idProducto");
+            query.setParameter("idProducto", productoId);
+            query.uniqueResult();
+            commit();
+            DAO.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
 }
