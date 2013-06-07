@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <c:set var="empleado" value="${empleado}" scope="session" />
+<c:set var="listaSupermercados" value="${listaSupermercados}" scope="session" />
 <div class="navbar blue blue2 navbar-fixed-top">
         <div class="navbar-inner">
                 <div class="container-fluid">
@@ -36,9 +37,9 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                                 <c:if test="${empleado.rol == 'pas'}" >
-                                                <li><a href="GestionEmpleado?cmd=nuevo-empleado">Nuevo empleado</a></li>
+                                                <li><a href="GestionEmpleados?cmd=nuevo-empleado">Nuevo empleado</a></li>
                                                 </c:if>
-                                                <li><a href="GestionEmpleado?cmd=gestion-empleado">Gestionar empleados</a></li>
+                                                <li><a href="GestionEmpleados?cmd=gestion-empleado">Gestionar empleados</a></li>
                                         </ul>
                                 </li>
                                  <li class="dropdown">
@@ -73,7 +74,7 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <li><a href="#">Modificar mis datos</a></li>
+                                                <li><a href="GestionEmpleados?cmd=editar-empleado&idEmpleado=${empleado.idempleado}">Modificar mis datos</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="login?cmd=logout">Salir</a></li>
                                         </ul>
