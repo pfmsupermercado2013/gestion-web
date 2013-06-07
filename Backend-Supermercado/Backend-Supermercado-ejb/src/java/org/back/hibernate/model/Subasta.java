@@ -24,6 +24,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.back.serializer.ProductoSerializer;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  *
@@ -55,13 +58,17 @@ public class Subasta implements Serializable {
     private Date fechaInicio;
     @Basic(optional = false)
     @Column(name = "puja_inicial")
-    private long pujaInicial;
+    private float pujaInicial;
     @Column(name = "estado")
     private Integer estado;
+    @Column(name = "descripcion")
+    private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subasta")
+    @JsonIgnore
     private Collection<ProveedorSubasta> proveedorSubastaCollection;
     @JoinColumn(name = "producto", referencedColumnName = "idproducto")
     @OneToOne(optional = false)
+    @JsonSerialize(using = ProductoSerializer.class)
     private Producto producto;
 
     public Subasta() {
@@ -71,11 +78,12 @@ public class Subasta implements Serializable {
         this.idsubasta = idsubasta;
     }
 
-    public Subasta(Date fechaFin, long pujaInicial, Producto producto) {
+    public Subasta(Date fechaFin, float pujaInicial, Producto producto, String descripcion) {
         this.fechaFin = fechaFin;
         this.pujaInicial = pujaInicial;
         this.producto = producto;
         this.estado = 1;
+        this.descripcion = descripcion;
         this.fechaInicio = new Date();
     }
 
@@ -103,11 +111,11 @@ public class Subasta implements Serializable {
         this.fechaInicio = fechaInicio;
     }
 
-    public long getPujaInicial() {
+    public float getPujaInicial() {
         return pujaInicial;
     }
 
-    public void setPujaInicial(long pujaInicial) {
+    public void setPujaInicial(float pujaInicial) {
         this.pujaInicial = pujaInicial;
     }
 
@@ -119,6 +127,14 @@ public class Subasta implements Serializable {
         this.estado = estado;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    
     @XmlTransient
     public Collection<ProveedorSubasta> getProveedorSubastaCollection() {
         return proveedorSubastaCollection;

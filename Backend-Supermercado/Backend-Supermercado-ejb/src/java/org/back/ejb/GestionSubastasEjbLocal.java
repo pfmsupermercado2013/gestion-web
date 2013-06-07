@@ -17,5 +17,9 @@ public interface GestionSubastasEjbLocal {
     List<Producto> buscarProductos(String query) throws Exception;
 
     Producto obtenerProductoPorId(Integer productoId);
+
+    List<Subasta> getSubastasActivas();
+
+    boolean esteProductoEnSubasta(Integer productoId);
     
 }
