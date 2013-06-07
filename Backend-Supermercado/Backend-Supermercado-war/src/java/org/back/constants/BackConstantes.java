@@ -50,6 +50,9 @@ public class BackConstantes {
     
     /* Paginación de resultados */
     public static final int NUM_REG_MAX = 20;
+    
+    /* Ruta almacenamiento Archivos subidos*/
+    public static final String RUTA_ARCHIVOS_UPLOAD = "img/tmp/";
 
     public static final String SALT_KEY = "716EA45X34";
     

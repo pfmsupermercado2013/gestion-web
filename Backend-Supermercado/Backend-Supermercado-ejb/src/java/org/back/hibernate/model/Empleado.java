@@ -5,6 +5,7 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +59,9 @@ public class Empleado implements Serializable {
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
+    @Basic(optional = true)
+    @Column(name = "imagen")
+    private byte[] imagen;
     @JoinColumn(name = "supermercado", referencedColumnName = "idsupermercado")
     @ManyToOne(optional = true)
     private Supermercado supermercado;
@@ -69,13 +73,14 @@ public class Empleado implements Serializable {
         this.idempleado = idempleado;
     }
 
-    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol, String email) {
+    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol, String email, byte[] imagen) {
         this.idempleado = idempleado;
         this.nif = nif;
         this.nombreEmpleado = nombreEmpleado;
         this.apellidosEmpleado = apellidosEmpleado;
         this.rol = rol;
         this.email = email;
+        this.imagen = imagen;
     }
 
     public Integer getIdempleado() {
@@ -132,6 +137,14 @@ public class Empleado implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setEmail(byte[] imagen) {
+        this.imagen = imagen;
     }
     
     public Supermercado getSupermercado() {

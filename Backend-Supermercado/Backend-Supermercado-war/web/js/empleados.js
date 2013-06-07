@@ -1,173 +1,84 @@
-$(document).ready(function(){
-    $(".button").click(function() {
-        $("#empleadoForm").validate({
-            rules: {
-                    nif: {
-                            required: true,
-                            maxlength: 10
-                    },
-                    nombre: {
-                            required: true,
-                            maxlength: 30,
-                    },
-                    apellidos: {
-                            required: true,
-                            maxlength: 30
-                    },
-                    email: {
-                            required: true,
-                            email: true,
-                            maxlength: 30
-                    }
-            },
-            messages: {
-                     nif: {
-                            required: "Escribir el NIF del empleado.",
-                            maxlength: 10
-                    },
-                    nombre: {
-                            required: "Escribir el nombre del empleado.",,
-                            maxlength: 30,
-                    },
-                    apellidos: {
-                            required: "Escribir los apellidos del empleado.",
-                            maxlength: 30
-                    },
-                    email: {
-                            required: "Escribir el E-mail del empleado.",
-                            error:"E-mail erróneo."
-                    }
-            }
+$( document ).ready( function() {
+	$("a[rel='pop-up-upload']").click(function () {
+      	var caracteristicas = "height=300,width=300,scrollTo,resizable=1,scrollbars=1,location=0";
+      	nueva=window.open(this.href, 'Popup', caracteristicas);
+      	return false;
         });
-    });
 });
-//Retorna: 1 = NIF ok, 2 = CIF ok, 3 = NIE ok, -1 = NIF error, -2 = CIF error, -3 = NIE error, 0 = ??? error
-function valida_nif_cif_nie( a )
-{
-	var temp = a.toUpperCase();
-	var cadenadni = "TRWAGMYFPDXBNJZSQVHLCKE";
- 
-	if( temp!= '' )
-	{
-		//si no tiene un formato valido devuelve error
-		if( ( !/^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$/.test( temp ) && !/^[T]{1}[A-Z0-9]{8}$/.test( temp ) ) && !/^[0-9]{8}[A-Z]{1}$/.test( temp ) )
-		{
-			return 0;
-		}
- 
-		//comprobacion de NIFs estandar
-		if( /^[0-9]{8}[A-Z]{1}$/.test( temp ) )
-		{
-			posicion = a.substring( 8,0 ) % 23;
-			letra = cadenadni.charAt( posicion );
-			var letradni = temp.charAt( 8 );
-			if( letra == letradni )
-			{
-				return 1;
-			}
-			else
-			{
-				return -1;
-			}
-		}
- 
-		//algoritmo para comprobacion de codigos tipo CIF
-		suma = parseInt(a.charAt(2))+parseInt(a.charAt(4))+parseInt(a.charAt(6));
- 
-		for( i = 1; i < 8; i += 2 )
-		{
-			temp1 = 2 * parseInt( a.charAt( i ) );
-			temp1 += '';
-			temp1 = temp1.substring(0,1);
-			temp2 = 2 * parseInt( a.charAt( i ) );
-			temp2 += '';
-			temp2 = temp2.substring( 1,2 );
-			if( temp2 == '' )
-			{
-				temp2 = '0';
-			}
- 
-			suma += ( parseInt( temp1 ) + parseInt( temp2 ) );
-		}
-		suma += '';
-		//n = 10 – parseInt( suma.substring( suma.length-1, suma.length ) );
-                n = 10 - parseInt(suma.substring(suma.length-1, suma.length));
-                
-		//comprobacion de NIFs especiales (se calculan como CIFs)
-		if( /^[KLM]{1}/.test( temp ) )
-		{
-			if( a.charAt( 8 ) == String.fromCharCode( 64 + n ) )
-			{
-				return 1;
-			}
-			else
-			{
-				return -1;
-			}
-		}
- 
-		//comprobacion de CIFs
-		if( /^[ABCDEFGHJNPQRSUVW]{1}/.test( temp ) )
-		{
-			temp = n + '';
-			if( a.charAt( 8 ) == String.fromCharCode( 64 + n ) || a.charAt( 8 ) == parseInt( temp.substring( temp.length-1, temp.length ) ) )
-			{
-				return 2;
-			}
-			else
-			{
-				return -2;
-			}
-		}
- 
-		//comprobacion de NIEs
-		//T
-		if( /^[T]{1}[A-Z0-9]{8}$/.test( temp ) )
-		{
-			if( a.charAt( 8 ) == /^[T]{1}[A-Z0-9]{8}$/.test( temp ) )
-			{
-				return 3;
-			}
-			else
-			{
-				return -3;
-			}
-		}
-		//XYZ
-		if( /^[XYZ]{1}/.test( temp ) )
-		{
-			temp = temp.replace( 'X','0' )
-			temp = temp.replace( 'Y','1' )
-			temp = temp.replace( 'Z','2' )
-			pos = temp.substring(0, 8) % 23;
- 
-			if( a.toUpperCase().charAt( 8 ) == cadenadni.substring( pos, pos + 1 ) )
-			{
-				return 3;
-			}
-			else
-			{
-				return -3;
-			}
-		}
-	}
- 
-	return 0;
-}
+$(function(){
+        $.validator.addMethod("alfaRegex", function(value, element) {
+        return this.optional(element) || /^[\xF1 \xD1 \xC7 \xE7 a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC]+$/i.test(value);
+        }, "Solo digitar valores que contengan letras.");
+        
+        $.validator.addMethod("alfanumRegex", function(value, element) {
+        return this.optional(element) || /^[\xF1 \xD1 \xC7 \xE7 a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC 0-9]+$/i.test(value);
+        }, "Solo digitar valores que contengan letras y numeros.");
+        
+        $.validator.addMethod("validarNIF", function(value, element) {
+        var cadenadni="TRWAGMYFPDXBNJZSQVHLCKET";
+        var let = value.substr(value.length-1,1);
+        if(/^([0-9]{8})*[a-zA-Z]+$/.test(value)){
+                var numero = value.substr(0,value.length-1) % 23;
+                letra=cadenadni.substring(numero,numero+1);
+                if (letra==let)
+                   return true;
+                return false;
+        } else if (/^[XYZ]{1}/.test(value)) {
+                var reemplazar = new Array("X", "Y", "Z")
+                var por = new Array("0", "1", "2");
+                numero=value
+                for (var i=0; i<reemplazar.length; i++) {
+                        numero = numero.replace(reemplazar[i].toUpperCase(), por[i]);
+                }
+                var numero = numero.substr(0,value.length-1) % 23;
+                var letra = cadenadni.substring(numero, numero + 1);
+                if (letra==let)
+                   return true;
+                return false;
+        }
+        return this.optional(element);
+        }, "Escribe un NIF con formato valido");
+        
+        $.validator.addMethod("selectSupermercado", function(value, element, arg){
+            return arg != value;
+        }, "Se debe asignar supermercado al empleado.");
+        
+        $.validator.addMethod("selectCargo", function(value, element, arg){
+            return arg != value;
+        }, "Se debe asignar cargo al empleado.");
 
-function str_replace( search, position, replace, subject )
-{
-	var f = search, r = replace, s = subject, p = position;
-	var ra = r instanceof Array, sa = s instanceof Array, f = [].concat(f), r = [].concat(r), i = (s = [].concat(s)).length;
- 
-	while( j = 0, i-- )
-	{
-		if( s[i] )
-		{
-			while( s[p] = s[p].split( f[j] ).join( ra ? r[j] || "" : r[0] ), ++j in f){};
-		}
-	};
- 
-	return sa ? s : s[0];
-}
-
+        $('#empleadoForm').validate({
+                rules: {
+                'nif': {required: true, minlength: 2, alfanumRegex:true, validarNIF:true},
+                'nombre': {required: true, minlength: 2, alfaRegex:true},
+                'apellidos': {required: true, minlength: 2, alfaRegex:true},
+                'email': { required: true, email: true },
+                'supermercado':{selectSupermercado:"default"},
+                'cargo': {selectCargo: "default"},
+                },
+                messages: {
+                'nombre': {required: 'Debe ingresar el nombre del empleado.', 
+                           minlength:'Digite un nombre de mas de 2 caracteres.',
+                           alfaRegex: 'Nombre no valido. Solo digitar letras.'},
+                'apellidos': {required: 'Debe ingresar los apellidos del empleado.', 
+                              minlength:'Digite un apellido de mas de 2 caracteres.',
+                              alfaRegex: 'Apellido no valido. Solo digitar letras.'},
+                'nif': { required: 'Debe ingresar el No. de documento de identidad.', 
+                         minlength:'Digite un NIF correcto.',
+                         validarNIF:'Digite un NIF con formato correcto.',
+                         alfanumRegex: 'NIF no valido. Solo digitar letras y numeros.'},
+                'email': { required: 'Debe ingresar el email del empleado.', 
+                           email:'Digite un email con el formato correcto.'},
+                'supermercado': {selectSupermercado: 'Debe asignar supermercado al empleado.'},
+                'cargo':{selectCargo: 'Debe seleccionar cargo al empleado.'},
+                },
+                 highlight: function(element) {
+                    $(element).closest('.control-group').removeClass('success').addClass('error');
+                 },
+                 success: function(element) {
+                    element
+                    .text('').addClass('valid')
+                    .closest('.control-group').removeClass('error').addClass('success');
+                 }
+        });
+});

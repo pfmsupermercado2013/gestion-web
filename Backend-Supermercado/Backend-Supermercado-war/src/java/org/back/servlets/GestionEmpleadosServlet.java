@@ -4,6 +4,7 @@
  */
 package org.back.servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.back.constants.BackConstantes;
 import org.back.ejb.GestionEmpleadosEjbLocal;
+import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.exceptions.BackException;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
@@ -34,6 +36,10 @@ import org.back.utils.PasswordEncoder;
 @WebServlet(name = "GestionEmpleadosServlet", urlPatterns = {"/GestionEmpleados"})
 public class GestionEmpleadosServlet extends HttpServlet {
      private static ServletContext sc;
+     
+     @EJB
+     private GestionSupermercadoEjbLocal gestionSupermercadoEjb;
+     
      @EJB
      private GestionEmpleadosEjbLocal gestionEmpleadosEjb;
 
@@ -59,9 +65,12 @@ public class GestionEmpleadosServlet extends HttpServlet {
         String nombreEmpleado = "";
         String apellidosEmpleado = "";
         String idSupermercado = "";
+        String rol = "";
         String email = "";
         String password = "";
         String passwordEncode = "";
+        byte[] fotoEmpleadoBinario = null;
+        File fotoEmpleado = null;
         int offset = 1;
         int numPaginas = 0;
         try {
@@ -85,20 +94,34 @@ public class GestionEmpleadosServlet extends HttpServlet {
                 } 
                 
                 if(cmd.equals(BackConstantes.NUEVO_EMPLEADO)){
-                
+                   List<Supermercado> listaSupermercados = null;
+                    try {
+                        if(session.getAttribute("listaSupermercados") == null){
+                            listaSupermercados = gestionSupermercadoEjb.listarSupermercados();
+                            if(listaSupermercados != null && !listaSupermercados.isEmpty()){
+                                session.setAttribute("listaSupermercados", listaSupermercados);
+                            }
+                        }
+                        redirectJsp = "nuevo_trabajador.jsp";
+                    } catch (Exception ex) {
+                        Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
                 }
                 // Invocamos a la operación que crea empleado
                 if(cmd.equals(BackConstantes.CREAR_EMPLEADO)){
+                    fotoEmpleado = (File)request.getSession(false);
                     nifEmpleado = request.getParameter("nif");
                     nombreEmpleado = request.getParameter("nombre");
                     apellidosEmpleado = request.getParameter("apellidos");
-                    idSupermercado = request.getParameter("localidadSuperm");
+                    idSupermercado = request.getParameter("idSupermercado");
+                    rol = request.getParameter("rol");
                     email = request.getParameter("email");
 
                     Empleado empleado = new Empleado();
-                    empleado.setNif(cmd);
-                    empleado.setNombreEmpleado(cmd);
-                    empleado.setApellidosEmpleado(cmd);
+                    empleado.setNif(nifEmpleado);
+                    empleado.setNombreEmpleado(nombreEmpleado);
+                    empleado.setApellidosEmpleado(apellidosEmpleado);
                     empleado.setRol(BackConstantes.ROL_NORMAL);
                     empleado.setEmail(email);
                     // Generamos una password aleatoria para el nuevo empleado
