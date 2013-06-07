@@ -24,6 +24,10 @@
         <servlet-name>GestionSubastasServlet</servlet-name>
         <servlet-class>org.back.servlets.GestionSubastasServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SubirArchivosServlet</servlet-name>
+        <servlet-class>org.back.servlets.SubirArchivosServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>GestionSubastasServlet</servlet-name>
         <url-pattern>/GestionSubastasServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubirArchivosServlet</servlet-name>
+        <url-pattern>/SubirArchivos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
