@@ -15,6 +15,7 @@ import org.back.hibernate.model.Proveedor;
 import org.back.utils.EnviarMail;
 import org.back.utils.PasswordAleatorio;
 import org.back.utils.PasswordEncoder;
+import org.back.utils.ValidadoresCampos;
 
 /**
  *
@@ -52,7 +53,7 @@ public class GestionProveedoresServlet extends HttpServlet {
         }
 
         //Accion desconocida
-        doError(request, response);
+        doDesconocido(request, response);
     }
 
     private void doCrearProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,9 +63,24 @@ public class GestionProveedoresServlet extends HttpServlet {
             String cif = request.getParameter("cif");
             String localidad = request.getParameter("localidad");
             String provincia = request.getParameter("provincia");
+
             String telefono = request.getParameter("telefono");
+            if (!ValidadoresCampos.validarTelefono(telefono)) {
+                doError(request, response, "Télefono no válido. Introduzca sólo números.");
+                return;
+            }
+
             String cp = request.getParameter("cp");
+            if (!ValidadoresCampos.validarCP(cp)) {
+                doError(request, response, "Código postal no válido.");
+                return;
+            }
+
             String email = request.getParameter("email");
+            if (!ValidadoresCampos.validarEmail(email)) {
+                doError(request, response, "Correo electrónico inválido.");
+                return;
+            }
 
             //Se genera un password aleatorio de TAMANO_PASSWORD caracteres
             String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
@@ -94,7 +110,13 @@ public class GestionProveedoresServlet extends HttpServlet {
         rd.forward(request, response);
     }
 
-    private void doError(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void doError(HttpServletRequest request, HttpServletResponse response, String mensaje) throws ServletException, IOException {
+        request.setAttribute("mensaje", mensaje);
+        RequestDispatcher rd = sc.getRequestDispatcher("/nuevo_proveedor.jsp");
+        rd.forward(request, response);
+    }
+
+    private void doDesconocido(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = sc.getRequestDispatcher("/error.jsp");
         rd.forward(request, response);
     }

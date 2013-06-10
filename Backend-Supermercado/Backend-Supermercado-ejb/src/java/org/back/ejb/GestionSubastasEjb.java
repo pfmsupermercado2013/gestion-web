@@ -5,6 +5,8 @@ import javax.ejb.Stateless;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
 import org.back.hibernate.model.Producto;
+import org.back.hibernate.model.ProveedorSubasta;
+import org.back.hibernate.model.ProveedorSubastaPK;
 import org.back.hibernate.model.Subasta;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -39,7 +41,36 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         DAO.close();
         return subastas;
     }
-
+    
+    @Override
+    public Subasta getSubastaById(Integer subastaId) {
+        begin();
+        Query query = getSession().getNamedQuery("Subasta.findByIdsubasta");
+        query.setParameter("idsubasta", subastaId);
+        Subasta subasta = (Subasta) query.uniqueResult();
+        commit();
+        DAO.close();
+        return subasta;
+    }
+    
+    @Override
+    public synchronized Subasta realizarPuja(Integer subastaId, Integer proveedorId,float cantidad) {
+        begin();
+        Query query = getSession().getNamedQuery("Subasta.findByIdsubasta");
+        query.setParameter("idsubasta", subastaId);
+        Subasta subasta = (Subasta) query.uniqueResult();
+        float cantidadActual = subasta.getPuja();
+        if(cantidad < cantidadActual){
+            subasta.setPuja(cantidad);
+            ProveedorSubastaPK pspk = new ProveedorSubastaPK(proveedorId, subastaId);
+            ProveedorSubasta proveedorSubasta = new ProveedorSubasta(pspk, cantidad);
+            subasta.getProveedorSubastaCollection().add(proveedorSubasta);
+        }
+        commit();
+        DAO.close();
+        return subasta;
+    }
+    
     //TODO: Mover a Productos EJB
     @Override
     public List<Producto> buscarProductos(String str) throws Exception {
@@ -73,15 +104,16 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
     public boolean esteProductoEnSubasta(Integer productoId) {
         try {
             begin();
-            Query query = getSession().createQuery("FROM Producto p WHERE p.producto like :idProducto");
+            Query query = getSession().createQuery("FROM Subasta s WHERE s.producto.idproducto = :idProducto");
             query.setParameter("idProducto", productoId);
-            query.uniqueResult();
+            Subasta subasta = (Subasta) query.uniqueResult();
             commit();
             DAO.close();
-            return true;
+            return subasta != null;
         } catch (Exception e) {
             e.printStackTrace();
-            return true;
+            return false;
         }
-    }
+    } 
+
 }

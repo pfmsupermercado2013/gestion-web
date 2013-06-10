@@ -39,11 +39,11 @@ public class GestionSubastasServlet extends HttpServlet {
             throws ServletException, IOException {
 
         //Buscar producto para el campo de autocompletado
-        if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) { 
-           doBusquedaProducto(request, response);
-           return;
+        if (request.getParameter("query") != null && !request.getParameter("query").isEmpty()) {
+            doBusquedaProducto(request, response);
+            return;
         }
-        
+
         RequestDispatcher rd = sc.getRequestDispatcher("/nueva_subasta.jsp");
         rd.forward(request, response);
     }
@@ -101,13 +101,21 @@ public class GestionSubastasServlet extends HttpServlet {
 
             String descripcion = request.getParameter("descripcion");
 
+            Integer unidades;
+            try {
+                unidades = Integer.valueOf(request.getParameter("unidades"));
+            } catch (Exception e) {
+                doError(request, response, "Introduzca un número de unidades válido.");
+                return;
+            }
+
             Producto producto = gestionSubastasEjb.obtenerProductoPorId(productoId);
             if (producto == null) {
                 doError(request, response, "El producto introducido no existe. Escoja un producto de la lista.");
                 return;
             }
 
-            Subasta subasta = new Subasta(fechaFinDate, Float.parseFloat(pujaInicial), producto, descripcion);
+            Subasta subasta = new Subasta(fechaFinDate, Float.parseFloat(pujaInicial), producto, descripcion, unidades);
             gestionSubastasEjb.crearSubasta(subasta);
             request.setAttribute("creado", true);
 

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.back.hibernate.model;
 
 import java.io.Serializable;
@@ -19,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  *
  * @author ÓscarJavier
+ * @author Alejandro Garcia
  */
 @Entity
 @Table(name = "proveedor_subasta")
@@ -34,7 +31,7 @@ public class ProveedorSubasta implements Serializable {
     protected ProveedorSubastaPK proveedorSubastaPK;
     @Basic(optional = false)
     @Column(name = "puja")
-    private long puja;
+    private float puja;
     @JoinColumn(name = "idsubasta", referencedColumnName = "idsubasta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Subasta subasta;
@@ -49,7 +46,7 @@ public class ProveedorSubasta implements Serializable {
         this.proveedorSubastaPK = proveedorSubastaPK;
     }
 
-    public ProveedorSubasta(ProveedorSubastaPK proveedorSubastaPK, long puja) {
+    public ProveedorSubasta(ProveedorSubastaPK proveedorSubastaPK, float puja) {
         this.proveedorSubastaPK = proveedorSubastaPK;
         this.puja = puja;
     }
@@ -66,11 +63,11 @@ public class ProveedorSubasta implements Serializable {
         this.proveedorSubastaPK = proveedorSubastaPK;
     }
 
-    public long getPuja() {
+    public float getPuja() {
         return puja;
     }
 
-    public void setPuja(long puja) {
+    public void setPuja(float puja) {
         this.puja = puja;
     }
 
