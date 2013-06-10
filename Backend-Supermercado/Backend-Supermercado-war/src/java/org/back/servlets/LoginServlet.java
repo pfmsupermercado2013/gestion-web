@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                  }
                  if (empleado != null) {
                     session = request.getSession(true); 
-                    session.setAttribute("empleado", empleado);  
+                    session.setAttribute("usuario", empleado);  
                     response.sendRedirect("principal.jsp");
                  } else {
                     request.setAttribute("error-acceso", "Acceso no permitido.");
@@ -173,6 +173,7 @@ public class LoginServlet extends HttpServlet {
         empleado.setApellidosEmpleado("Admin");
         empleado.setRol(BackConstantes.ROL_SUPER);
         empleado.setEmail("pfmsupermercado2013@gmail.com");
+        empleado.setActivo("S");
         empleado.setSupermercado(supermercado);
         try {
             gestionEmpleadosEjbLocal.crearEmpleado(empleado);

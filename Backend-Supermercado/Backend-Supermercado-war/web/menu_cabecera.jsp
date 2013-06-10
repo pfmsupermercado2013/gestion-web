@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<c:set var="empleado" value="${empleado}" scope="session" />
+<c:set var="usuario" value="${usuario}" scope="session" />
 <c:set var="listaSupermercados" value="${listaSupermercados}" scope="session" />
 <div class="navbar blue blue2 navbar-fixed-top">
         <div class="navbar-inner">
@@ -12,7 +12,7 @@
                                                 <b class="caret"></b>
                                     </a>
                                     <ul class="dropdown-menu">
-                                                <c:if test="${empleado.rol == 'pas'}" >
+                                                <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="GestionSupermercado?cmd=nuevo-supermercado">Nuevo supermercado</a></li>
                                                 </c:if>
                                                 <li><a href="GestionSupermercado?cmd=gestion-supermercado">Gestionar supermercados</a></li>
@@ -24,7 +24,7 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <c:if test="${empleado.rol == 'pas'}" >
+                                                <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="nuevo_producto.jsp">Nuevo producto</a></li>
                                                 </c:if>
                                                 <li><a href="#">Gestionar productos</a></li>
@@ -36,10 +36,10 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <c:if test="${empleado.rol == 'pas'}" >
+                                                <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="GestionEmpleados?cmd=nuevo-empleado">Nuevo empleado</a></li>
                                                 </c:if>
-                                                <li><a href="GestionEmpleados?cmd=gestion-empleado">Gestionar empleados</a></li>
+                                                <li><a href="GestionEmpleados?cmd=gestion-empleados">Gestionar empleados</a></li>
                                         </ul>
                                 </li>
                                  <li class="dropdown">
@@ -48,7 +48,7 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <c:if test="${empleado.rol == 'pas'}" >
+                                                <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="#">Nueva subasta</a></li>
                                                 </c:if>
                                                 <li><a href="#">Gestionar subastas</a></li>
@@ -60,7 +60,7 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <c:if test="${empleado.rol == 'pas'}" >
+                                                <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="nuevo_proveedor.jsp">Nuevo proveedor</a></li>
                                                 </c:if>
                                                 <li><a href="#">Gestionar proveedores</a></li>

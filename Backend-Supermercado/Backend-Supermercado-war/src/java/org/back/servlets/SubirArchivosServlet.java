@@ -46,7 +46,6 @@ public class SubirArchivosServlet extends HttpServlet {
 	        if (isMultipart) {
                     // Create a factory for disk-based file items
                     FileItemFactory factory = new DiskFileItemFactory();
-
                     // Create a new file upload handler
                     ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -61,10 +60,11 @@ public class SubirArchivosServlet extends HttpServlet {
 	                    if (!item.isFormField()) {
 	                        String fileName = item.getName();	 
 	                        File path = new File(directorio);
-                                if(contentType.equals("image/png") || 
-                                   contentType.equals("image/gif") ||
-                                   contentType.equals("image/jpg") ||
-                                   contentType.equals("image/jpeg") ) {
+                                if(contentType != null && 
+                                   (contentType.equals("image/png") || 
+                                    contentType.equals("image/gif")  ||
+                                    contentType.equals("image/jpg")  ||
+                                    contentType.equals("image/jpeg"))) {
                                     
                                    if (!path.exists()) {
 	                            boolean status = path.mkdirs();

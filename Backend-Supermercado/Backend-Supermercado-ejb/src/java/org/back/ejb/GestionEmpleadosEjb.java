@@ -33,8 +33,18 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
     }
 
     @Override
-    public boolean editarEmpleado(String idEmpleado) {
-        return false;
+    public Empleado editarEmpleado(Empleado empleado) throws Exception {
+        Empleado empleadoActualizado;
+        try {
+            begin();
+            getSession().update(empleado);
+            commit();
+            DAO.close();
+            empleadoActualizado = buscarEmpleado(empleado.getIdempleado());
+        } catch (HibernateException e) {
+            throw new Exception("Error al guardar los cambios del empleado "+empleado.getIdempleado());
+        }
+        return empleadoActualizado;
     }
 
     @Override
@@ -43,7 +53,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         try{
             begin();
             // Buscamos al empleado de acuerdo a su identificador y password
-            empleado = (Empleado)getSession().createQuery("FROM Empleado e WHERE e.nif = :nif").setParameter("nif", idEmpleado).uniqueResult();
+            empleado = (Empleado)getSession().createQuery("FROM Empleado e WHERE e.nif = :nif AND e.activo = 'S'").setParameter("nif", idEmpleado).uniqueResult();
             
             if(empleado != null){
                 // Si las contraseñas no son iguales devolvemos nulo
@@ -63,7 +73,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         List<Empleado> listaEmpleados = null;
         try {
             begin();
-            Query query = getSession().createQuery("FROM Empleado e ORDER BY e.nombreEmpleado");
+            Query query = getSession().createQuery("FROM Empleado e WHERE e.activo = :activo ORDER BY e.apellidosEmpleado").setParameter("activo", "S");
             query.setMaxResults(limite);
             listaEmpleados = query.list();
             DAO.close();
@@ -79,7 +89,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         List<Empleado> listaEmpleados = null;
         try {
             begin();
-            Query query = getSession().createQuery("FROM Empleado e ORDER BY e.apellidosEmpleado");
+            Query query = getSession().createQuery("FROM Empleado e WHERE e.activo = :activo ORDER BY e.apellidosEmpleado").setParameter("activo", "S");
             query.setMaxResults(limite);
             query.setFirstResult(limite * offset);
             listaEmpleados = query.list();
@@ -97,7 +107,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         int numPaginas = 0;
         try {
             begin();
-            numEmpleados = (Long) getSession().createQuery("SELECT COUNT(*) FROM Empleado").uniqueResult();
+            numEmpleados = (Long) getSession().createQuery("SELECT COUNT(*) FROM Empleado e WHERE e.activo = :activo").setParameter("activo", "S").uniqueResult();
             DAO.close();
             numPaginas = (int) Math.ceil(numEmpleados / limite);
         } catch (HibernateException e) {
@@ -105,8 +115,39 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
         }
         return numPaginas;
     }
-    
-    
-    
+
+    @Override
+    public Empleado buscarEmpleado(int idEmpleado) throws Exception {
+        Empleado empleado = null;
+        try {
+            begin();
+            empleado = (Empleado)getSession().createQuery("FROM Empleado e WHERE e.idempleado = :idEmpleado AND e.activo = 'S'").setParameter("idEmpleado", idEmpleado).uniqueResult();
+            DAO.close();
+        } catch (HibernateException e) {
+            throw new Exception("Error al listar empleados.");
+        }
+         return empleado;
+    }
+
+    @Override
+    public boolean inactivarEmpleado(int idEmpleado) throws Exception {
+        boolean inactivo = false;
+        Empleado empleado = null;
+        try {
+            empleado = buscarEmpleado(idEmpleado);
+            if(empleado != null){
+                empleado.setActivo("N");
+                begin();
+                getSession().update(empleado);
+                commit();
+                DAO.close();
+                inactivo = true;
+            }
+        } catch (HibernateException e) {
+            throw new Exception("Error al inactivar empleado.");
+        }
+        return inactivo;
+    }
+   
     
 }

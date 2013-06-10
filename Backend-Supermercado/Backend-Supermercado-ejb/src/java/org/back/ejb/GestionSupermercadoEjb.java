@@ -48,7 +48,7 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
     }
 
     @Override
-    public Supermercado buscarSupermercado(long idSupermercado) throws Exception{
+    public Supermercado buscarSupermercado(Integer idSupermercado) throws Exception{
         Supermercado supermercado = null;
         try {
             begin();

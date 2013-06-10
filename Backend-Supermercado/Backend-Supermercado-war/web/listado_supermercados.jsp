@@ -29,7 +29,7 @@
                           <th scope="col" colspan="2">LOCALIDAD</th>
                           <th scope="col" colspan="2">PROVINCIA</th>
                           <th scope="col"></th>
-                          <c:if test="${empleado.rol == 'pas'}">
+                          <c:if test="${usuario.rol == 'pas'}">
                           <th scope="col"></th>
                           <th scope="col"></th>
                           </c:if> 
@@ -42,7 +42,7 @@
                             <td colspan="2">${supermercado.direccionSupermercado}</td>
                             <td colspan="2">${supermercado.localidadSupermercado}</td>
                             <td colspan="2">${supermercado.provinciaSupermercado}</td>
-                             <c:if test="${empleado.rol == 'pas'}">
+                             <c:if test="${usuario.rol == 'pas'}">
                                 <td><a href='GestionSupermercado?cmd=editar-supermercado&idSupermercado=${supermercado.idsupermercado}'>
                                     <img src="img/botones/editar_registro.png" width="20" height="20"  title="Editar registro">
                                     </a>

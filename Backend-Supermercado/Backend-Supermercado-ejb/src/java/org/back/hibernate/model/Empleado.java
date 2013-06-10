@@ -5,7 +5,6 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,6 +61,9 @@ public class Empleado implements Serializable {
     @Basic(optional = true)
     @Column(name = "imagen")
     private byte[] imagen;
+    @Basic(optional = true)
+    @Column(name = "activo")
+    private String activo;
     @JoinColumn(name = "supermercado", referencedColumnName = "idsupermercado")
     @ManyToOne(optional = true)
     private Supermercado supermercado;
@@ -73,7 +75,7 @@ public class Empleado implements Serializable {
         this.idempleado = idempleado;
     }
 
-    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol, String email, byte[] imagen) {
+    public Empleado(Integer idempleado, String nif, String nombreEmpleado, String apellidosEmpleado, String rol, String email, byte[] imagen, String activo) {
         this.idempleado = idempleado;
         this.nif = nif;
         this.nombreEmpleado = nombreEmpleado;
@@ -81,6 +83,7 @@ public class Empleado implements Serializable {
         this.rol = rol;
         this.email = email;
         this.imagen = imagen;
+        this.activo = activo;
     }
 
     public Integer getIdempleado() {
@@ -132,7 +135,7 @@ public class Empleado implements Serializable {
     }
 
     public String getEmail() {
-        return nombreEmpleado;
+        return email;
     }
 
     public void setEmail(String email) {
@@ -143,8 +146,16 @@ public class Empleado implements Serializable {
         return imagen;
     }
 
-    public void setEmail(byte[] imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
+    }
+    
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
     }
     
     public Supermercado getSupermercado() {

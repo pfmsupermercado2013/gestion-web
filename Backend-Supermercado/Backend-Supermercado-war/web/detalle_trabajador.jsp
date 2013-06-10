@@ -13,24 +13,37 @@
         <script type="text/javascript" src="js/jquery/jquery_validate.js"></script>
         <script src="js/empleados.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            function submitForm(cmd){
+                var formulario = document.empleadoDetalleForm;
+                formulario.action = "GestionEmpleados?cmd="+cmd;
+                formulario.submit();
+            }
+            
+        </script>
     </head>
     <body>
         <header>
             <%@include file="menu_cabecera.jsp" %> 
         </header>
+        <c:set var="supermercado" value="${supermercado}" scope="session"/>
+        <c:set var="empleado" value="${empleado}" scope="session"/>
+        <c:set var="readonly" value="${readonly}" scope="request"/>
+        <c:set var="operacion" value="${operacion}" scope="request"/>
+        <c:set var="fotoEmpleado" value="${fotoEmpleado}" scope="request"/>
         <div class="container">
-            <form class="form-horizontal" id="empleadoForm" action="GestionEmpleados" method="post">
-                <input type="hidden" id="cmd" name="cmd" value="crear-empleado"/>
+            <form class="form-horizontal" name="empleadoDetalleForm" method="post">
+                <input type="hidden" id="idEmpleado" name="idEmpleado" value="${empleado.idempleado}"/>
                 <input type="hidden" id="idSupermercado" name="idSupermercado" value=""/>
                 <input type="hidden" id="idCargo" name="idCargo" value=""/>
                 <fieldset>
                     <!-- Formulario nuevo trabajador -->
 
-                    <h2>Nuevo Empleado</h2>
+                    <h2>Datos del Empleado</h2>
 
                     <div class="control-group" id="foto-empleado-div" style="float:right;margin-right:200px">
                         <a href="#" onclick="window.open('popUp_subidaFicheros.jsp', 'window', 'width=400,height=300,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'); return false">
-                            <img style="width:140px;height:160px" id="foto-empleado" src="img/silueta.gif" class="img-polaroid" title="Pulse para cambiar la imagen del empleado.">
+                            <img style="width:140px;height:160px" id="foto-empleado" src="${fotoEmpleado}" class="img-polaroid" title="Pulse para cambiar la imagen del empleado.">
                         </a>
                     </div>
 
@@ -39,10 +52,10 @@
                         <div class="control-group">
                             <label class="control-label" for="cargo">Supermercado</label>
                             <div class="controls">
-                                <select id="supermercado" name="supermercado" class="input-xlarge">
+                                <select id="supermercado" name="supermercado" class="input-xlarge" >
                                     <option value="default" selected="selected">Supermercado donde trabajará</option>
                                     <c:forEach var="supermercado" items="${listaSupermercados}">
-                                        <option value="${supermercado.idsupermercado}">${supermercado.nombreSupermercado}</option>
+                                        <option value="${supermercado.idsupermercado}" >${supermercado.nombreSupermercado}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -52,7 +65,7 @@
                             <label class="control-label" for="nombre">Nombre</label>
                             <div class="controls">
                                 <input id="nombre" name="nombre" type="text" placeholder="Nombre del empleado"
-                                       class="input-xlarge"  maxlength="30">
+                                       class="input-xlarge"  maxlength="30" value="${empleado.nombreEmpleado}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -61,7 +74,7 @@
                             <label class="control-label">Apellidos</label>
                             <div class="controls">
                                 <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos del empleado"
-                                       class="input-xlarge"  maxlength="30">
+                                       class="input-xlarge"  maxlength="30" value="${empleado.apellidosEmpleado}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -70,7 +83,7 @@
                             <label class="control-label" for="nif">NIF</label>
                             <div class="controls">
                                 <input id="nif" name="nif" type="text" placeholder="NIF del empleado"
-                                       class="input-xlarge"  maxlength="10">
+                                       class="input-xlarge"  maxlength="10" value="${empleado.nif}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -91,13 +104,18 @@
                             <label class="control-label" for="email">E-mail</label>
                             <div class="controls">
                                 <input id="email" name="email" type="text" placeholder="E-mail"
-                                       class="input-xlarge"  maxlength="30" >
+                                       class="input-xlarge"  maxlength="30" value="${empleado.email}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
                     </div>
                 </fieldset>
-                <button class="btn btn-large btn-primary" id="btnCrearEmpleado" type="submit"  >Crear empleado</button>
+                <c:if test="${operacion == 'editar-empleado'}" >  
+                    <c:if test="${usuario.rol == 'pas'}" >
+                    <button class="btn btn-large btn-primary" id="btnGuardarEmpleado" type="button" onclick="javascript:submitForm('guardar-empleado');">Guardar</button>
+                    </c:if>
+                </c:if>
+                    <button class="btn btn-large btn-primary" id="btnVolverEmpleado" type="button" onclick="javascript:submitForm('gestion-empleados');">Ir al listado</button>
             </form> 
         </div>
         <footer>

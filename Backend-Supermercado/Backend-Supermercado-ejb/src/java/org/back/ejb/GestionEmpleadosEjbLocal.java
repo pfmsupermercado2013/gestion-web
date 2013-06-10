@@ -17,7 +17,7 @@ public interface GestionEmpleadosEjbLocal {
 
     Empleado crearEmpleado(Empleado empleado) throws Exception;
 
-    boolean editarEmpleado(String idEmpleado);
+    Empleado editarEmpleado(Empleado empleado) throws Exception;
 
     Empleado validarIdentidadEmpleado(String idEmpleado, String password) throws Exception;
 
@@ -26,6 +26,10 @@ public interface GestionEmpleadosEjbLocal {
     List<Empleado> paginarResultados(int limite, int offset) throws Exception;
 
     int obtenerNumeroPaginas(int limite) throws Exception;
+
+    Empleado buscarEmpleado(int idEmpleado) throws Exception;
+
+    boolean inactivarEmpleado(int idEmpleado)  throws Exception;
     
     
     

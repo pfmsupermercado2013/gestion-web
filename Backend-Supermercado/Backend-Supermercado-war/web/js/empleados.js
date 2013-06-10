@@ -1,10 +1,17 @@
 $( document ).ready( function() {
-	$("a[rel='pop-up-upload']").click(function () {
-      	var caracteristicas = "height=300,width=300,scrollTo,resizable=1,scrollbars=1,location=0";
-      	nueva=window.open(this.href, 'Popup', caracteristicas);
-      	return false;
+	$('#supermercado').change(function() {
+        var supermercadoSel = $('#supermercado :selected').val();
+        $('input#idSupermercado').val(supermercadoSel);
+        alert($('input#idSupermercado').val());
+        });
+        
+        $('#cargo').change(function() {
+        var cargoSel = $('#cargo :selected').val();
+        $('input#idCargo').val(cargoSel);
+        alert($('input#idCargo').val());
         });
 });
+
 $(function(){
         $.validator.addMethod("alfaRegex", function(value, element) {
         return this.optional(element) || /^[\xF1 \xD1 \xC7 \xE7 a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC]+$/i.test(value);
@@ -40,11 +47,13 @@ $(function(){
         }, "Escribe un NIF con formato valido");
         
         $.validator.addMethod("selectSupermercado", function(value, element, arg){
+             var valorSelSupermercado = $('#supermercado').val();
+             $('input#idSupermercado').val(valorSelSupermercado);
             return arg != value;
         }, "Se debe asignar supermercado al empleado.");
         
         $.validator.addMethod("selectCargo", function(value, element, arg){
-            return arg != value;
+            return arg != value; 
         }, "Se debe asignar cargo al empleado.");
 
         $('#empleadoForm').validate({

@@ -76,7 +76,7 @@
                  </fieldset>
                  <c:if test="${operacion == 'editar-supermercado'}" >             
                   <button class="btn btn-large btn-primary" type="button" onclick="javascript:submitForm('gestion-supermercado');" >Ir a listado</button>
-                  <c:if test="${empleado.rol == 'pas'}" >
+                  <c:if test="${usuario.rol == 'pas'}" >
                       <button class="btn btn-large btn-primary" type='button' onclick="javascript:submitForm('guardar-supermercado');" >Guardar cambios</button>    
                   </c:if>
                  </c:if> 

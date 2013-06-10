@@ -105,7 +105,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
             if(cmd.equals(BackConstantes.VER_SUPERMERCADO)){
                 try {
                     if(idSupermercado != null && !"".equals(idSupermercado)){
-                        supermercado = gestionSupermercadoEjb.buscarSupermercado(Long.parseLong(idSupermercado));
+                        supermercado = gestionSupermercadoEjb.buscarSupermercado(Integer.parseInt(idSupermercado));
                         if(supermercado != null){
                           session.setAttribute("supermercado", supermercado);
                           request.setAttribute("readonly", "readonly");
@@ -122,7 +122,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
             if(cmd.equals(BackConstantes.EDITAR_SUPERMERCADO)){
                  try {
                     if(idSupermercado != null && !"".equals(idSupermercado)){
-                        supermercado = gestionSupermercadoEjb.buscarSupermercado(Long.parseLong(idSupermercado));
+                        supermercado = gestionSupermercadoEjb.buscarSupermercado(Integer.parseInt(idSupermercado));
                         if(supermercado != null){
                           session.setAttribute("supermercado", supermercado);
                           request.setAttribute("readonly", "");
