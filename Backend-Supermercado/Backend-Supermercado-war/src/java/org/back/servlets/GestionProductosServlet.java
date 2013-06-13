@@ -4,7 +4,12 @@
  */
 package org.back.servlets;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +27,7 @@ import org.back.constants.BackConstantes;import org.back.ejb.GestionCategoriasEj
 import org.back.ejb.GestionProductosEjbLocal;
 import org.back.exceptions.BackException;
 import org.back.hibernate.model.Categoria;
+import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Producto;
 
 /**
@@ -61,6 +67,10 @@ public class GestionProductosServlet extends HttpServlet {
         String marca = "";
         String precio = "";
         String codigoEAN = "";
+        File fotoProducto = null;
+        String rutaFotoProducto = "";
+        byte[] fotoBinario = null;
+        String directorio = "";
         String cmd = request.getParameter("cmd");
         String idCategoria = request.getParameter("idCategoria");
         String idProducto = request.getParameter("idProducto");
@@ -70,6 +80,7 @@ public class GestionProductosServlet extends HttpServlet {
         if(cmd != null && !"".equals(cmd)){
             session = request.getSession(false);
             session.setAttribute("menu", idMenu);
+            directorio = session.getServletContext().getRealPath(BackConstantes.RUTA_ARCHIVOS_UPLOAD);
             if(cmd.equals(BackConstantes.GESTION_PRODUCTOS)){
                 List<Producto> listaProductos = null;
                 try {
@@ -117,15 +128,27 @@ public class GestionProductosServlet extends HttpServlet {
                 producto.setFechaEntrada(new Date());
                 producto.setMarca(marca);
                 producto.setPrecio(Short.parseShort(precio));
-               
+                // Obtenemos la foto del producto de la sesión
+                fotoProducto = (File)session.getAttribute("archivo");
                 try {
                     categoria = gestionCategoriasEjb.buscarCategoria(Integer.parseInt(idCategoria));
                     if(categoria != null){
                        producto.setCategoriaIdCategoria(categoria);
                     }
+                    if(fotoProducto != null){
+                        fotoBinario = new byte[(int)fotoProducto.length()];
+                        try {
+                             FileInputStream fileInputStream = new FileInputStream(fotoProducto);
+                             fileInputStream.read(fotoBinario);
+                             fileInputStream.close();
+                        } catch (Exception e) {
+                             e.printStackTrace();
+                        }
+                        producto.setImagen(fotoBinario);
+                    }
                     producto = gestionProductosEjb.crearProducto(producto);
                     if(producto != null){
-                        listaProductosPorCategoria(Integer.parseInt(idCategoria), request);
+                        this.listaTodosProductos(request);
                         redirectJsp = "listado_productos.jsp";
                     }
                 } catch (Exception ex) {
@@ -140,6 +163,10 @@ public class GestionProductosServlet extends HttpServlet {
                     if(idProducto != null && !"".equals(idCategoria)){
                         producto = gestionProductosEjb.buscarProductoPorId(Integer.parseInt(idProducto));
                         if(producto != null){
+                          rutaFotoProducto = obtenerImagenProducto(producto, directorio);
+                          if(rutaFotoProducto != null){
+                                request.setAttribute("fotoProducto", rutaFotoProducto);
+                          }
                           session.setAttribute("producto", producto);
                           request.setAttribute("readonly", "readonly");
                           request.setAttribute("operacion", cmd);
@@ -153,10 +180,20 @@ public class GestionProductosServlet extends HttpServlet {
             }
             
             if(cmd.equals(BackConstantes.EDITAR_PRODUCTO)){
+                List<Categoria> listaCategorias = null;
                  try {
                     if(idProducto != null && !"".equals(idProducto)){
                         producto = gestionProductosEjb.buscarProductoPorId(Integer.parseInt(idProducto));
                         if(producto != null){
+                          // Obtenemos listado de categorias
+                          listaCategorias = gestionCategoriasEjb.listarTodasCategorias();
+                          if(listaCategorias != null && !listaCategorias.isEmpty()){
+                              request.setAttribute("listaCategorias", listaCategorias);
+                          }
+                          rutaFotoProducto = obtenerImagenProducto(producto, directorio);
+                          if(rutaFotoProducto != null){
+                              request.setAttribute("fotoProducto", rutaFotoProducto);
+                          }
                           session.setAttribute("producto", producto);
                           request.setAttribute("readonly", "");
                           request.setAttribute("operacion", cmd);
@@ -175,7 +212,18 @@ public class GestionProductosServlet extends HttpServlet {
                 codigoEAN = request.getParameter("codigoEAN");
                 precio = request.getParameter("precio");
                 marca = request.getParameter("marca");
-                
+                // Obtenemos la foto del producto de la sesión
+                fotoProducto = (File)session.getAttribute("archivo");
+                if(fotoProducto != null){
+                   fotoBinario = new byte[(int)fotoProducto.length()];
+                   try {
+                        FileInputStream fileInputStream = new FileInputStream(fotoProducto);
+                        fileInputStream.read(fotoBinario);
+                        fileInputStream.close();
+                   } catch (Exception e) {
+                        e.printStackTrace();
+                   }
+                }
                 try {
                     // Recuperamos el supermercado de la sesión
                     producto = (Producto)session.getAttribute("producto");
@@ -184,8 +232,13 @@ public class GestionProductosServlet extends HttpServlet {
                     producto.setCodigoEAN(codigoEAN);
                     producto.setMarca(marca);
                     producto.setPrecio(Short.parseShort(precio));
+                    producto.setImagen(fotoBinario);
                     producto = gestionProductosEjb.guardarProducto(producto);
                     if(producto != null){
+                        rutaFotoProducto = obtenerImagenProducto(producto, directorio);
+                        if(rutaFotoProducto != null){
+                                request.setAttribute("fotoProducto", rutaFotoProducto);
+                        }
                         // Guardamos en sesión el producto modificada
                         session.setAttribute("producto", producto);
                         request.setAttribute("operacion", cmd);
@@ -258,6 +311,41 @@ public class GestionProductosServlet extends HttpServlet {
          } catch (Exception ex) {
              Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
+    }
+    
+    private void listaTodosProductos(HttpServletRequest request){
+         try {
+             List<Producto> listadoProductos = null;
+             //int numPaginas = gestionEmpleadosEjb.obtenerNumeroPaginas(BackConstantes.NUM_REG_MAX);
+             listadoProductos = gestionProductosEjb.listarTodosProductos(BackConstantes.NUM_REG_MAX);
+             //request.getSession(false).setAttribute("numPaginas", numPaginas);
+             request.getSession(false).setAttribute("listaProductos", listadoProductos);
+         } catch (Exception ex) {
+             Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    
+    private String obtenerImagenProducto(Producto producto, String directorio){
+        String urlImagen = "";
+        byte[] fotoBinario = producto.getImagen();
+        if(fotoBinario != null){
+            String nombreFoto = "foto_"+producto.getIdproducto();
+            File rutaFoto = new File (directorio);
+            File fotoProducto = new File(rutaFoto + nombreFoto +".png");
+            OutputStream fotoOS;
+             try {
+                 fotoOS = new FileOutputStream(fotoProducto);
+                 fotoOS.write(fotoBinario);
+                 fotoOS.close();
+                 if(fotoProducto.exists())
+                   urlImagen = "img/" + fotoProducto.getName();
+             } catch (FileNotFoundException ex) {
+                 Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (IOException ex) {
+                    Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+             }
+        }
+        return urlImagen;
     }
 
 }

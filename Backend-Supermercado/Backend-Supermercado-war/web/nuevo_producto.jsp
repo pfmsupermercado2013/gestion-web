@@ -27,7 +27,7 @@
 
                     <div class="control-group" id="foto-producto-div" style="float:right;margin-right:200px">
                         <a href="#" onclick="window.open('popUp_subidaFicheros.jsp', 'window', 'width=400,height=300,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'); return false">
-                            <img style="width:140px;height:160px" id="foto-formulario" src="img/silueta.gif" class="img-polaroid" title="Pulse para cambiar la imagen del producto.">
+                            <img style="width:140px;height:160px" id="foto-formulario" src="img/producto.gif" class="img-polaroid" title="Pulse para cambiar la imagen del producto.">
                         </a>
                     </div>
 

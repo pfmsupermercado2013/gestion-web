@@ -27,6 +27,7 @@ import org.back.constants.BackConstantes;
 import org.back.ejb.GestionEmpleadosEjbLocal;
 import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.exceptions.BackException;
+import org.back.hibernate.model.Categoria;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
 import org.back.utils.EnviarMail;

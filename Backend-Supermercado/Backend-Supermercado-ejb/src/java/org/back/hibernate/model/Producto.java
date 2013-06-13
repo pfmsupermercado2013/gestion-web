@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -62,7 +63,8 @@ public class Producto implements Serializable {
     private Date fechaEntrada;
     @Column(name = "Descripcion")
     private String descripcion;
-    @Column(name = "imagen")
+    @Basic(optional = true)
+    @Lob @Column(name = "imagen", length = 1048576)
     private byte[] imagen;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "producto") 
     private Subasta subasta;
