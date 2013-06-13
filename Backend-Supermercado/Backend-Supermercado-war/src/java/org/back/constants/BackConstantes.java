@@ -19,6 +19,7 @@ public class BackConstantes {
     public static final String VER_EMPLEADO       = "ver-empleado";
     public static final String LISTAR_EMPLEADOS   = "listar-empleados";
     public static final String GUARDAR_EMPLEADO   = "guardar-empleado";
+    public static final String EDITAR_USUARIO     = "editar-usuario";
     
     /* Gestión de Supermercado */
     public static final String GESTION_SUPERMERCADO = "gestion-supermercado";
@@ -30,14 +31,25 @@ public class BackConstantes {
     public static final String LISTAR_SUPERMERCADO  = "listar-supermercados";
     public static final String GUARDAR_SUPERMERCADO = "guardar-supermercado";
     
-    /* Gestión de Supermercado */
+    /* Gestión de Productos */
     public static final String GESTION_PRODUCTOS = "gestion-productos";
+    public static final String NUEVO_PRODUCTO    = "nuevo-producto";
     public static final String CREAR_PRODUCTO    = "crear-producto";
     public static final String EDITAR_PRODUCTO   = "editar-producto";
     public static final String BORRAR_PRODUCTO   = "borrar-producto";
     public static final String VER_PRODUCTO      = "ver-producto";
     public static final String LISTAR_PRODUCTOS  = "listar-productos";
     public static final String GUARDAR_PRODUCTO  = "guardar-producto";
+    
+    /* Gestión de Categorias */
+    public static final String GESTION_CATEGORIAS = "gestion-categorias";
+    public static final String NUEVA_CATEGORIA    = "nueva-categoria";
+    public static final String CREAR_CATEGORIA    = "crear-categoria";
+    public static final String EDITAR_CATEGORIA   = "editar-categoria";
+    public static final String BORRAR_CATEGORIA   = "borrar-categoria";
+    public static final String VER_CATEGORIA      = "ver-categoria";
+    public static final String LISTAR_CATEGORIAS  = "listar-categorias";
+    public static final String GUARDAR_CATEGORIA  = "guardar-categoria";
     
     /* Roles */
     public static final String ROL_SUPER  = "pas";

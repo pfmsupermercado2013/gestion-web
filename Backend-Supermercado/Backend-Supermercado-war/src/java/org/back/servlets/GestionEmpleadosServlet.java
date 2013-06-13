@@ -65,6 +65,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
         boolean hayErrores = false;
         String redirectJsp = "";
         String cmd = request.getParameter("cmd");
+        String idMenu = request.getParameter("menu");
         String nifEmpleado = "";
         String nombreEmpleado = "";
         String apellidosEmpleado = "";
@@ -84,6 +85,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
             
             if (cmd != null && !"".equals(cmd)){
                 session = request.getSession(false);
+                request.setAttribute("menu", idMenu);
                 if(cmd.equals(BackConstantes.GESTION_EMPLEADOS)){
                     List<Empleado> listadoEmpleados = null;
                     try {
@@ -150,6 +152,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
                     empleado.setRol(rol);
                     empleado.setEmail(email);
                     empleado.setImagen(fotoBinario);
+                    empleado.setActivo("S");
                     if(supermercado != null){
                         empleado.setSupermercado(supermercado);
                     }
@@ -213,7 +216,20 @@ public class GestionEmpleadosServlet extends HttpServlet {
                         Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-
+                
+                if(cmd.equals(BackConstantes.EDITAR_USUARIO)){
+                     try {
+                        empleado = (Empleado)session.getAttribute("usuario");
+                        if(empleado != null){
+                          request.setAttribute("operacion", cmd);
+                          redirectJsp = "datos_usuario.jsp";
+                        }
+                    } catch (Exception ex) {
+                        hayErrores = true;
+                        Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
                 if(cmd.equals(BackConstantes.GUARDAR_EMPLEADO)){
                     idEmpleado = request.getParameter("idEmpleado");
                     nifEmpleado = request.getParameter("nif");

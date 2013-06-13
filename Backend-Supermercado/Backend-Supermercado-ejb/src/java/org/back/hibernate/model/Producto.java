@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,6 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idproducto")
     private Integer idproducto;
@@ -59,7 +62,9 @@ public class Producto implements Serializable {
     private Date fechaEntrada;
     @Column(name = "Descripcion")
     private String descripcion;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "producto")
+    @Column(name = "imagen")
+    private byte[] imagen;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "producto") 
     private Subasta subasta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private Collection<UbicacionProducto> ubicacionProductoCollection;
@@ -132,6 +137,14 @@ public class Producto implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+    
     public Subasta getSubasta() {
         return subasta;
     }

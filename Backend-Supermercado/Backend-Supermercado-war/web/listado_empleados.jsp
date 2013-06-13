@@ -29,7 +29,7 @@
         </header>
         <div class="container">
             <form class="form-horizontal form-search" name="listadoEmpleadosForm" method="post">    
-                <table id="tabla_supermercados" summary="Tabla para gestión de empleados existentes">
+                <table id="tabla_datos" summary="Tabla para gestión de empleados existentes">
                     <caption>Gestión de Empleados</caption>
                     <thead>
                         <tr>
@@ -52,17 +52,20 @@
                                 <td colspan="2">${empleadoSuperm.nombreEmpleado}</td>
                                 <td colspan="2">${empleadoSuperm.supermercado.nombreSupermercado}</td>
                                 <c:if test="${usuario.rol == 'pas'}">
-                                    <td><a href='GestionEmpleados?cmd=editar-empleado&idEmpleado=${empleadoSuperm.idempleado}'>
-                                            <img src="img/botones/editar_registro.png" width="20" height="20"  title="Editar datos empleado.">
+                                    <td><a class="btn btn-success" href='GestionEmpleados?cmd=editar-empleado&idEmpleado=${empleadoSuperm.idempleado}' title="Editar datos empleado.">
+                                            <!--<img src="img/botones/editar_registro.png" width="20" height="20"  title="Editar datos empleado.">-->
+                                            <li class="icon-pencil icon-white"></li>
                                         </a>
                                     </td>
-                                    <td><a href="#" onclick="inactivarEmpleado('borrar-empleado&idEmpleado=${empleadoSuperm.idempleado}');return false;">
-                                            <img src="img/botones/borrar_registro.png" width="20" height="20" title="Dar de baja a empleado.">
+                                    <td><a class="btn btn-danger"href="#" onclick="inactivarEmpleado('borrar-empleado&idEmpleado=${empleadoSuperm.idempleado}');return false;" title="Dar de baja a empleado.">
+                                            <!--<img src="img/botones/borrar_registro.png" width="20" height="20" title="Dar de baja a empleado.">-->
+                                            <li class="icon-trash icon-white"></li>
                                         </a>
                                     </td>
                                 </c:if>
-                                <td><a href='GestionEmpleados?cmd=ver-empleado&idEmpleado=${empleadoSuperm.idempleado}'>
-                                        <img src="img/botones/consultar_registro.png" width="20" height="30" title="Ver datos empleado.">
+                                <td><a class="btn btn-warning" href='GestionEmpleados?cmd=ver-empleado&idEmpleado=${empleadoSuperm.idempleado}' title="Ver datos empleado.">
+                                        <!--<img src="img/botones/consultar_registro.png" width="20" height="30" title="Ver datos empleado.">-->
+                                        <li class="icon-search icon-white"></li>
                                     </a>    
                                 </td>
                             </tr>
@@ -82,7 +85,7 @@
                 </div>
             </form>
         </div>
-        <footer>
+        <footer align="center">
             <%@include file="pie.html" %> 
         </footer>
     </body>

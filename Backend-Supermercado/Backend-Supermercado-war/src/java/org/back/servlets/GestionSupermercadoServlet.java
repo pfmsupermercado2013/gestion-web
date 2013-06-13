@@ -5,14 +5,10 @@
 package org.back.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.back.constants.BackConstantes;
-import org.back.ejb.GestionProveedoresEjbLocal;
-import org.back.ejb.GestionSupermercadoEjb;
 import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.exceptions.BackException;
 import org.back.hibernate.model.Supermercado;
@@ -59,11 +53,12 @@ public class GestionSupermercadoServlet extends HttpServlet {
         String provinciaSupermercado = "";
         String localidadSupermercado = "";
         String cmd = request.getParameter("cmd");
-       
         String idSupermercado = request.getParameter("idSupermercado");
+        String idMenu = request.getParameter("menu");
 
         if(cmd != null && !"".equals(cmd)){
             session = request.getSession(false);
+            request.setAttribute("menu", idMenu);
             if(cmd.equals(BackConstantes.GESTION_SUPERMERCADO)){
                 List<Supermercado> listaSupermercados = null;
                 try {
@@ -87,7 +82,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 direccionSupermercado = request.getParameter("direccionSuperm");
                 provinciaSupermercado = request.getParameter("provinciaSuperm");
                 localidadSupermercado = request.getParameter("localidadSuperm");
-
+                supermercado = new Supermercado();
                 supermercado.setNombreSupermercado(nombreSupermercado);
                 supermercado.setDireccionSupermercado(direccionSupermercado);
                 supermercado.setProvinciaSupermercado(provinciaSupermercado);

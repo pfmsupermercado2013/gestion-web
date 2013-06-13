@@ -63,9 +63,10 @@ public class LoginServlet extends HttpServlet {
             rol = request.getParameter("rol");
             idUsuario = request.getParameter("admin-id");
             password = request.getParameter("admin-pass");
-            empleado = loginAdmin(rol, idUsuario, password);
+            empleado = loginAdmin(rol, idUsuario, password, request);
             if(empleado != null) {
-                session = request.getSession(true);  
+                session = request.getSession(true); 
+                session.setAttribute("usuaurio", empleado);
                 response.sendRedirect("principal.jsp");
             }
         } else  // Si el usuario es empleado
@@ -76,16 +77,16 @@ public class LoginServlet extends HttpServlet {
                     PasswordEncoder encoder = PasswordEncoder.getInstance();
                     password = encoder.encode(password, BackConstantes.SALT_KEY);
                     empleado = login(idUsuario, password);
+                    if (empleado != null) {
+                        session = request.getSession(true); 
+                        session.setAttribute("usuario", empleado);  
+                        response.sendRedirect("principal.jsp");
+                    } else {
+                       request.setAttribute("error-acceso", "Acceso no permitido.");
+                       request.getRequestDispatcher("login.jsp").forward(request, response); 
+                    }
                  } catch (Exception ex) {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-                 if (empleado != null) {
-                    session = request.getSession(true); 
-                    session.setAttribute("usuario", empleado);  
-                    response.sendRedirect("principal.jsp");
-                 } else {
-                    request.setAttribute("error-acceso", "Acceso no permitido.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response); 
                  }
             } else // Si se cierra sesión 
                 if (operacion.equals(BackConstantes.LOGOUT)) {
@@ -125,7 +126,7 @@ public class LoginServlet extends HttpServlet {
         processRequest(request, response);
     }
     
-    private Empleado loginAdmin(String rol, String idUsuario, String password){
+    private Empleado loginAdmin(String rol, String idUsuario, String password, HttpServletRequest request ){
         Empleado empleado = null;
         String passwordEncode = "";
         if(BackConstantes.ROL_SUPER.equals(rol)){
@@ -141,8 +142,14 @@ public class LoginServlet extends HttpServlet {
                         supermercado.setLocalidadSupermercado("99");
                         supermercado.setProvinciaSupermercado("99");
                         try {
-                            supermercado = gestionSupermercadoEjbLocal.crearSupermercado(supermercado);
-                            empleado = crearEmpleadoAdmin(idUsuario, passwordEncode, supermercado);
+                            // Verificamos si ya existe el usuario, de lo contrario lo creamos
+                            empleado = gestionEmpleadosEjbLocal.buscarEmpleadoPorNif(idUsuario);
+                            if(empleado != null){
+                                request.setAttribute("error-acceso", "El usuario ya existe.");
+                            } else {
+                                supermercado = gestionSupermercadoEjbLocal.crearSupermercado(supermercado);
+                                empleado = crearEmpleadoAdmin(idUsuario, passwordEncode, supermercado);
+                            }
                         } catch (Exception ex) {
                             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
                         }   
@@ -153,7 +160,6 @@ public class LoginServlet extends HttpServlet {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ioEx);
                 }
             } 
-        
         return empleado;
     }
     
@@ -161,7 +167,6 @@ public class LoginServlet extends HttpServlet {
         Empleado empleado = null;
         // Comprobamos la identidad del usuario
         empleado = gestionEmpleadosEjbLocal.validarIdentidadEmpleado(idUsuario, password);
-        
         return empleado;
     }
     
@@ -180,7 +185,6 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return empleado;
     }
     

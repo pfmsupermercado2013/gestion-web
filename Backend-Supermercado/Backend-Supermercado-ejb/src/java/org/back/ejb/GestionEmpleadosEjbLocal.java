@@ -28,6 +28,8 @@ public interface GestionEmpleadosEjbLocal {
     int obtenerNumeroPaginas(int limite) throws Exception;
 
     Empleado buscarEmpleado(int idEmpleado) throws Exception;
+    
+    Empleado buscarEmpleadoPorNif(String nifEmpleado) throws Exception;
 
     boolean inactivarEmpleado(int idEmpleado)  throws Exception;
     
