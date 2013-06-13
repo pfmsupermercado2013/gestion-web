@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.back.hibernate.model;
 
 import java.io.Serializable;
@@ -40,7 +36,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
     @NamedQuery(name = "Subasta.findByIdsubasta", query = "SELECT s FROM Subasta s WHERE s.idsubasta = :idsubasta"),
     @NamedQuery(name = "Subasta.findByFechaFin", query = "SELECT s FROM Subasta s WHERE s.fechaFin = :fechaFin"),
     @NamedQuery(name = "Subasta.findByFechaInicio", query = "SELECT s FROM Subasta s WHERE s.fechaInicio = :fechaInicio"),
-    @NamedQuery(name = "Subasta.findByPujaInicial", query = "SELECT s FROM Subasta s WHERE s.pujaInicial = :pujaInicial"),
+    @NamedQuery(name = "Subasta.findByPuja", query = "SELECT s FROM Subasta s WHERE s.puja = :puja"),
     @NamedQuery(name = "Subasta.findByEstado", query = "SELECT s FROM Subasta s WHERE s.estado = :estado")})
 public class Subasta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -57,12 +53,14 @@ public class Subasta implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
     @Basic(optional = false)
-    @Column(name = "puja_inicial")
-    private float pujaInicial;
+    @Column(name = "puja")
+    private float puja;
     @Column(name = "estado")
     private Integer estado;
     @Column(name = "descripcion")
     private String descripcion;
+    @Column(name = "unidades")
+    private Integer unidades;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subasta")
     @JsonIgnore
     private Collection<ProveedorSubasta> proveedorSubastaCollection;
@@ -78,13 +76,14 @@ public class Subasta implements Serializable {
         this.idsubasta = idsubasta;
     }
 
-    public Subasta(Date fechaFin, float pujaInicial, Producto producto, String descripcion) {
+    public Subasta(Date fechaFin, float puja, Producto producto, String descripcion, Integer unidades) {
         this.fechaFin = fechaFin;
-        this.pujaInicial = pujaInicial;
+        this.puja = puja;
         this.producto = producto;
         this.estado = 1;
         this.descripcion = descripcion;
         this.fechaInicio = new Date();
+        this.unidades = unidades;
     }
 
     public Integer getIdsubasta() {
@@ -111,12 +110,12 @@ public class Subasta implements Serializable {
         this.fechaInicio = fechaInicio;
     }
 
-    public float getPujaInicial() {
-        return pujaInicial;
+    public float getPuja() {
+        return puja;
     }
 
-    public void setPujaInicial(float pujaInicial) {
-        this.pujaInicial = pujaInicial;
+    public void setPuja(float puja) {
+        this.puja = puja;
     }
 
     public Integer getEstado() {
@@ -133,6 +132,14 @@ public class Subasta implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Integer getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(Integer unidades) {
+        this.unidades = unidades;
     }
     
     @XmlTransient

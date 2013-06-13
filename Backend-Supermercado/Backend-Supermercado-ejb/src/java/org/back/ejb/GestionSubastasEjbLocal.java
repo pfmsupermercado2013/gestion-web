@@ -21,5 +21,9 @@ public interface GestionSubastasEjbLocal {
     List<Subasta> getSubastasActivas();
 
     boolean esteProductoEnSubasta(Integer productoId);
+
+    Subasta getSubastaById(Integer subastaId);
+
+    Subasta realizarPuja(Integer subastaId, Integer proveedorId, float cantidad);
     
 }

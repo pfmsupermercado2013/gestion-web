@@ -33,17 +33,16 @@
             </div>
             <%                }
             %>
-            
+
             <%
                 if (request.getAttribute("mensaje") != null) {
             %>
             <div id="alerta" class="alert alert-error">
-               ${mensaje}
+                ${mensaje}
             </div>
-            <%          
-                }
+            <%                }
             %>
-            
+
 
             <form class="form-horizontal" action="GestionSubastasServlet?operacion=nuevo" method="POST">
                 <fieldset>
@@ -61,7 +60,7 @@
                             <p class="help-block"></p>
                         </div>
                     </div>
-                    
+
                     <!-- Descripcion de la subasta-->
                     <div class="control-group">
                         <label class="control-label">Descripción</label>
@@ -83,11 +82,21 @@
                         </div>
                     </div>
 
+                    <!-- Unidades de productos-->
+                    <div class="control-group">
+                        <label class="control-label">Unidades</label>
+                        <div class="controls">
+                            <input id="unidades" name="unidades" type="text" placeholder="Unidades del producto"
+                                   class="input-xlarge" required pattern="[0-9]+" oninvalid="setCustomValidity('Introduzca una cantidad correcta.')">
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+
                     <!-- Puja inicial-->
                     <div class="control-group">
                         <label class="control-label">Precio inicial (€)</label>
                         <div class="controls">
-                            <input id="nombre" name="precio_inicial" type="text" placeholder="Precio de salida"
+                            <input id="precio_inicial" name="precio_inicial" type="text" placeholder="Precio de salida"
                                    class="input-xlarge" required pattern="[0-9]{1,}\.?[0-9]*" oninvalid="setCustomValidity('Introduzca una cantidad correcta. Ej: 5,50')">
                             <p class="help-block"></p>
                         </div>
@@ -113,7 +122,7 @@
                         });
                     }
                     , property: 'name'
-                    , onselect: function(obj) {
+                            , onselect: function(obj) {
                         $('input[name="producto_id"]').val(obj.id);
                         console.log('Selected ' + obj.id)
                     }
