@@ -105,7 +105,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                                 <c:if test="${usuario.rol == 'pas'}" >
-                                                <li><a href="#">Nueva subasta</a></li>
+                                                <li><a href="nueva_subasta.jsp">Nueva subasta</a></li>
                                                 </c:if>
                                                 <li><a href="#">Gestionar subastas</a></li>
                                         </ul>

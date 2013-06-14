@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.back.ejb.GestionSubastasEjbLocal;
 import org.back.hibernate.model.Producto;
 import org.back.hibernate.model.Subasta;
+import org.back.utils.ValidadoresCampos;
 
 /**
  *
@@ -69,13 +70,13 @@ public class GestionSubastasServlet extends HttpServlet {
     private void doCrearSubasta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
 
-            Integer productoId;
-            try {
-                productoId = Integer.valueOf(request.getParameter("producto_id"));
-            } catch (Exception e) {
+            String productoIdString = request.getParameter("producto_id");
+            if (!ValidadoresCampos.validarNumero(request.getParameter("producto_id"))) {
                 doError(request, response, "El producto introducido no existe. Escoja un producto de la lista.");
                 return;
             }
+            Integer productoId = Integer.valueOf(request.getParameter("producto_id"));
+
             if (gestionSubastasEjb.esteProductoEnSubasta(productoId)) {
                 doError(request, response, "El producto ya se encuentra en subasta");
                 return;
@@ -92,22 +93,19 @@ public class GestionSubastasServlet extends HttpServlet {
             }
 
             String pujaInicial = request.getParameter("precio_inicial");
-            try {
-                Float.parseFloat(pujaInicial);
-            } catch (Exception e) {
-                doError(request, response, "Introduzca una cantidad de puja correcta.");
-                return;
-            }
+            //if (!ValidadoresCampos.validarPuja(fechaFin)) {
+              //  doError(request, response, "Introduzca una cantidad de puja correcta.");
+                //return;
+            //}
 
             String descripcion = request.getParameter("descripcion");
 
-            Integer unidades;
-            try {
-                unidades = Integer.valueOf(request.getParameter("unidades"));
-            } catch (Exception e) {
+            String unidadesString = request.getParameter("unidades");
+            if (!ValidadoresCampos.validarNumero(unidadesString)) {
                 doError(request, response, "Introduzca un número de unidades válido.");
                 return;
             }
+            Integer unidades = Integer.valueOf(unidadesString);
 
             Producto producto = gestionSubastasEjb.obtenerProductoPorId(productoId);
             if (producto == null) {

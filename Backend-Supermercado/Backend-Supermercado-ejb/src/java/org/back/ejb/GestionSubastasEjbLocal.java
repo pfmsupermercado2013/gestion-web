@@ -2,6 +2,7 @@ package org.back.ejb;
 
 import java.util.List;
 import javax.ejb.Local;
+import org.back.exceptions.NoExisteProveedorException;
 import org.back.hibernate.model.Producto;
 import org.back.hibernate.model.Subasta;
 
@@ -25,5 +26,7 @@ public interface GestionSubastasEjbLocal {
     Subasta getSubastaById(Integer subastaId);
 
     Subasta realizarPuja(Integer subastaId, Integer proveedorId, float cantidad);
+
+    Integer loginSubastas(String username, String password) throws NoExisteProveedorException;
     
 }

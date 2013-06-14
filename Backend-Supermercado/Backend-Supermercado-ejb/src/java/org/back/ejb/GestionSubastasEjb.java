@@ -2,12 +2,15 @@ package org.back.ejb;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import org.back.exceptions.NoExisteProveedorException;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
 import org.back.hibernate.model.Producto;
+import org.back.hibernate.model.Proveedor;
 import org.back.hibernate.model.ProveedorSubasta;
 import org.back.hibernate.model.ProveedorSubastaPK;
 import org.back.hibernate.model.Subasta;
+import org.back.utils.PasswordEncoder;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
@@ -41,7 +44,7 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         DAO.close();
         return subastas;
     }
-    
+
     @Override
     public Subasta getSubastaById(Integer subastaId) {
         begin();
@@ -52,15 +55,15 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         DAO.close();
         return subasta;
     }
-    
+
     @Override
-    public synchronized Subasta realizarPuja(Integer subastaId, Integer proveedorId,float cantidad) {
+    public synchronized Subasta realizarPuja(Integer subastaId, Integer proveedorId, float cantidad) {
         begin();
         Query query = getSession().getNamedQuery("Subasta.findByIdsubasta");
         query.setParameter("idsubasta", subastaId);
         Subasta subasta = (Subasta) query.uniqueResult();
         float cantidadActual = subasta.getPuja();
-        if(cantidad < cantidadActual){
+        if (cantidad < cantidadActual) {
             subasta.setPuja(cantidad);
             ProveedorSubastaPK pspk = new ProveedorSubastaPK(proveedorId, subastaId);
             ProveedorSubasta proveedorSubasta = new ProveedorSubasta(pspk, cantidad);
@@ -70,7 +73,32 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         DAO.close();
         return subasta;
     }
-    
+
+    @Override
+    public Integer loginSubastas(String username, String password) throws NoExisteProveedorException {
+        begin();
+        Query query = getSession().getNamedQuery("Proveedor.findByCif");
+        query.setParameter("cif", username);
+        Proveedor proveedor = (Proveedor) query.uniqueResult();
+        commit();
+        DAO.close();
+
+        if (proveedor == null) {
+            throw new NoExisteProveedorException();
+        }
+        String passEncoded = "";
+        try {
+            PasswordEncoder passEncoder = PasswordEncoder.getInstance();
+            passEncoded = passEncoder.encode(password, "716EA45X34");
+        } catch (Exception e) {}
+
+        if (proveedor.getPassword().equals(passEncoded)) {
+            return proveedor.getIdProveedor();
+        }
+        
+        return -1;
+    }
+
     //TODO: Mover a Productos EJB
     @Override
     public List<Producto> buscarProductos(String str) throws Exception {
@@ -114,6 +142,5 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
             e.printStackTrace();
             return false;
         }
-    } 
-
+    }
 }

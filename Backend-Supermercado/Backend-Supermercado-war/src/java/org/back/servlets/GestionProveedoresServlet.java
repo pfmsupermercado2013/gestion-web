@@ -66,7 +66,7 @@ public class GestionProveedoresServlet extends HttpServlet {
 
             String telefono = request.getParameter("telefono");
             if (!ValidadoresCampos.validarTelefono(telefono)) {
-                doError(request, response, "Télefono no válido. Introduzca sólo números.");
+                doError(request, response, "Teléfono no válido. Introduzca sólo números.");
                 return;
             }
 
@@ -84,7 +84,6 @@ public class GestionProveedoresServlet extends HttpServlet {
 
             //Se genera un password aleatorio de TAMANO_PASSWORD caracteres
             String password = PasswordAleatorio.generarPassword(TAMANO_PASSWORD);
-
             //Funcion hash para almacenar el password
             PasswordEncoder passEncoder = PasswordEncoder.getInstance();
             String passEncoded = passEncoder.encode(password, BackConstantes.SALT_KEY);
