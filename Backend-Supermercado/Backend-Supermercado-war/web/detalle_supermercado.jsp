@@ -74,7 +74,7 @@
                  </div>
 
                  </fieldset>
-                 <c:if test="${operacion == 'editar-supermercado'}" >             
+                 <c:if test="${operacion == 'editar-supermercado' || operacion == 'guardar-supermercado'}" >             
                   <button class="btn btn-large btn-primary" type="button" onclick="javascript:submitForm('gestion-supermercado');" >Ir a listado</button>
                   <c:if test="${usuario.rol == 'pas'}" >
                       <button class="btn btn-large btn-primary" type='button' onclick="javascript:submitForm('guardar-supermercado');" >Guardar cambios</button>    
@@ -86,7 +86,7 @@
 
            </form> 
      </div>
-     <footer>
+     <footer align="center">
         <%@include file="pie.html" %> 
     </footer>
   </body>

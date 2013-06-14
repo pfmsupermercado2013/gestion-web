@@ -2,13 +2,11 @@ $( document ).ready( function() {
 	$('#supermercado').change(function() {
         var supermercadoSel = $('#supermercado :selected').val();
         $('input#idSupermercado').val(supermercadoSel);
-        alert($('input#idSupermercado').val());
         });
         
         $('#cargo').change(function() {
         var cargoSel = $('#cargo :selected').val();
         $('input#idCargo').val(cargoSel);
-        alert($('input#idCargo').val());
         });
 });
 

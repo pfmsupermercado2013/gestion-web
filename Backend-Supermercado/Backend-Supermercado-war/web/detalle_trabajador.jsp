@@ -43,7 +43,7 @@
 
                     <div class="control-group" id="foto-empleado-div" style="float:right;margin-right:200px">
                         <a href="#" onclick="window.open('popUp_subidaFicheros.jsp', 'window', 'width=400,height=300,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'); return false">
-                            <img style="width:140px;height:160px" id="foto-empleado" src="${fotoEmpleado}" class="img-polaroid" title="Pulse para cambiar la imagen del empleado.">
+                            <img style="width:140px;height:160px" id="foto-formulario" src="${fotoEmpleado}" class="img-polaroid" title="Pulse para cambiar la imagen del empleado.">
                         </a>
                     </div>
 
@@ -65,7 +65,7 @@
                             <label class="control-label" for="nombre">Nombre</label>
                             <div class="controls">
                                 <input id="nombre" name="nombre" type="text" placeholder="Nombre del empleado"
-                                       class="input-xlarge"  maxlength="30" value="${empleado.nombreEmpleado}">
+                                       class="input-xlarge"  maxlength="30" <c:out value="${readonly}"/> value="${empleado.nombreEmpleado}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <label class="control-label">Apellidos</label>
                             <div class="controls">
                                 <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos del empleado"
-                                       class="input-xlarge"  maxlength="30" value="${empleado.apellidosEmpleado}" >
+                                       class="input-xlarge"  maxlength="30" <c:out value="${readonly}"/> value="${empleado.apellidosEmpleado}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             <label class="control-label" for="nif">NIF</label>
                             <div class="controls">
                                 <input id="nif" name="nif" type="text" placeholder="NIF del empleado"
-                                       class="input-xlarge"  maxlength="10" value="${empleado.nif}" >
+                                       class="input-xlarge"  maxlength="10" <c:out value="${readonly}"/> value="${empleado.nif}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                             <label class="control-label" for="email">E-mail</label>
                             <div class="controls">
                                 <input id="email" name="email" type="text" placeholder="E-mail"
-                                       class="input-xlarge"  maxlength="30" value="${empleado.email}">
+                                       class="input-xlarge"  maxlength="30" <c:out value="${readonly}"/> value="${empleado.email}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                     <button class="btn btn-large btn-primary" id="btnVolverEmpleado" type="button" onclick="javascript:submitForm('gestion-empleados');">Ir al listado</button>
             </form> 
         </div>
-        <footer>
+        <footer align="center">
             <%@include file="pie.html" %> 
         </footer>
     </body>

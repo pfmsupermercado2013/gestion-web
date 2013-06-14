@@ -130,6 +130,19 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
     }
 
     @Override
+    public Empleado buscarEmpleadoPorNif(String nifEmpleado) throws Exception {
+        Empleado empleado = null;
+        try {
+            begin();
+            empleado = (Empleado)getSession().createQuery("FROM Empleado e WHERE e.nif = :nifEmpleado").setParameter("nifEmpleado", nifEmpleado).uniqueResult();
+            DAO.close();
+        } catch (HibernateException e) {
+            throw new Exception("Error al buscar empleado por nif.");
+        }
+         return empleado;
+    }
+    
+    @Override
     public boolean inactivarEmpleado(int idEmpleado) throws Exception {
         boolean inactivo = false;
         Empleado empleado = null;

@@ -17,8 +17,12 @@
         <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GestionSupermercadoServlet</servlet-name>
-        <servlet-class>org.back.servlets.GestionSupermercadoServlet</servlet-class>
+        <servlet-name>GestionCategoriasServlet</servlet-name>
+        <servlet-class>org.back.servlets.GestionCategoriasServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestionProductosServlet</servlet-name>
+        <servlet-class>org.back.servlets.GestionProductosServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GestionSubastasServlet</servlet-name>
@@ -43,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>GestionProveedoresServlet</servlet-name>
         <url-pattern>/GestionProveedoresServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionCategoriasServlet</servlet-name>
+        <url-pattern>/GestionCategorias</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestionProductosServlet</servlet-name>
+        <url-pattern>/GestionProductos</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GestionSubastasServlet</servlet-name>

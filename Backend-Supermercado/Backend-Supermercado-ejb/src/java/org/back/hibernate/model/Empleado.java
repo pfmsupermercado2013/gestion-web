@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -59,7 +60,7 @@ public class Empleado implements Serializable {
     @Column(name = "email")
     private String email;
     @Basic(optional = true)
-    @Column(name = "imagen")
+    @Lob @Column(name = "imagen", length = 1048576)
     private byte[] imagen;
     @Basic(optional = true)
     @Column(name = "activo")

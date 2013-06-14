@@ -62,11 +62,11 @@
 
                 </fieldset>
 
-                <button class="btn btn-large btn-primary" type="submit" >Crear supermercado</button>
+                <button class="btn btn-large btn-primary" type="submit" >Crear Supermercado</button>
 
             </form> 
         </div>
-        <footer>
+        <footer align="center">
             <%@include file="pie.html" %> 
         </footer>
     </body>

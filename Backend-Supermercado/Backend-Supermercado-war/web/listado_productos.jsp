@@ -1,6 +1,7 @@
 <%@page import="org.back.hibernate.model.Supermercado"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="listaProductos" value="${listaProductos}" scope="session" />
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -19,15 +20,16 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
-            <form class="form-horizontal form-search" name="listadoSupermercadosForm" method="post">    
-                <table id="tabla_datos" summary="Tabla para gestión de supermercados existentes">
-                    <caption>Gestión de Supermercados</caption>
+            <form class="form-horizontal form-search" name="listadoProductosForm" method="post">    
+                <table id="tabla_datos" summary="Tabla para gestión de productos existentes">
+                    <caption>Gestión de Productos</caption>
                     <thead>
                         <tr>
                             <th scope="col" colspan="2">NOMBRE</th>
-                            <th scope="col" colspan="2">DIRECCIÓN</th>
-                            <th scope="col" colspan="2">LOCALIDAD</th>
-                            <th scope="col" colspan="2">PROVINCIA</th>
+                            <th scope="col" colspan="2">DESCRIPCIÓN</th>
+                            <th scope="col" colspan="2">MARCA</th>
+                            <th scope="col" colspan="2">CANTIDAD</th>
+                            <th scope="col" colspan="2">PRECIO UNITARIO</th>
                             <th scope="col"></th>
                                 <c:if test="${usuario.rol == 'pas'}">
                                 <th scope="col"></th>
@@ -36,26 +38,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="supermercado" items="${listaSupermercados}" >
+                        <c:forEach var="producto" items="${listaProductos}" >
                             <tr>
-                                <td colspan="2">${supermercado.nombreSupermercado}</td>
-                                <td colspan="2">${supermercado.direccionSupermercado}</td>
-                                <td colspan="2">${supermercado.localidadSupermercado}</td>
-                                <td colspan="2">${supermercado.provinciaSupermercado}</td>
+                                <td colspan="2">${producto.nombreProducto}</td>
+                                <td colspan="2">${producto.descripcion}</td>
+                                <td colspan="2">${producto.marca}</td>
+                                <td colspan="2">0</td><!-- <td colspan="2">{producto.cantidad}</td>-->
+                                <td colspan="2">${producto.precio} &euro;</td>
                                 <c:if test="${usuario.rol == 'pas'}">
-                                    <td><a class="btn btn-success" href='GestionSupermercado?cmd=editar-supermercado&idSupermercado=${supermercado.idsupermercado}' title="Editar registro">
-                                            <!--<img src="img/botones/editar_registro.png" width="20" height="20"  title="Editar registro"> -->
+                                    <td><a class="btn btn-success" href='GestionProductos?cmd=editar-producto&idProducto=${producto.idproducto}' title="Editar producto">
                                             <li class="icon-pencil icon-white"></li>
                                         </a>
                                     </td>
-                                    <td><a class="btn btn-danger" href='GestionSupermercado?cmd=borrar-supermercado&idSupermercado=${supermercado.idsupermercado}' title="Borra registro">
-                                            <!--<img src="img/botones/borrar_registro.png" width="20" height="20" title="Borrar registro">-->
+                                    <td><a class="btn btn-danger" href='GestionProductos?cmd=borrar-producto&idProducto=${producto.idproducto}' title="Borrar producto">
                                             <li class="icon-trash icon-white"></li>
                                         </a>
                                     </td>
                                 </c:if>
-                                <td><a class="btn btn-warning"href='GestionSupermercado?cmd=ver-supermercado&idSupermercado=${supermercado.idsupermercado}' title="Ver registro">
-                                        <!--<img src="img/botones/consultar_registro.png" width="20" height="30" title="Ver registro">-->
+                                <td><a class="btn btn-warning" href='GestionProductos?cmd=ver-producto&idProducto=${producto.idproducto}' title="Ver producto">
                                         <li class="icon-search icon-white"></li>
                                     </a>    
                                 </td>
