@@ -54,6 +54,11 @@ public class BackConstantes {
     /* Ruta almacenamiento Archivos subidos*/
     public static final String RUTA_ARCHIVOS_UPLOAD = "img/tmp/";
 
+    /* Para la generación de la contraseña de los proveedores*/
     public static final String SALT_KEY = "716EA45X34";
     
+    /* Códigos de respuesta login proveedores*/
+    public static final int OK= 0;
+    public static final int BAD_PASSWORD= -1;
+    public static final int PROVEEDOR_NO_ENCONTRADO= -2;
 }
