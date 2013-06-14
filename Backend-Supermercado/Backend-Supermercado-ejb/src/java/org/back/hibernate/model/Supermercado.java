@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -35,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Supermercado.findByLocalidadSupermercado", query = "SELECT s FROM Supermercado s WHERE s.localidadSupermercado = :localidadSupermercado"),
     @NamedQuery(name = "Supermercado.findByProvinciaSupermercado", query = "SELECT s FROM Supermercado s WHERE s.provinciaSupermercado = :provinciaSupermercado")})
 public class Supermercado implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
+    private Collection<MapaSupermercado> mapaSupermercadoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -161,6 +164,16 @@ public class Supermercado implements Serializable {
     @Override
     public String toString() {
         return "org.back.hibernate.model.Supermercado[ idsupermercado=" + idsupermercado + " ]";
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<MapaSupermercado> getMapaSupermercadoCollection() {
+        return mapaSupermercadoCollection;
+    }
+
+    public void setMapaSupermercadoCollection(Collection<MapaSupermercado> mapaSupermercadoCollection) {
+        this.mapaSupermercadoCollection = mapaSupermercadoCollection;
     }
     
 }

@@ -5,7 +5,9 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -36,6 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Empleado.findByRol", query = "SELECT e FROM Empleado e WHERE e.rol = :rol"),
     @NamedQuery(name = "Empleado.findByEmail", query = "SELECT e FROM Empleado e WHERE e.email = :email")})
 public class Empleado implements Serializable {
+    @Lob
+    @Column(name = "imagen")
+    private byte[] imagen;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idempleado")
+    private Collection<Notificaciones> notificacionesCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,9 +69,6 @@ public class Empleado implements Serializable {
     @Basic(optional = false)
     @Column(name = "email")
     private String email;
-    @Basic(optional = true)
-    @Lob @Column(name = "imagen", length = 1048576)
-    private byte[] imagen;
     @Basic(optional = true)
     @Column(name = "activo")
     private String activo;
@@ -143,14 +150,6 @@ public class Empleado implements Serializable {
         this.email = email;
     }
     
-    public byte[] getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
-    }
-    
     public String getActivo() {
         return activo;
     }
@@ -190,6 +189,24 @@ public class Empleado implements Serializable {
     @Override
     public String toString() {
         return "org.back.hibernate.model.Empleado[ idempleado=" + idempleado + " ]";
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public Collection<Notificaciones> getNotificacionesCollection() {
+        return notificacionesCollection;
+    }
+
+    public void setNotificacionesCollection(Collection<Notificaciones> notificacionesCollection) {
+        this.notificacionesCollection = notificacionesCollection;
     }
     
 }
