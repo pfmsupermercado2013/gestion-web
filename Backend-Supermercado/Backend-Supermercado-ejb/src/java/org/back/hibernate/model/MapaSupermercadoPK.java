@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class MapaSupermercadoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "idmapa_supermercado")
     private int idmapaSupermercado;
     @Basic(optional = false)

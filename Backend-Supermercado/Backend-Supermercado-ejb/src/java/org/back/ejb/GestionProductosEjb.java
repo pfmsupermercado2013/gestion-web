@@ -5,11 +5,11 @@
  */
 package org.back.ejb;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
-import org.back.hibernate.model.Categoria;
 import org.back.hibernate.model.Producto;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,6 +21,7 @@ import org.hibernate.Query;
 @Stateless
 public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal {
 
+    @Override
     public Producto crearProducto(Producto producto) throws Exception{
        try {
             begin();
@@ -35,11 +36,11 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
     
     @Override
     public List<Producto> listarTodosProductos(int limite) throws Exception {
-        List<Producto> listaTodosProductos = null;
+        List<Producto> listaTodosProductos = new ArrayList<Producto>();
         try {
             begin();
-            Query query = getSession().createQuery("FROM Producto p ");
-            query.setMaxResults(limite);
+            Query query = getSession().getNamedQuery("FROM Producto p");
+            query.setMaxResults(10);
             listaTodosProductos = query.list();
             DAO.close();
             return listaTodosProductos;
@@ -48,6 +49,7 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
         }
     }
     
+    @Override
     public List<Producto> listarProductosPorCategoria(int idCategoria, int limite) throws Exception{
         List<Producto> listaPoductosPorCategoria = null;
         try {
@@ -63,6 +65,7 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
         return listaPoductosPorCategoria;
     }
 
+    @Override
     public Producto buscarProductoPorId (int idProducto) throws Exception{
         Producto producto = null;
         try {
@@ -76,6 +79,7 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
         return producto; 
     }
     
+    @Override
     public List<Producto> buscarProductoPorNombre (String nombreProducto) throws Exception{
         List<Producto> listaProductos = null;
         try {
@@ -90,6 +94,7 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
     }
 
    
+    @Override
     public Producto guardarProducto(Producto producto) throws Exception{
         Producto productoActualizado = null;
         try {

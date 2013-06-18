@@ -38,6 +38,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class Supermercado implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
     private Collection<MapaSupermercado> mapaSupermercadoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

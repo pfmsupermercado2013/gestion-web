@@ -191,14 +191,6 @@ public class Empleado implements Serializable {
         return "org.back.hibernate.model.Empleado[ idempleado=" + idempleado + " ]";
     }
 
-    public byte[] getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
-    }
-
     @XmlTransient
     @JsonIgnore
     public Collection<Notificaciones> getNotificacionesCollection() {
@@ -207,6 +199,14 @@ public class Empleado implements Serializable {
 
     public void setNotificacionesCollection(Collection<Notificaciones> notificacionesCollection) {
         this.notificacionesCollection = notificacionesCollection;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
     
 }

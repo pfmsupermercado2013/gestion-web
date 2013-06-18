@@ -18,19 +18,25 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class EntradaSupermercadoPK implements Serializable {
     @Basic(optional = false)
+    @NotNull
     @Column(name = "identrada_supermercado")
     private int identradaSupermercado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "mapa_supermercado_idmapa_supermercado")
     private int mapaSupermercadoIdmapaSupermercado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "mapa_supermercado_idsupermercado")
+    private int mapaSupermercadoIdsupermercado;
 
     public EntradaSupermercadoPK() {
     }
 
-    public EntradaSupermercadoPK(int identradaSupermercado, int mapaSupermercadoIdmapaSupermercado) {
+    public EntradaSupermercadoPK(int identradaSupermercado, int mapaSupermercadoIdmapaSupermercado, int mapaSupermercadoIdsupermercado) {
         this.identradaSupermercado = identradaSupermercado;
         this.mapaSupermercadoIdmapaSupermercado = mapaSupermercadoIdmapaSupermercado;
+        this.mapaSupermercadoIdsupermercado = mapaSupermercadoIdsupermercado;
     }
 
     public int getIdentradaSupermercado() {
@@ -49,11 +55,20 @@ public class EntradaSupermercadoPK implements Serializable {
         this.mapaSupermercadoIdmapaSupermercado = mapaSupermercadoIdmapaSupermercado;
     }
 
+    public int getMapaSupermercadoIdsupermercado() {
+        return mapaSupermercadoIdsupermercado;
+    }
+
+    public void setMapaSupermercadoIdsupermercado(int mapaSupermercadoIdsupermercado) {
+        this.mapaSupermercadoIdsupermercado = mapaSupermercadoIdsupermercado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) identradaSupermercado;
         hash += (int) mapaSupermercadoIdmapaSupermercado;
+        hash += (int) mapaSupermercadoIdsupermercado;
         return hash;
     }
 
@@ -70,12 +85,15 @@ public class EntradaSupermercadoPK implements Serializable {
         if (this.mapaSupermercadoIdmapaSupermercado != other.mapaSupermercadoIdmapaSupermercado) {
             return false;
         }
+        if (this.mapaSupermercadoIdsupermercado != other.mapaSupermercadoIdsupermercado) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "org.back.hibernate.model.EntradaSupermercadoPK[ identradaSupermercado=" + identradaSupermercado + ", mapaSupermercadoIdmapaSupermercado=" + mapaSupermercadoIdmapaSupermercado + " ]";
+        return "org.back.hibernate.model.EntradaSupermercadoPK[ identradaSupermercado=" + identradaSupermercado + ", mapaSupermercadoIdmapaSupermercado=" + mapaSupermercadoIdmapaSupermercado + ", mapaSupermercadoIdsupermercado=" + mapaSupermercadoIdsupermercado + " ]";
     }
     
 }

@@ -54,6 +54,9 @@ public class Producto implements Serializable {
     private String nombreProducto;
     @Column(name = "Precio")
     private Short precio;
+    @Basic(optional = false)
+    @Column(name = "Cantidad")
+    private Integer cantidad;
     @Column(name = "Marca")
     private String marca;
     @Column(name = "CodigoEAN")
@@ -105,6 +108,14 @@ public class Producto implements Serializable {
 
     public void setPrecio(Short precio) {
         this.precio = precio;
+    }
+    
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     public String getMarca() {

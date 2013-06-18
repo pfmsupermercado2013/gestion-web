@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EntradaSupermercado.findAll", query = "SELECT e FROM EntradaSupermercado e"),
     @NamedQuery(name = "EntradaSupermercado.findByIdentradaSupermercado", query = "SELECT e FROM EntradaSupermercado e WHERE e.entradaSupermercadoPK.identradaSupermercado = :identradaSupermercado"),
     @NamedQuery(name = "EntradaSupermercado.findByMapaSupermercadoIdmapaSupermercado", query = "SELECT e FROM EntradaSupermercado e WHERE e.entradaSupermercadoPK.mapaSupermercadoIdmapaSupermercado = :mapaSupermercadoIdmapaSupermercado"),
+    @NamedQuery(name = "EntradaSupermercado.findByMapaSupermercadoIdsupermercado", query = "SELECT e FROM EntradaSupermercado e WHERE e.entradaSupermercadoPK.mapaSupermercadoIdsupermercado = :mapaSupermercadoIdsupermercado"),
     @NamedQuery(name = "EntradaSupermercado.findByPosicionX", query = "SELECT e FROM EntradaSupermercado e WHERE e.posicionX = :posicionX"),
     @NamedQuery(name = "EntradaSupermercado.findByPosicionY", query = "SELECT e FROM EntradaSupermercado e WHERE e.posicionY = :posicionY"),
     @NamedQuery(name = "EntradaSupermercado.findByRotacion", query = "SELECT e FROM EntradaSupermercado e WHERE e.rotacion = :rotacion"),
@@ -50,7 +52,9 @@ public class EntradaSupermercado implements Serializable {
     private Float alto;
     @Column(name = "tipo_puerta_entrada")
     private Integer tipoPuertaEntrada;
-    @JoinColumn(name = "mapa_supermercado_idmapa_supermercado", referencedColumnName = "idmapa_supermercado", insertable = false, updatable = false)
+    @JoinColumns({
+        @JoinColumn(name = "mapa_supermercado_idmapa_supermercado", referencedColumnName = "idmapa_supermercado", insertable = false, updatable = false),
+        @JoinColumn(name = "mapa_supermercado_idsupermercado", referencedColumnName = "supermercado_idsupermercado", insertable = false, updatable = false)})
     @ManyToOne(optional = false)
     private MapaSupermercado mapaSupermercado;
 
@@ -61,8 +65,8 @@ public class EntradaSupermercado implements Serializable {
         this.entradaSupermercadoPK = entradaSupermercadoPK;
     }
 
-    public EntradaSupermercado(int identradaSupermercado, int mapaSupermercadoIdmapaSupermercado) {
-        this.entradaSupermercadoPK = new EntradaSupermercadoPK(identradaSupermercado, mapaSupermercadoIdmapaSupermercado);
+    public EntradaSupermercado(int identradaSupermercado, int mapaSupermercadoIdmapaSupermercado, int mapaSupermercadoIdsupermercado) {
+        this.entradaSupermercadoPK = new EntradaSupermercadoPK(identradaSupermercado, mapaSupermercadoIdmapaSupermercado, mapaSupermercadoIdsupermercado);
     }
 
     public EntradaSupermercadoPK getEntradaSupermercadoPK() {

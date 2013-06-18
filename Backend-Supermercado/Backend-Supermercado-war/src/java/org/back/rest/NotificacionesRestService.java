@@ -10,14 +10,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.back.ejb.GestionProductosEjbLocal;
-import org.back.hibernate.model.Producto;
+import org.back.ejb.GestionNotificacionesEjbLocal;
+import org.back.hibernate.model.Notificaciones;
 /**
  *
  * @author Fer
  */
-@Path("/productos")
-public class ProductoRestService 
+
+@Path("/notificaciones")
+public class NotificacionesRestService 
 {
    /*
    @GET
@@ -39,20 +40,21 @@ public class ProductoRestService
         return productos;
     }
     */
-    GestionProductosEjbLocal gestionProductosEjb = lookupGestionProductosEjbLocal();
+    GestionNotificacionesEjbLocal gestionNotificacionesEjb = lookupGestionNotificacionessEjbLocal();
   
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Producto> getProductosActivos() throws Exception {
-        List<Producto> productos = gestionProductosEjb.listarTodosProductos(10);
-        return productos;
+    public List<Notificaciones> getNotificacionesActivas() throws Exception {
+        
+        List<Notificaciones> notificaciones = gestionNotificacionesEjb.listarNotificaciones();
+        return notificaciones;
     }
 
 
-    private GestionProductosEjbLocal lookupGestionProductosEjbLocal() {
+    private GestionNotificacionesEjbLocal lookupGestionNotificacionessEjbLocal() {
         try {
             Context c = new InitialContext();
-            return (GestionProductosEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionProductosEjb!org.back.ejb.GestionProductosEjbLocal");
+            return (GestionNotificacionesEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionNotificacionesEjb!org.back.ejb.GestionNotificacionesEjbLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
