@@ -24,6 +24,9 @@
         <mapping class="org.back.hibernate.model.ProveedorSubasta"/>
         <mapping class="org.back.hibernate.model.Subasta"/>
         <mapping class="org.back.hibernate.model.TicketAparcamiento"/>
+        <mapping class="org.back.hibernate.model.Notificaciones"/>
+        <mapping class="org.back.hibernate.model.MapaSupermercado"/>
+        <mapping class="org.back.hibernate.model.EntradaSupermercado"/>
         
     </session-factory>
 </hibernate-configuration>

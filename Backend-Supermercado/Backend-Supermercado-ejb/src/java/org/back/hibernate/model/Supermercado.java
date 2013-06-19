@@ -36,10 +36,11 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     @NamedQuery(name = "Supermercado.findByLocalidadSupermercado", query = "SELECT s FROM Supermercado s WHERE s.localidadSupermercado = :localidadSupermercado"),
     @NamedQuery(name = "Supermercado.findByProvinciaSupermercado", query = "SELECT s FROM Supermercado s WHERE s.provinciaSupermercado = :provinciaSupermercado")})
 public class Supermercado implements Serializable {
+    private static final long serialVersionUID = 1L;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
     private Collection<MapaSupermercado> mapaSupermercadoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
-    private static final long serialVersionUID = 1L;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "supermercado")
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
