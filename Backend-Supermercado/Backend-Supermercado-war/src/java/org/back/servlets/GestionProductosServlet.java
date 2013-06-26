@@ -64,6 +64,7 @@ public class GestionProductosServlet extends HttpServlet {
         String redirectJsp = "";
         String nombreProducto       = "";
         String descripcionProducto  = "";
+        String cantidad = "";
         String marca = "";
         String precio = "";
         String codigoEAN = "";
@@ -119,6 +120,7 @@ public class GestionProductosServlet extends HttpServlet {
                 nombreProducto = request.getParameter("nombreProducto");
                 descripcionProducto = request.getParameter("descripcionProducto");
                 marca = request.getParameter("marca");
+                cantidad = request.getParameter("cantidad");
                 precio = request.getParameter("precio");
                 codigoEAN = request.getParameter("codigoEAN");
                 producto = new Producto();
@@ -127,6 +129,7 @@ public class GestionProductosServlet extends HttpServlet {
                 producto.setCodigoEAN(codigoEAN);
                 producto.setFechaEntrada(new Date());
                 producto.setMarca(marca);
+                producto.setCantidad(Integer.parseInt(cantidad));
                 producto.setPrecio(Short.parseShort(precio));
                 // Obtenemos la foto del producto de la sesión
                 fotoProducto = (File)session.getAttribute("archivo");
@@ -148,7 +151,7 @@ public class GestionProductosServlet extends HttpServlet {
                     }
                     producto = gestionProductosEjb.crearProducto(producto);
                     if(producto != null){
-                        this.listaTodosProductos(request);
+                        listaTodosProductos(request);
                         redirectJsp = "listado_productos.jsp";
                     }
                 } catch (Exception ex) {
@@ -181,6 +184,7 @@ public class GestionProductosServlet extends HttpServlet {
             
             if(cmd.equals(BackConstantes.EDITAR_PRODUCTO)){
                 List<Categoria> listaCategorias = null;
+                session.setAttribute("archivo", null);
                  try {
                     if(idProducto != null && !"".equals(idProducto)){
                         producto = gestionProductosEjb.buscarProductoPorId(Integer.parseInt(idProducto));
@@ -211,6 +215,7 @@ public class GestionProductosServlet extends HttpServlet {
                 descripcionProducto = request.getParameter("descripcionProducto");
                 codigoEAN = request.getParameter("codigoEAN");
                 precio = request.getParameter("precio");
+                cantidad = request.getParameter("cantidad"); 
                 marca = request.getParameter("marca");
                 // Obtenemos la foto del producto de la sesión
                 fotoProducto = (File)session.getAttribute("archivo");
@@ -231,6 +236,7 @@ public class GestionProductosServlet extends HttpServlet {
                     producto.setDescripcion(descripcionProducto);
                     producto.setCodigoEAN(codigoEAN);
                     producto.setMarca(marca);
+                    producto.setCantidad(Integer.parseInt(cantidad));
                     producto.setPrecio(Short.parseShort(precio));
                     producto.setImagen(fotoBinario);
                     producto = gestionProductosEjb.guardarProducto(producto);
@@ -242,6 +248,7 @@ public class GestionProductosServlet extends HttpServlet {
                         // Guardamos en sesión el producto modificada
                         session.setAttribute("producto", producto);
                         request.setAttribute("operacion", cmd);
+                        request.setAttribute("operacionCorrecta", Boolean.TRUE);
                         redirectJsp = "detalle_producto.jsp";
                     }
                 } catch (Exception ex) {
@@ -250,8 +257,25 @@ public class GestionProductosServlet extends HttpServlet {
                 }
             }
             
-            if(cmd.equals(BackConstantes.BORRAR_CATEGORIA)){
-               /*@TODO: */
+            if(cmd.equals(BackConstantes.BORRAR_PRODUCTO)){
+                idProducto = request.getParameter("idProducto");
+                boolean productoBorrado = Boolean.FALSE;
+                try {
+                    if(idProducto != null && !"".equals(idProducto)){
+                        producto = gestionProductosEjb.buscarProductoPorId(Integer.parseInt(idProducto));
+                        if(producto != null){
+                            productoBorrado = gestionProductosEjb.borrarProducto(producto);
+                            if(productoBorrado)
+                                request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                        }
+                        listaTodosProductos(request);
+                        redirectJsp = "listado_productos.jsp";
+                    } else {
+                        throw new BackException("");
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(GestionProductosServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
             if(!hayErrores && !"".equals(redirectJsp)) {

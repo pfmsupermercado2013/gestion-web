@@ -18,6 +18,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal form-search" id="productoForm" action="GestionProductos" method="post">
                 <input type="hidden" name="idCategoria" id="idCategoria" value="" />
                 <input type="hidden" id="cmd" name="cmd" value="crear-producto"/>
@@ -27,7 +32,7 @@
 
                     <div class="control-group" id="foto-producto-div" style="float:right;margin-right:200px">
                         <a href="#" onclick="window.open('popUp_subidaFicheros.jsp', 'window', 'width=400,height=300,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0'); return false">
-                            <img style="width:140px;height:160px" id="foto-formulario" src="img/producto.gif" class="img-polaroid" title="Pulse para cambiar la imagen del producto.">
+                            <img style="width:140px;height:160px" id="foto-formulario" src="img/producto.jpg" class="img-polaroid" title="Pulse para cambiar la imagen del producto.">
                         </a>
                     </div>
 
@@ -75,7 +80,17 @@
                                 <p class="help-block"></p>
                             </div>
                         </div>
-
+                        
+                        <!-- Cantidad del producto-->
+                        <div class="control-group">
+                            <label class="control-label">Cantidad</label>
+                            <div class="controls">
+                                <input id="cantidad" name="cantidad" type="number" placeholder="Nro. Unidades"
+                                       class="input-xlarge" maxlength="56">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        
                         <!-- Precio del producto-->
                         <div class="control-group">
                             <label class="control-label">Precio</label>

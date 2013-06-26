@@ -17,7 +17,7 @@
         <section>
             <div class="container" >
                 <div class="span6 well"
-                    <p class="lead"> Bienvenido ${usuario.nombreEmpleado} ${usuario.apellidosEmpleado} </p>
+                    <p class="lead">Bienvenido ${usuario.nombreEmpleado} ${usuario.apellidosEmpleado}</p>
                     <p class="lead">Este es el Back Office de la Aplicación de Supermercado.</p>
                 </div
             </div>

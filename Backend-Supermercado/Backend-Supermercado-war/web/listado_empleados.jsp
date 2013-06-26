@@ -28,6 +28,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal form-search" name="listadoEmpleadosForm" method="post">    
                 <table id="tabla_datos" summary="Tabla para gestión de empleados existentes">
                     <caption>Gestión de Empleados</caption>

@@ -17,6 +17,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal" name="categoriaForm" action="GestionCategorias" method="post">
                 <input type="hidden" id="cmd" name="cmd" value="crear-categoria">
                 <fieldset>

@@ -55,9 +55,6 @@ public class LoginServlet extends HttpServlet {
         String idUsuario  = "";
         String password   = "";
         operacion = request.getParameter("cmd");
-        rol = "";
-        idUsuario = "";
-        password = "";
         // Si el usuario es Administrador
         if (operacion.equals(BackConstantes.LOGIN_ADMIN)){
             rol = request.getParameter("rol");
@@ -66,9 +63,13 @@ public class LoginServlet extends HttpServlet {
             empleado = loginAdmin(rol, idUsuario, password, request);
             if(empleado != null) {
                 session = request.getSession(true); 
-                session.setAttribute("usuaurio", empleado);
+                session.setAttribute("usuario", empleado);
+                session.setAttribute("accesoPermitido", Boolean.TRUE);
                 response.sendRedirect("principal.jsp");
-            }
+            }  else {
+                request.setAttribute("accesoPermitido", Boolean.FALSE);
+                request.getRequestDispatcher("login_error.jsp").forward(request, response); 
+             }
         } else  // Si el usuario es empleado
             if (operacion.equals(BackConstantes.LOGIN_NORMAL)){
                 idUsuario = request.getParameter("idUsuario");
@@ -79,11 +80,12 @@ public class LoginServlet extends HttpServlet {
                     empleado = login(idUsuario, password);
                     if (empleado != null) {
                         session = request.getSession(true); 
-                        session.setAttribute("usuario", empleado);  
+                        session.setAttribute("usuario", empleado);
+                        session.setAttribute("accesoPermitido", Boolean.TRUE);
                         response.sendRedirect("principal.jsp");
                     } else {
-                       request.setAttribute("error-acceso", "Acceso no permitido.");
-                       request.getRequestDispatcher("login.jsp").forward(request, response); 
+                       request.setAttribute("accesoPermitido", Boolean.FALSE);
+                       request.getRequestDispatcher("login_error.jsp").forward(request, response); 
                     }
                  } catch (Exception ex) {
                     Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);

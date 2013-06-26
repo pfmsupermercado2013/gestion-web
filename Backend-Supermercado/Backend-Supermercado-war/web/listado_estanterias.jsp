@@ -1,8 +1,9 @@
-<%@page import="org.back.hibernate.model.Supermercado"%>
+<%@page import="org.back.hibernate.model.Estanteria"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="listaProductos" value="${listaProductos}" scope="session" />
 <!DOCTYPE html>
+<c:set var="listadoEstanterias" value="${listadoEstanterias}" scope="session" />
+<c:set var="numPaginas" value="${numPaginas}" scope="session" />
 <html lang="es">
     <head>
         <title>Backend Supermercado</title>
@@ -14,6 +15,13 @@
         <link href="css/tablas.css" rel="stylesheet" media="screen">
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+             function borrarEstanteria(cmd){
+               if(confirm('¿Desea borrar la estantería?')){
+                 location.href = "GestionEstanterias?cmd="+cmd; 
+               }
+             }
+        </script>
     </head>
     <body>
         <header>
@@ -25,16 +33,14 @@
                     Operacion realizada correctamente.
                 </div>
             </c:if>
-            <form class="form-horizontal form-search" name="listadoProductosForm" method="post">    
-                <table id="tabla_datos" summary="Tabla para gestión de productos existentes">
-                    <caption>Gestión de Productos</caption>
+            <form class="form-horizontal form-search" name="listadoEstanteriasForm" method="post">    
+                <table id="tabla_datos" summary="Tabla para gestión de estanterías existentes">
+                    <caption>Gestión de Estanterías</caption>
                     <thead>
                         <tr>
-                            <th scope="col" colspan="2">NOMBRE</th>
-                            <th scope="col" colspan="2">DESCRIPCIÓN</th>
-                            <th scope="col" colspan="2">MARCA</th>
-                            <th scope="col" colspan="2">CANTIDAD</th>
-                            <th scope="col" colspan="2">PRECIO UNITARIO</th>
+                            <th scope="col" colspan="2">ID</th>
+                            <th scope="col" colspan="2">LONGITUD</th>
+                            <th scope="col" colspan="2">SUPERMERCADO</th>
                             <th scope="col"></th>
                                 <c:if test="${usuario.rol == 'pas'}">
                                 <th scope="col"></th>
@@ -43,24 +49,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="producto" items="${listaProductos}" >
+                        <c:if test="${empty listadoEstanterias}" >
                             <tr>
-                                <td colspan="2">${producto.nombreProducto}</td>
-                                <td colspan="2">${producto.descripcion}</td>
-                                <td colspan="2">${producto.marca}</td>
-                                <td colspan="2">${producto.cantidad}</td>
-                                <td colspan="2">${producto.precio} &euro;</td>
+                                <td colspan="3">
+                                No hay estanterías en el supermercado
+                                </td>
+                            </tr>
+                        </c:if>
+                        <c:forEach var="estanteriaSuperm" items="${listadoEstanterias}" >
+                            <tr>
+                                <td colspan="2">${estanteriaSuperm.idestanteria}</td>
+                                <td colspan="2">${estanteriaSuperm.longitud}</td>
+                                <td colspan="2">${estanteriaSuperm.supermercado.nombreSupermercado}</td>
                                 <c:if test="${usuario.rol == 'pas'}">
-                                    <td><a class="btn btn-success" href='GestionProductos?cmd=editar-producto&idProducto=${producto.idproducto}' title="Editar producto">
+                                    <td><a class="btn btn-success" href='GestionEstanterias?cmd=editar-estanteria&idEstanteria=${estanteriaSuperm.idestanteria}' title="Editar datos estantería.">
                                             <li class="icon-pencil icon-white"></li>
                                         </a>
                                     </td>
-                                    <td><a class="btn btn-danger" href='GestionProductos?cmd=borrar-producto&idProducto=${producto.idproducto}' title="Borrar producto">
+                                    <td><a class="btn btn-danger"href="#" onclick="borrarEstanteria('borrar-estanteria&idEstanteria=${estanteriaSuperm.idestanteria}');return false;" title="Dar de baja la estantería.">
                                             <li class="icon-trash icon-white"></li>
                                         </a>
                                     </td>
                                 </c:if>
-                                <td><a class="btn btn-warning" href='GestionProductos?cmd=ver-producto&idProducto=${producto.idproducto}' title="Ver producto">
+                                <td><a class="btn btn-warning" href='GestionEstanterias?cmd=ver-estanteria&idEstanteria=${estanteriaSuperm.idestanteria}' title="Ver datos de la estantería.">
                                         <li class="icon-search icon-white"></li>
                                     </a>    
                                 </td>

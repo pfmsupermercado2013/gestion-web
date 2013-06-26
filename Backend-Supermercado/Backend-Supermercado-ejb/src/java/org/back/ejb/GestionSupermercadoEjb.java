@@ -76,5 +76,19 @@ public class GestionSupermercadoEjb extends DAO implements GestionSupermercadoEj
         
         return supermercadoActualizado;
     }
-   
+    
+    @Override
+    public boolean eliminarSupermercado(Supermercado supermercado) throws Exception {
+      boolean eliminado = false;
+      try{
+          begin();
+          getSession().delete(supermercado);
+          commit();
+          DAO.close();
+          eliminado = true;
+      } catch(HibernateException e){
+          throw new Exception("Error al eliminar el supermercado "+supermercado.getIdsupermercado());
+      }
+      return eliminado;
+    }   
 }

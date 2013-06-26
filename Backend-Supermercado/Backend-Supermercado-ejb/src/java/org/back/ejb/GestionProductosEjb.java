@@ -39,7 +39,7 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
         List<Producto> listaTodosProductos = new ArrayList<Producto>();
         try {
             begin();
-            Query query = getSession().getNamedQuery("FROM Producto p");
+            Query query = getSession().createQuery("FROM Producto p");
             query.setMaxResults(10);
             listaTodosProductos = query.list();
             DAO.close();
@@ -108,6 +108,20 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
         }
         
         return productoActualizado;
+    }
+    
+    public boolean borrarProducto(Producto producto) throws Exception{
+        boolean productoBorrado = false;
+        try {
+            begin();
+            getSession().delete(producto);
+            commit();
+            DAO.close();
+            productoBorrado = true;
+        } catch (HibernateException e) {
+            throw new Exception("Error al borrar producto "+producto.getIdproducto());
+        }
+        return productoBorrado;
     }
 
 }

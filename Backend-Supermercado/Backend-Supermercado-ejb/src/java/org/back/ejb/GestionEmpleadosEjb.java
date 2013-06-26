@@ -26,7 +26,7 @@ public class GestionEmpleadosEjb extends DAO implements GestionEmpleadosEjbLocal
             getSession().save(empleado);
             commit();
             DAO.close();
-        return empleado; 
+            return empleado; 
         } catch (HibernateException e) {
             throw new Exception("Error al crear el empleado",e);
         }

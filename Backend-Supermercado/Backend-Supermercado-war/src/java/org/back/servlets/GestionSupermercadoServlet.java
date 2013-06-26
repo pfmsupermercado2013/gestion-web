@@ -47,6 +47,7 @@ public class GestionSupermercadoServlet extends HttpServlet {
         HttpSession session = null;
         boolean hayErrores = false;
         Supermercado supermercado = null;
+        List<Supermercado> listadoSupermercados = null;
         String redirectJsp = "";
         String nombreSupermercado    = "";
         String direccionSupermercado = "";
@@ -60,12 +61,13 @@ public class GestionSupermercadoServlet extends HttpServlet {
             session = request.getSession(false);
             request.setAttribute("menu", idMenu);
             if(cmd.equals(BackConstantes.GESTION_SUPERMERCADO)){
-                List<Supermercado> listaSupermercados = null;
                 try {
-                    listaSupermercados = gestionSupermercadoEjb.listarSupermercados();
-                    if(listaSupermercados != null && !listaSupermercados.isEmpty()){
+                    listadoSupermercados = gestionSupermercadoEjb.listarSupermercados();
+                    if(listadoSupermercados != null && !listadoSupermercados.isEmpty()){
                         redirectJsp = "listado_supermercados.jsp";
-                        session.setAttribute("listaSupermercados", listaSupermercados);
+                        session.setAttribute("listaSupermercados", listadoSupermercados);
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -89,6 +91,11 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 supermercado.setLocalidadSupermercado(localidadSupermercado);
                 try {
                     supermercado = gestionSupermercadoEjb.crearSupermercado(supermercado);
+                    request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                    listadoSupermercados = gestionSupermercadoEjb.listarSupermercados();
+                    if(listadoSupermercados != null && !listadoSupermercados.isEmpty()){
+                        session.setAttribute("listaSupermercados", listadoSupermercados);
+                    }
                     redirectJsp = "listado_supermercados.jsp";
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -107,6 +114,8 @@ public class GestionSupermercadoServlet extends HttpServlet {
                           request.setAttribute("operacion", cmd);
                           redirectJsp = "detalle_supermercado.jsp";
                         }
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -124,6 +133,8 @@ public class GestionSupermercadoServlet extends HttpServlet {
                           request.setAttribute("operacion", cmd);
                           redirectJsp = "detalle_supermercado.jsp";
                         }
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -136,7 +147,6 @@ public class GestionSupermercadoServlet extends HttpServlet {
                 direccionSupermercado = request.getParameter("direccionSuperm");
                 provinciaSupermercado = request.getParameter("provinciaSuperm");
                 localidadSupermercado = request.getParameter("localidadSuperm");
-                
                 try {
                     // Recuperamos el supermercado de la sesión
                     supermercado = (Supermercado)session.getAttribute("supermercado");
@@ -150,7 +160,10 @@ public class GestionSupermercadoServlet extends HttpServlet {
                         // Guardamos en sesión el supermercado modificado
                         session.setAttribute("supermercado", supermercado);
                         request.setAttribute("operacion", cmd);
+                        request.setAttribute("operacionCorrecta", Boolean.TRUE);
                         redirectJsp = "detalle_supermercado.jsp";
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -159,7 +172,25 @@ public class GestionSupermercadoServlet extends HttpServlet {
             }
             
             if(cmd.equals(BackConstantes.BORRAR_SUPERMERCADO)){
-               /*@TODO: */
+                try {
+                    idSupermercado = request.getParameter("idSupermercado");
+                    boolean supermercadoBorrado = false;
+                    if(idSupermercado != null && !"".equals(idSupermercado)){
+                        supermercado = gestionSupermercadoEjb.buscarSupermercado(Integer.parseInt(idSupermercado));
+                        supermercadoBorrado = gestionSupermercadoEjb.eliminarSupermercado(supermercado);
+                        if(supermercadoBorrado)
+                            request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                        listadoSupermercados = gestionSupermercadoEjb.listarSupermercados();
+                        if(listadoSupermercados != null && !listadoSupermercados.isEmpty()){
+                            session.setAttribute("listaSupermercados", listadoSupermercados);
+                        }
+                        redirectJsp = "listado_supermercados.jsp";
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(GestionSupermercadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
             if(!hayErrores && !"".equals(redirectJsp)) {

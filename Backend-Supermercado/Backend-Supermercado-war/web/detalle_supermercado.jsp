@@ -28,6 +28,11 @@
      <c:set var="readonly" value="${readonly}" scope="request"/>
      <c:set var="operacion" value="${operacion}" scope="request"/>
      <div class="container">
+         <c:if test="${operacionCorrecta}">
+            <div id="alerta" class="alert alert-success">
+                Operacion realizada correctamente.
+            </div>
+         </c:if>
          <form class="form-horizontal" name="supermercadoDetalleForm" method="post">
                  <fieldset>
                  <!-- Formulario detalle supermercado -->

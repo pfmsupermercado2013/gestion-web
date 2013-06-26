@@ -1,13 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.back.constants;
 
-/**
- *
- * @author ÓscarJavier
- */
+
 public class BackConstantes {
     
     /* Gestión de Empleados */
@@ -20,10 +13,11 @@ public class BackConstantes {
     public static final String LISTAR_EMPLEADOS   = "listar-empleados";
     public static final String GUARDAR_EMPLEADO   = "guardar-empleado";
     public static final String EDITAR_USUARIO     = "editar-usuario";
+    public static final String GUARDAR_USUARIO    = "guardar-usuario";
     
     /* Gestión de Supermercado */
     public static final String GESTION_SUPERMERCADO = "gestion-supermercado";
-    public static final String NUEVO_SUPERMERCADO   = "nuevo-empleado";
+    public static final String NUEVO_SUPERMERCADO   = "nuevo-supermercado";
     public static final String CREAR_SUPERMERCADO   = "crear-supermercado";
     public static final String EDITAR_SUPERMERCADO  = "editar-supermercado";
     public static final String BORRAR_SUPERMERCADO  = "borrar-supermercado";
@@ -50,6 +44,17 @@ public class BackConstantes {
     public static final String VER_CATEGORIA      = "ver-categoria";
     public static final String LISTAR_CATEGORIAS  = "listar-categorias";
     public static final String GUARDAR_CATEGORIA  = "guardar-categoria";
+    
+    /* Gestión de Estanterias */
+    public static final String GESTION_ESTANTERIAS_SUPERMERCADO = "gestion-estanterias-super";
+    public static final String GESTION_ESTANTERIAS = "gestion-estanterias";
+    public static final String NUEVA_ESTANTERIA    = "nueva-estanteria";
+    public static final String CREAR_ESTANTERIA    = "crear-estanteria";
+    public static final String EDITAR_ESTANTERIA   = "editar-estanteria";
+    public static final String BORRAR_ESTANTERIA   = "borrar-estanteria";
+    public static final String VER_ESTANTERIA      = "ver-estanteria";
+    public static final String LISTAR_ESTANTERIAS  = "listar-estanterias";
+    public static final String GUARDAR_ESTANTERIA  = "guardar-estanteria";
     
     /* Roles */
     public static final String ROL_SUPER  = "pas";

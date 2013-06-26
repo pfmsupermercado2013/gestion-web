@@ -1,6 +1,7 @@
 <%@page import="org.back.hibernate.model.Categoria"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="operacionCorrecta" value="${operacionCorrecta}" scope="request" />
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -19,6 +20,11 @@
         <%@include file="menu_cabecera.jsp" %> 
      </header>
      <div class="container">
+        <c:if test="${operacionCorrecta}">
+            <div id="alerta" class="alert alert-success">
+                Operacion realizada correctamente.
+            </div>
+        </c:if>
         <form class="form-horizontal form-search" name="listadoCategoriasForm" method="post">    
             <table id="tabla_datos" summary="Tabla para gestión de categorias existentes">
                   <caption>Gestión de Categorias</caption>

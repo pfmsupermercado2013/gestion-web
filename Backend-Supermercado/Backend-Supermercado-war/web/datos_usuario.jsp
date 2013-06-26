@@ -11,27 +11,24 @@
         <link href="css/datepicker.css" rel="stylesheet" media="screen">
         <script type="text/javascript" src="js/jquery/jquery_1.4.js"></script>
         <script type="text/javascript" src="js/jquery/jquery_validate.js"></script>
-        <script src="js/empleados.js"></script>
+        <script src="js/usuarios.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript">
-            function submitForm(cmd){
-                var formulario = document.empleadoDetalleForm;
-                formulario.action = "GestionEmpleados?cmd="+cmd;
-                formulario.submit();
-            }
-            
-        </script>
     </head>
     <body>
         <header>
             <%@include file="menu_cabecera.jsp" %> 
         </header>
-        <c:set var="empleado" value="${empleado}" scope="session"/>
+        <c:set var="empleado" value="${usuario}" scope="session"/>
         <c:set var="operacion" value="${operacion}" scope="request"/>
         <c:set var="fotoEmpleado" value="${fotoEmpleado}" scope="request"/>
         <div class="container">
-            <form class="form-horizontal" name="empleadoDetalleForm" method="post">
-                <input type="hidden" id="idEmpleado" name="idEmpleado" value="${empleado.idempleado}"/>
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operación realizada correctamente.
+                </div>
+            </c:if>
+            <form class="form-horizontal" id="usuarioDetalleForm" action="GestionEmpleados" method="post">
+                <input type="hidden" id="cmd" name="cmd" value="guardar-usuario"/>
                 <fieldset>
                     <!-- Formulario datos usuario-->
 
@@ -49,7 +46,7 @@
                             <label class="control-label" for="nombre">Nombre</label>
                             <div class="controls">
                                 <input id="nombre" name="nombre" type="text" placeholder="Nombre del empleado"
-                                       class="input-xlarge"  maxlength="30" value="${empleado.nombreEmpleado}">
+                                       class="input-xlarge"  maxlength="30" value="${usuario.nombreEmpleado}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -58,7 +55,7 @@
                             <label class="control-label">Apellidos</label>
                             <div class="controls">
                                 <input id="apellidos" name="apellidos" type="text" placeholder="Apellidos del empleado"
-                                       class="input-xlarge"  maxlength="30" value="${empleado.apellidosEmpleado}" >
+                                       class="input-xlarge"  maxlength="30" value="${usuario.apellidosEmpleado}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -67,7 +64,7 @@
                             <label class="control-label" for="nif">NIF</label>
                             <div class="controls">
                                 <input id="nif" name="nif" type="text" placeholder="NIF del empleado"
-                                       class="input-xlarge"  maxlength="10" value="${empleado.nif}" >
+                                       class="input-xlarge"  maxlength="10" value="${usuario.nif}" >
                                 <p class="help-block"></p>
                             </div>
                         </div>
@@ -76,23 +73,32 @@
                             <label class="control-label" for="email">E-mail</label>
                             <div class="controls">
                                 <input id="email" name="email" type="text" placeholder="E-mail"
-                                       class="input-xlarge"  maxlength="30"  value="${empleado.email}">
+                                       class="input-xlarge"  maxlength="30"  value="${usuario.email}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
                         <!-- Password -->
                         <div class="control-group">
-                            <label class="control-label" for="email">Password</label>
+                            <label class="control-label" for="email">Nueva Password</label>
                             <div class="controls">
-                                <input id="password" name="àssword" type="password" placeholder="E-mail"
-                                       class="input-xlarge"  maxlength="30" <c:out value="${readonly}"/> value="">
+                                <input id="password" name="password" type="password" placeholder="Nueva Password"
+                                       class="input-xlarge"  maxlength="30" value="">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        <!-- Confirmacion Password -->
+                        <div class="control-group">
+                            <label class="control-label" for="email">Repite Nueva Password</label>
+                            <div class="controls">
+                                <input id="passwordConfirmada" name="passwordConfirmada" type="password" placeholder="Repita Password"
+                                       class="input-xlarge"  maxlength="20" value="">
                                 <p class="help-block"></p>
                             </div>
                         </div>
                     </div>
                 </fieldset>
                 <c:if test="${operacion == 'editar-usuario'}" >  
-                    <button class="btn btn-large btn-primary" id="btnGuardarEmpleado" type="button" onclick="javascript:submitForm('guardar-empleado');">Guardar</button>
+                    <button class="btn btn-large btn-primary" id="btnGuardarEmpleado" type="submit">Guardar</button>
                 </c:if>
             </form> 
         </div>

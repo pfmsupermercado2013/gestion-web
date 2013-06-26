@@ -22,7 +22,9 @@ public interface GestionCategoriasEjbLocal {
 
     Categoria buscarCategoria(Integer idCategoria) throws Exception;
 
-    Categoria guardarSupermercado(Categoria categoria) throws Exception;
+    Categoria guardarCategoria(Categoria categoria) throws Exception;
     
     List<Categoria> listarTodasCategorias() throws Exception;
+    
+    boolean eliminarCategoria(Categoria categoria) throws Exception;
 }

@@ -26,5 +26,7 @@ public interface GestionProductosEjbLocal {
     List<Producto> buscarProductoPorNombre (String nombreProducto) throws Exception;
    
     Producto guardarProducto(Producto producto) throws Exception;
+    
+    boolean borrarProducto(Producto producto) throws Exception;
 
 }

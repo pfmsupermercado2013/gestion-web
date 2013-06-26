@@ -28,6 +28,11 @@
         <c:set var="operacion" value="${operacion}" scope="request"/>
         <c:set var="fotoEmpleado" value="${fotoProducto}" scope="request"/>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal form-search" name="productoDetalleForm"  method="post">
                 <input type="hidden" name="idCategoria" id="idCategoria" value="" />
                 <input type="hidden" id="cmd" name="cmd" value="crear-producto"/>
@@ -83,6 +88,16 @@
                             <div class="controls">
                                 <input id="marca" name="marca" type="text" placeholder="Marca del producto"
                                        class="input-xlarge" <c:out value="${readonly}"/> maxlength="30" value="${producto.marca}">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Cantidad del producto-->
+                        <div class="control-group">
+                            <label class="control-label">Cantidad</label>
+                            <div class="controls">
+                                <input id="cantidad" name="cantidad" type="number" placeholder="Nro. Unidades"
+                                       class="input-xlarge" <c:out value="${readonly}"/> maxlength="56" value="${producto.cantidad}">
                                 <p class="help-block"></p>
                             </div>
                         </div>
