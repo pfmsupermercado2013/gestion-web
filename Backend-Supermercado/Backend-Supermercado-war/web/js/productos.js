@@ -14,7 +14,7 @@ $(function(){
         return this.optional(element) || /^[\xF1 \xD1 \xC7 \xE7 a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC 0-9]+$/i.test(value);
         }, "Solo digitar valores que contengan letras y numeros.");
         
-         $.validator.addMethod("numRegex", function(value, element) {
+        $.validator.addMethod("numRegex", function(value, element) {
         return this.optional(element) || /^[0-9]+$/i.test(value);
         }, "Solo digitar valores que contengan numeros.");
         

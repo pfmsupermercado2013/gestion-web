@@ -5,6 +5,7 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -43,6 +44,12 @@ public class UbicacionProducto implements Serializable {
     @JoinColumn(name = "idestanteria", referencedColumnName = "idestanteria", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Estanteria estanteria;
+    @Column(name = "alto")
+    private double alto;
+    @Column(name = "ancho")
+    private double ancho;
+    @Column(name = "largo")
+    private double largo;
 
     public UbicacionProducto() {
     }
@@ -118,6 +125,30 @@ public class UbicacionProducto implements Serializable {
     @Override
     public String toString() {
         return "org.back.hibernate.model.UbicacionProducto[ ubicacionProductoPK=" + ubicacionProductoPK + " ]";
+    }
+
+    public double getAlto() {
+        return alto;
+    }
+
+    public void setAlto(double alto) {
+        this.alto = alto;
+    }
+
+    public double getAncho() {
+        return ancho;
+    }
+
+    public void setAncho(double ancho) {
+        this.ancho = ancho;
+    }
+
+    public double getLargo() {
+        return largo;
+    }
+
+    public void setLargo(double largo) {
+        this.largo = largo;
     }
     
 }

@@ -64,6 +64,9 @@ public class GestionEstanteriasServlet extends HttpServlet {
         String longitud = "";
         String idSupermercado = "";
         String numeroEstantes= "";
+        String posicionX = "";
+        String posicionY = "";
+        String tipoEstanteria = "";
         Estanteria estanteria = null;
         Supermercado supermercado = null;
         List<Estanteria> listadoEstanterias = null;
@@ -125,8 +128,11 @@ public class GestionEstanteriasServlet extends HttpServlet {
                 // Invocamos a la operación que crea empleado
                 if(cmd.equals(BackConstantes.CREAR_ESTANTERIA)){
                     idSupermercado = request.getParameter("idSupermercado");
-                    longitud = request.getParameter("longitud");
-                    numeroEstantes = request.getParameter("numeroEstantes");
+ 
+                    numeroEstantes = request.getParameter("estantes");
+                    posicionX = request.getParameter("coordenadaX");
+                    posicionY = request.getParameter("coordenadaY");
+                    tipoEstanteria = request.getParameter("tipoEstanteria");
                     // Obtenemos los datos del supermercado asigando al empleado
                     if(idSupermercado != null && !"".equals(idSupermercado)){
                         try {
@@ -136,12 +142,15 @@ public class GestionEstanteriasServlet extends HttpServlet {
                         }
                     }
                     estanteria = new Estanteria();
-                    estanteria.setLongitud(new BigDecimal(longitud));
+                    estanteria.setLongitud(new BigDecimal(0));
+                    estanteria.setPosicion_x(new Double(posicionX));
+                    estanteria.setPosicion_y(new Double(posicionY));
+                    estanteria.setTipoEstanteria(Integer.parseInt(tipoEstanteria));
                     estanteria.setNumeroEstantes(Integer.parseInt(numeroEstantes));
                     if(supermercado != null){
                         estanteria.setSupermercado(supermercado);
                     }
-                   
+                    listarEstanterias(Integer.parseInt(idSupermercado), request);
                     redirectJsp = "listado_estanterias.jsp";
                 }
 

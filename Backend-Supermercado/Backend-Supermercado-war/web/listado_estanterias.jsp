@@ -51,7 +51,7 @@
                     <tbody>
                         <c:if test="${empty listadoEstanterias}" >
                             <tr>
-                                <td colspan="3">
+                                <td colspan="6">
                                 No hay estanterías en el supermercado
                                 </td>
                             </tr>

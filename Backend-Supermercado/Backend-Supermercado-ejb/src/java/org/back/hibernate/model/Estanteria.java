@@ -55,7 +55,7 @@ public class Estanteria implements Serializable {
     @Column(name = "rotacion_xy")
     private double rotacion_xy;
     @Column(name = "tipoEstanteria")
-    private double tipoEstanteria;
+    private Integer tipoEstanteria;
     @JoinColumn(name = "supermercado", referencedColumnName = "idsupermercado")
     @ManyToOne(optional = false)
     private Supermercado supermercado;
@@ -115,7 +115,7 @@ public class Estanteria implements Serializable {
         this.rotacion_xy = rotacion_xy;
     }
 
-    public void setTipoEstanteria(double tipoEstanteria) {
+    public void setTipoEstanteria(Integer tipoEstanteria) {
         this.tipoEstanteria = tipoEstanteria;
     }
     
@@ -131,7 +131,7 @@ public class Estanteria implements Serializable {
         return rotacion_xy;
     }
 
-    public double getTipoEstanteria() {
+    public Integer getTipoEstanteria() {
         return tipoEstanteria;
     }
 
