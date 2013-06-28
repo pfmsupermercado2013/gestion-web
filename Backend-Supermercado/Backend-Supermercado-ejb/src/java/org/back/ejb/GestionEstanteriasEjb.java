@@ -15,7 +15,6 @@ public class GestionEstanteriasEjb extends DAO implements GestionEstanteriasEjbL
 
     @Override
     public Estanteria crearEstanteria(Estanteria estanteria) throws Exception{
-        Estanteria estanteriaNueva = null;
         try {
             begin();
             getSession().save(estanteria);
@@ -24,10 +23,9 @@ public class GestionEstanteriasEjb extends DAO implements GestionEstanteriasEjbL
         } catch (HibernateException e) {
             throw new Exception("Error al crear la estantería",e);
         }
-        return estanteriaNueva;
+        return estanteria;
     }
-    
-    
+      
     @Override
     public Estanteria guardarEstanteria(Estanteria estanteria) throws Exception{
         Estanteria estanteriaActualizada = null;
@@ -61,7 +59,7 @@ public class GestionEstanteriasEjb extends DAO implements GestionEstanteriasEjbL
         List<Estanteria> listaEstanterias = null;
         try{
           begin();
-          listaEstanterias = getSession().createQuery("FROM Estanteria e, Supermercado s WHERE e.supermercado = s.idsupermercado AND s.idsupermercado = :idSupermercado").setParameter("idSupermercado", idSupermercado).list();
+          listaEstanterias = getSession().createQuery("SELECT e FROM Estanteria e, Supermercado s WHERE e.supermercado = s.idsupermercado AND s.idsupermercado = :idSupermercado").setParameter("idSupermercado", idSupermercado).list();
           DAO.close();
         } catch (HibernateException e) {
             throw new Exception("Error al listar estanterías de supermercado",e);

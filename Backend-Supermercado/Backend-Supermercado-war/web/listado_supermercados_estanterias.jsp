@@ -24,7 +24,7 @@
                     <caption>Estanterias | Supermercados</caption>
                     <thead>
                         <tr>
-                            <th scope="col">NOMBRE</th>
+                            <th scope="col">SUPERMERCADO</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>

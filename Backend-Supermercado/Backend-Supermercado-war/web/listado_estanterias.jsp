@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <c:set var="listadoEstanterias" value="${listadoEstanterias}" scope="session" />
-<c:set var="numPaginas" value="${numPaginas}" scope="session" />
 <html lang="es">
     <head>
         <title>Backend Supermercado</title>
@@ -38,9 +37,11 @@
                     <caption>Gestión de Estanterías</caption>
                     <thead>
                         <tr>
-                            <th scope="col" colspan="2">ID</th>
-                            <th scope="col" colspan="2">LONGITUD</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nº ESTANTES</th>
                             <th scope="col" colspan="2">SUPERMERCADO</th>
+                            <th scope="col">COORDENADA X</th>
+                            <th scope="col">COORDENADA Y</th>
                             <th scope="col"></th>
                                 <c:if test="${usuario.rol == 'pas'}">
                                 <th scope="col"></th>
@@ -58,9 +59,11 @@
                         </c:if>
                         <c:forEach var="estanteriaSuperm" items="${listadoEstanterias}" >
                             <tr>
-                                <td colspan="2">${estanteriaSuperm.idestanteria}</td>
-                                <td colspan="2">${estanteriaSuperm.longitud}</td>
+                                <td>${estanteriaSuperm.idestanteria}</td>
+                                <td>${estanteriaSuperm.numeroEstantes}</td>
                                 <td colspan="2">${estanteriaSuperm.supermercado.nombreSupermercado}</td>
+                                <td>${estanteriaSuperm.posicion_x}</td>
+                                <td>${estanteriaSuperm.posicion_y}</td>
                                 <c:if test="${usuario.rol == 'pas'}">
                                     <td><a class="btn btn-success" href='GestionEstanterias?cmd=editar-estanteria&idEstanteria=${estanteriaSuperm.idestanteria}' title="Editar datos estantería.">
                                             <li class="icon-pencil icon-white"></li>

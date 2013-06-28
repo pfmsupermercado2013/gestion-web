@@ -21,9 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.back.constants.BackConstantes;
 import org.back.ejb.GestionEstanteriasEjbLocal;
+import org.back.ejb.GestionEstantesEjbLocal;
+import org.back.ejb.GestionSeccionesEjbLocal;
 import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.exceptions.BackException;
 import org.back.hibernate.model.Empleado;
+import org.back.hibernate.model.Estante;
 import org.back.hibernate.model.Estanteria;
 import org.back.hibernate.model.Supermercado;
 
@@ -40,6 +43,12 @@ public class GestionEstanteriasServlet extends HttpServlet {
      
      @EJB
      private GestionEstanteriasEjbLocal gestionEstanteriasEjb;
+     
+     @EJB
+     private GestionEstantesEjbLocal gestionEstantesEjb;
+     
+     @EJB
+     private GestionSeccionesEjbLocal gestionSeccionesEjb;
 
     /**
      * Processes requests for both HTTP
@@ -67,6 +76,7 @@ public class GestionEstanteriasServlet extends HttpServlet {
         String posicionX = "";
         String posicionY = "";
         String tipoEstanteria = "";
+        int numEstantes = 0;
         Estanteria estanteria = null;
         Supermercado supermercado = null;
         List<Estanteria> listadoEstanterias = null;
@@ -82,6 +92,8 @@ public class GestionEstanteriasServlet extends HttpServlet {
                             listadoEstanterias = gestionEstanteriasEjb.listarEstanteriasSupermercado(Integer.valueOf(idSupermercado));
                             if(listadoEstanterias != null && !listadoEstanterias.isEmpty()){
                                 session.setAttribute("listadoEstanterias", listadoEstanterias);
+                            } else {
+                                session.removeAttribute("listadoEstanterias");
                             }
                             redirectJsp = "listado_estanterias.jsp";
                         } else {
@@ -100,10 +112,10 @@ public class GestionEstanteriasServlet extends HttpServlet {
                         if(listadoSupermercados == null || listadoSupermercados.isEmpty()){
                             listadoSupermercados = gestionSupermercadoEjb.listarSupermercados();
                             if(listadoSupermercados != null && !listadoSupermercados.isEmpty()){
-                                redirectJsp = "listado_supermercados_estanterias.jsp";
                                 session.setAttribute("listaSupermercados", listadoSupermercados);
                             }
-                        }
+                        } 
+                        redirectJsp = "listado_supermercados_estanterias.jsp";
                     } catch (Exception ex) {
                         hayErrores = true;
                         Logger.getLogger(GestionEstanteriasServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,8 +162,16 @@ public class GestionEstanteriasServlet extends HttpServlet {
                     if(supermercado != null){
                         estanteria.setSupermercado(supermercado);
                     }
-                    listarEstanterias(Integer.parseInt(idSupermercado), request);
-                    redirectJsp = "listado_estanterias.jsp";
+                    try {
+                        // Guardamos la estantería en base de datos
+                        estanteria = gestionEstanteriasEjb.crearEstanteria(estanteria);
+                        if(estanteria != null)
+                            listarEstanterias(Integer.parseInt(idSupermercado), request);
+                        redirectJsp = "listado_estanterias.jsp";
+             
+                    } catch (Exception ex) {
+                        Logger.getLogger(GestionEstanteriasServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
 
                 if(cmd.equals(BackConstantes.VER_ESTANTERIA)){
@@ -317,7 +337,10 @@ public class GestionEstanteriasServlet extends HttpServlet {
          try {
              List<Estanteria> listadoEstanterias = null;
              listadoEstanterias = gestionEstanteriasEjb.listarEstanteriasSupermercado(idSupermercado);
-             request.getSession(false).setAttribute("listadoEstanterias", listadoEstanterias);
+             if(listadoEstanterias != null && !listadoEstanterias.isEmpty())
+                request.getSession(false).setAttribute("listadoEstanterias", listadoEstanterias);
+             else
+                request.getSession(false).removeAttribute("listadoEstanterias");
          } catch (Exception ex) {
              Logger.getLogger(GestionEstanteriasServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
