@@ -1,6 +1,5 @@
 package org.back.rest;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,21 +10,17 @@ import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.back.ejb.GestionProductosEjbLocal;
 import org.back.ejb.GestionUbicacionProductoEjbLocal;
-import static org.back.hibernate.DAO.getSession;
 import org.back.hibernate.model.Producto;
 import org.back.hibernate.model.ProductoAndroid;
 import org.back.hibernate.model.UbicacionProducto;
-import org.hibernate.Query;
 /**
  *
  * @author Fer
@@ -92,7 +87,8 @@ public class ProductoRestService
             pAndroid.setIdestanteria(ubicacion.getEstanteria().getIdestanteria());
             pAndroid.setLongitud(ubicacion.getEstanteria().getLongitud());
             pAndroid.setNumero_estantes(ubicacion.getEstanteria().getNumeroEstantes());
-            pAndroid.setPosicion(ubicacion.getEstanteria().getPosicion());
+            pAndroid.setPosicion_x(ubicacion.getEstanteria().getPosicion_x());
+            pAndroid.setPosicion_y(ubicacion.getEstanteria().getPosicion_y());
             pAndroid.setSupermercado(ubicacion.getEstanteria().getSupermercado().getIdsupermercado());
             
             }
@@ -103,9 +99,10 @@ public class ProductoRestService
             pAndroid.setNumero_secciones_estante(0);
             pAndroid.setIdseccion(0);
             pAndroid.setIdestanteria(0);
-            pAndroid.setLongitud(0);
+            pAndroid.setLongitud(null);
             pAndroid.setNumero_estantes(0);
-            pAndroid.setPosicion(0);
+            pAndroid.setPosicion_x(0);
+            pAndroid.setPosicion_x(0);
             pAndroid.setSupermercado(0);
                 
             }
@@ -137,9 +134,5 @@ public class ProductoRestService
             throw new RuntimeException(ne);
         }
     }
-    
-    
-  
-}
 
 }
