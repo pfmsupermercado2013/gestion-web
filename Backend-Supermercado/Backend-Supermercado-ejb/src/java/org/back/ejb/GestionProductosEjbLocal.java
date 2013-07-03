@@ -11,7 +11,7 @@ import org.back.hibernate.model.Producto;
 
 /**
  *
- * @author ÓscarJavier
+ * @author Fernando Pabón
  */
 @Local
 public interface GestionProductosEjbLocal {
@@ -28,5 +28,7 @@ public interface GestionProductosEjbLocal {
     Producto guardarProducto(Producto producto) throws Exception;
     
     boolean borrarProducto(Producto producto) throws Exception;
+    
+    void actualizadProducto(Producto p) throws Exception;
 
 }
