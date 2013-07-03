@@ -5,20 +5,16 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -61,11 +57,13 @@ public class ProductoAndroid implements Serializable {
     @Column(name = "idestanteria")
     private int idestanteria;
     @Column(name = "longitud")
-    private long longitud;
+    private BigDecimal longitud;
     @Column(name = "numero_estantes")
     private int numero_estantes;
-    @Column(name = "posicion")
-    private int posicion;
+    @Column(name = "posicion_x")
+    private double posicion_x;
+    @Column(name = "posicion_y")
+    private double posicion_y;
     @Column(name = "supermercado")
     private long supermercado;
     
@@ -193,11 +191,11 @@ public class ProductoAndroid implements Serializable {
         this.idestanteria = idestanteria;
     }
 
-    public long getLongitud() {
+    public BigDecimal getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(long longitud) {
+    public void setLongitud(BigDecimal longitud) {
         this.longitud = longitud;
     }
 
@@ -209,20 +207,28 @@ public class ProductoAndroid implements Serializable {
         this.numero_estantes = numero_estantes;
     }
 
-    public int getPosicion() {
-        return posicion;
-    }
-
-    public void setPosicion(int posicion) {
-        this.posicion = posicion;
-    }
-
     public long getSupermercado() {
         return supermercado;
     }
 
     public void setSupermercado(long supermercado) {
         this.supermercado = supermercado;
+    }
+
+    public double getPosicion_x() {
+        return posicion_x;
+    }
+
+    public void setPosicion_x(double posicion_x) {
+        this.posicion_x = posicion_x;
+    }
+
+    public double getPosicion_y() {
+        return posicion_y;
+    }
+
+    public void setPosicion_y(double posicion_y) {
+        this.posicion_y = posicion_y;
     }
     
     
