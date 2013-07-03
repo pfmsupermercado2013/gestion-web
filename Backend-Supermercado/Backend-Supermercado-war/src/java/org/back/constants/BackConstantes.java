@@ -34,6 +34,7 @@ public class BackConstantes {
     public static final String VER_PRODUCTO      = "ver-producto";
     public static final String LISTAR_PRODUCTOS  = "listar-productos";
     public static final String GUARDAR_PRODUCTO  = "guardar-producto";
+    public static final String UBICAR_PRODUCTO   = "ubicar-producto";
     
     /* Gestión de Categorias */
     public static final String GESTION_CATEGORIAS = "gestion-categorias";
@@ -79,4 +80,11 @@ public class BackConstantes {
     public static final int PROVEEDOR_NO_ACTIVADO= 1;
     public static final int BAD_PASSWORD= -1;
     public static final int PROVEEDOR_NO_ENCONTRADO= -2;
+    
+    
+    /* Número máximo de secciones por estante */
+    public static final int NUMERO_MAX_SECCIONES    = 4;
+    
+    /* Número máximo de productos por sección*/
+    public static final int NUMERO_MAX_PROD_SECCION = 30;
 }

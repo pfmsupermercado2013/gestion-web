@@ -12,7 +12,7 @@
         <link href="css/styles.css" rel="stylesheet" media="screen">
         <link href="css/datepicker.css" rel="stylesheet" media="screen">
         <link href="css/tablas.css" rel="stylesheet" media="screen">
-        <script src="js/jquery-latest.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -36,10 +36,11 @@
                             <th scope="col" colspan="2">CANTIDAD</th>
                             <th scope="col" colspan="2">PRECIO UNITARIO</th>
                             <th scope="col"></th>
-                                <c:if test="${usuario.rol == 'pas'}">
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                                </c:if> 
+                            <th scope="col"></th>
+                            <c:if test="${usuario.rol == 'pas'}">
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            </c:if> 
                         </tr>
                     </thead>
                     <tbody>
@@ -63,6 +64,10 @@
                                 <td><a class="btn btn-warning" href='GestionProductos?cmd=ver-producto&idProducto=${producto.idproducto}' title="Ver producto">
                                         <li class="icon-search icon-white"></li>
                                     </a>    
+                                </td>
+                                <td><a class="btn btn-info" href='GestionProductos?cmd=ubicar-producto&idProducto=${producto.idproducto}' title="Ubicar producto en almacén">
+                                            <li class="icon-map-marker icon-white"></li>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach> 
