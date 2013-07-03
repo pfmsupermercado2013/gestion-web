@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <c:set var="usuario" value="${usuario}" scope="session" />
 <c:set var="listaSupermercados" value="${listaSupermercados}" scope="session" />
+<c:set var="operacionCorrecta" value="${operacionCorrecta}" scope="request" />
 <c:set var="menu"   value="${menu}"  scope="session"/>
 <c:set var="menu_1" value="dropdown" scope="session"/>
 <c:set var="menu_2" value="dropdown" scope="session"/>
@@ -130,7 +131,7 @@
                                                 <b class="caret"></b>
                                         </a>
                                         <ul class="dropdown-menu">
-                                                <li><a href="GestionEmpleados?cmd=editar-empleado">Modificar mis datos</a></li>
+                                                <li><a href="GestionEmpleados?cmd=editar-usuario">Modificar mis datos</a></li>
                                                 <li class="divider"></li>
                                                 <li><a href="login?cmd=logout">Salir</a></li>
                                         </ul>

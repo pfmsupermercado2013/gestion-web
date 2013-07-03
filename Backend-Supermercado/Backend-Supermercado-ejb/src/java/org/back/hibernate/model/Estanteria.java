@@ -5,6 +5,7 @@
 package org.back.hibernate.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -33,8 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estanteria.findAll", query = "SELECT e FROM Estanteria e"),
     @NamedQuery(name = "Estanteria.findByIdestanteria", query = "SELECT e FROM Estanteria e WHERE e.idestanteria = :idestanteria"),
     @NamedQuery(name = "Estanteria.findByNumeroEstantes", query = "SELECT e FROM Estanteria e WHERE e.numeroEstantes = :numeroEstantes"),
-    @NamedQuery(name = "Estanteria.findByLongitud", query = "SELECT e FROM Estanteria e WHERE e.longitud = :longitud"),
-    @NamedQuery(name = "Estanteria.findByPosicion", query = "SELECT e FROM Estanteria e WHERE e.posicion = :posicion")})
+    @NamedQuery(name = "Estanteria.findByLongitud", query = "SELECT e FROM Estanteria e WHERE e.longitud = :longitud")})
 public class Estanteria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,10 +47,15 @@ public class Estanteria implements Serializable {
     private int numeroEstantes;
     @Basic(optional = false)
     @Column(name = "longitud")
-    private long longitud;
-    @Basic(optional = false)
-    @Column(name = "posicion")
-    private int posicion;
+    private BigDecimal longitud;
+    @Column(name = "posicion_x")
+    private double posicion_x;
+    @Column(name = "posicion_y")
+    private double posicion_y;
+    @Column(name = "rotacion_xy")
+    private double rotacion_xy;
+    @Column(name = "tipoEstanteria")
+    private Integer tipoEstanteria;
     @JoinColumn(name = "supermercado", referencedColumnName = "idsupermercado")
     @ManyToOne(optional = false)
     private Supermercado supermercado;
@@ -64,11 +69,13 @@ public class Estanteria implements Serializable {
         this.idestanteria = idestanteria;
     }
 
-    public Estanteria(Integer idestanteria, int numeroEstantes, long longitud, int posicion) {
+    public Estanteria(Integer idestanteria, int numeroEstantes, BigDecimal longitud, double posicion_x, double posicion_y, double rotacion_xy) {
         this.idestanteria = idestanteria;
         this.numeroEstantes = numeroEstantes;
         this.longitud = longitud;
-        this.posicion = posicion;
+        this.posicion_x = posicion_x;
+        this.posicion_y = posicion_y;
+        this.rotacion_xy = rotacion_xy;
     }
 
     public Integer getIdestanteria() {
@@ -87,20 +94,45 @@ public class Estanteria implements Serializable {
         this.numeroEstantes = numeroEstantes;
     }
 
-    public long getLongitud() {
+    public BigDecimal getLongitud() {
         return longitud;
     }
 
-    public void setLongitud(long longitud) {
+    public void setLongitud(BigDecimal longitud) {
         this.longitud = longitud;
     }
 
-    public int getPosicion() {
-        return posicion;
+    
+    public void setPosicion_x(double posicion_x) {
+        this.posicion_x = posicion_x;
     }
 
-    public void setPosicion(int posicion) {
-        this.posicion = posicion;
+    public void setPosicion_y(double posicion_y) {
+        this.posicion_y = posicion_y;
+    }
+
+    public void setRotacion_xy(double rotacion_xy) {
+        this.rotacion_xy = rotacion_xy;
+    }
+
+    public void setTipoEstanteria(Integer tipoEstanteria) {
+        this.tipoEstanteria = tipoEstanteria;
+    }
+    
+    public double getPosicion_x() {
+        return posicion_x;
+    }
+
+    public double getPosicion_y() {
+        return posicion_y;
+    }
+
+    public double getRotacion_xy() {
+        return rotacion_xy;
+    }
+
+    public Integer getTipoEstanteria() {
+        return tipoEstanteria;
     }
 
     public Supermercado getSupermercado() {

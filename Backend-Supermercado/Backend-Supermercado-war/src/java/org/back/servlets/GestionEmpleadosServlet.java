@@ -27,7 +27,6 @@ import org.back.constants.BackConstantes;
 import org.back.ejb.GestionEmpleadosEjbLocal;
 import org.back.ejb.GestionSupermercadoEjbLocal;
 import org.back.exceptions.BackException;
-import org.back.hibernate.model.Categoria;
 import org.back.hibernate.model.Empleado;
 import org.back.hibernate.model.Supermercado;
 import org.back.utils.EnviarMail;
@@ -222,6 +221,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
                      try {
                         empleado = (Empleado)session.getAttribute("usuario");
                         if(empleado != null){
+                          session.setAttribute("archivo", null);
                           request.setAttribute("operacion", cmd);
                           redirectJsp = "datos_usuario.jsp";
                         }
@@ -286,14 +286,64 @@ public class GestionEmpleadosServlet extends HttpServlet {
                         }
                     }
                 }
+                
+                if(cmd.equals(BackConstantes.GUARDAR_USUARIO)){
+                    String nuevaPassword = "";
+                    idEmpleado = request.getParameter("idEmpleado");
+                    nifEmpleado = request.getParameter("nif");
+                    nombreEmpleado = request.getParameter("nombre");
+                    apellidosEmpleado = request.getParameter("apellidos");
+                    email = request.getParameter("email");
+                    password = request.getParameter("password");
+                    if(password != null && !"".equals(password)){
+                         PasswordEncoder encoder = PasswordEncoder.getInstance();
+                         nuevaPassword = encoder.encode(password, BackConstantes.SALT_KEY);
+                    }
+                    // Obtenemos la foto del empleado de la sesión
+                    fotoEmpleado = (File)session.getAttribute("archivo");
+                    if(fotoEmpleado != null){
+                       fotoBinario = new byte[(int)fotoEmpleado.length()];
+                       try {
+                            FileInputStream fileInputStream = new FileInputStream(fotoEmpleado);
+                            fileInputStream.read(fotoBinario);
+                            fileInputStream.close();
+                       } catch (Exception e) {
+                            e.printStackTrace();
+                       }
+                    }
+                    
+                    empleado = (Empleado)session.getAttribute("usuario");
+                    if(empleado != null){
+                        empleado.setNif(nifEmpleado);
+                        empleado.setNombreEmpleado(nombreEmpleado);
+                        empleado.setApellidosEmpleado(apellidosEmpleado);
+                        empleado.setEmail(email);
+                        empleado.setImagen(fotoBinario);
+                        if(!"".equals(nuevaPassword) && nuevaPassword.length() > 10)
+                            empleado.setPassword(nuevaPassword);
+                        try {
+                            // Guardamos el empleado en base de datos
+                            empleado = gestionEmpleadosEjb.editarEmpleado(empleado);
+                        } catch (Exception ex) {
+                            Logger.getLogger(GestionEmpleadosServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        if (empleado != null){
+                            listarEmpleados(request);
+                            request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                            redirectJsp = "datos_usuario.jsp";
+                        }
+                    }
+                }
+                
 
                 if(cmd.equals(BackConstantes.BORRAR_EMPLEADO)){
                    boolean inactivo = false;
                    try {
                         idEmpleado = request.getParameter("idEmpleado");
-                        inactivo = borrarEmpleado(Integer.parseInt(idEmpleado));
+                        inactivo = inactivarEmpleado(Integer.parseInt(idEmpleado));
                         if(inactivo){
                             listarEmpleados(request);
+                            request.setAttribute("operacionCorrecta", Boolean.TRUE);
                             redirectJsp = "listado_empleados.jsp";
                         }
                    } catch (Exception ex) {
@@ -409,7 +459,7 @@ public class GestionEmpleadosServlet extends HttpServlet {
          }
     }
     
-    private boolean borrarEmpleado(int idEmpleado) throws Exception{
+    private boolean inactivarEmpleado(int idEmpleado) throws Exception{
          boolean inactivo = false;
          try {
              inactivo = gestionEmpleadosEjb.inactivarEmpleado(idEmpleado);

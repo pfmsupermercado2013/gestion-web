@@ -7,7 +7,7 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/styles.css" rel="stylesheet" media="screen">
         <link href="css/datepicker.css" rel="stylesheet" media="screen">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -15,6 +15,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal" name="supermercadoForm" action="GestionSupermercado" method="post">
                 <input type="hidden" id="cmd" name="cmd" value="crear-supermercado">
                 <input type="hidden" id="rol" name="rol" value="">

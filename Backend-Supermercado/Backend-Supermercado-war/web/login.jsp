@@ -1,15 +1,5 @@
-<%-- 
-    Document   : login
-    Created on : 22-may-2013, 18:39:00
-    Author     : ÓscarJavier
---%>
-
 <%@page import="org.back.constants.BackConstantes"%>
 <!DOCTYPE html>
-<%
-    String mensaje_error = request.getAttribute("error-acceso") != null?
-                           (String)request.getAttribute("error-acceso"):"";
-%>
 <html lang="es">
   <head>
     <title>Supermercado | Login</title>
@@ -17,6 +7,8 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
+    <script src="js/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
   </head>
   <body>
   	<div class="container">
@@ -30,19 +22,13 @@
                     <label>Contraseña</label>
                     <input type="password"  name="passUsuario" id="passUsuario" size="20" maxlength="20" required="required" 
                     pattern="(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
-                    <label id="label_error" ><%=mensaje_error%></label>
                     </div>
-                    <div class="footer">
-                           <label class="checkbox inline">
-                           <input type="checkbox" id="inlineCheckbox1" value="option1"> Recuérdame
-                           </label>       
+                    <div class="footer">      
                            <button type="submit" class="btn btn-success">Entrar</button>
                     </div>
                 </form>
             </div>
 	</div>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
 

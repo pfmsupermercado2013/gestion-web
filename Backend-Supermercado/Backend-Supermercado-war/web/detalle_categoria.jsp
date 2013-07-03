@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,7 +8,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/styles.css" rel="stylesheet" media="screen">
     <link href="css/datepicker.css" rel="stylesheet" media="screen">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/jquery-latest.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
         function submitForm(cmd){
@@ -28,6 +27,11 @@
      <c:set var="readonly" value="${readonly}" scope="request"/>
      <c:set var="operacion" value="${operacion}" scope="request"/>
      <div class="container">
+         <c:if test="${operacionCorrecta}">
+            <div id="alerta" class="alert alert-success">
+                Operación realizada correctamente.
+            </div>
+         </c:if>
          <form class="form-horizontal" name="categoriaDetalleForm" method="post">
                  <fieldset>
                  <!-- Formulario detalle supermercado -->

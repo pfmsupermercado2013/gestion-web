@@ -23,6 +23,6 @@ public interface GestionSupermercadoEjbLocal {
 
     Supermercado guardarSupermercado(Supermercado supermercado) throws Exception;
     
-    
+    boolean eliminarSupermercado(Supermercado supermercado) throws Exception;
     
 }

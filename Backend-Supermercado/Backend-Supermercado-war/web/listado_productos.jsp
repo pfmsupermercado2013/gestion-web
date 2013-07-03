@@ -12,7 +12,7 @@
         <link href="css/styles.css" rel="stylesheet" media="screen">
         <link href="css/datepicker.css" rel="stylesheet" media="screen">
         <link href="css/tablas.css" rel="stylesheet" media="screen">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -20,6 +20,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal form-search" name="listadoProductosForm" method="post">    
                 <table id="tabla_datos" summary="Tabla para gestión de productos existentes">
                     <caption>Gestión de Productos</caption>
@@ -43,7 +48,7 @@
                                 <td colspan="2">${producto.nombreProducto}</td>
                                 <td colspan="2">${producto.descripcion}</td>
                                 <td colspan="2">${producto.marca}</td>
-                                <td colspan="2">0</td><!-- <td colspan="2">{producto.cantidad}</td>-->
+                                <td colspan="2">${producto.cantidad}</td>
                                 <td colspan="2">${producto.precio} &euro;</td>
                                 <c:if test="${usuario.rol == 'pas'}">
                                     <td><a class="btn btn-success" href='GestionProductos?cmd=editar-producto&idProducto=${producto.idproducto}' title="Editar producto">

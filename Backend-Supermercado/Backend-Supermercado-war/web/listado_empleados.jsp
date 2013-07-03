@@ -13,7 +13,7 @@
         <link href="css/styles.css" rel="stylesheet" media="screen">
         <link href="css/datepicker.css" rel="stylesheet" media="screen">
         <link href="css/tablas.css" rel="stylesheet" media="screen">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="js/jquery-latest.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
              function inactivarEmpleado(cmd){
@@ -28,6 +28,11 @@
             <%@include file="menu_cabecera.jsp" %> 
         </header>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal form-search" name="listadoEmpleadosForm" method="post">    
                 <table id="tabla_datos" summary="Tabla para gestión de empleados existentes">
                     <caption>Gestión de Empleados</caption>

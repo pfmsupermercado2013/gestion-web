@@ -14,7 +14,7 @@ $(function(){
         return this.optional(element) || /^[\xF1 \xD1 \xC7 \xE7 a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC 0-9]+$/i.test(value);
         }, "Solo digitar valores que contengan letras y numeros.");
         
-         $.validator.addMethod("numRegex", function(value, element) {
+        $.validator.addMethod("numRegex", function(value, element) {
         return this.optional(element) || /^[0-9]+$/i.test(value);
         }, "Solo digitar valores que contengan numeros.");
         
@@ -29,6 +29,7 @@ $(function(){
                 'nombreProducto': {required: true, minlength: 2, alfanumRegex:true},
                 'descripcionProducto': {required: true, minlength: 2, alfanumRegex:true},
                 'marca': {required: true, minlength: 2, alfanumRegex:true},
+                'cantidad': { required: true, numRegex: true},
                 'precio': { required: true, numRegex: true},
                 'categoria':{selectCategoria:"default"},
                 },
@@ -42,6 +43,8 @@ $(function(){
                 'marca': { required: 'Debe ingresar el No. de documento de identidad.', 
                          minlength:'Digite un marca de mas de 2 caracteres.',
                          alfanumRegex: 'Marca no valida. Solo digitar letras y numeros.'},
+                'cantidad': { required: 'Debe ingresar numero de unidades del producto.', 
+                           alfanum:'Valor no valido. Solo numeros.'},
                 'precio': { required: 'Debe ingresar el precio unitario del producto.', 
                            alfanum:'Precio no valido. Solo numeros.'},
                 'categoria': {selectCategoria: 'Debe asignar categoria al producto.'},

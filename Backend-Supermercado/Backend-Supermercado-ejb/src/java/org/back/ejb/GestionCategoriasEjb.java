@@ -20,6 +20,7 @@ import org.hibernate.Query;
 @Stateless
 public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLocal {
 
+     @Override
      public Categoria crearCategoria(Categoria categoria) throws Exception{
        try {
             begin();
@@ -32,6 +33,7 @@ public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLoc
         }
     }
     
+     @Override
     public List<Categoria> listarCategorias(int limite) throws Exception{
         List<Categoria> listaCategorias = null;
         try {
@@ -48,6 +50,7 @@ public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLoc
     }
 
     
+     @Override
     public Categoria buscarCategoria (Integer idCategoria) throws Exception{
         Categoria categoria = null;
         try {
@@ -62,7 +65,8 @@ public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLoc
     }
 
    
-    public Categoria guardarSupermercado(Categoria categoria) throws Exception{
+     @Override
+    public Categoria guardarCategoria(Categoria categoria) throws Exception{
         Categoria categoriaActualizada = null;
         try {
             begin();
@@ -77,6 +81,7 @@ public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLoc
         return categoriaActualizada;
     }
 
+     @Override
      public List<Categoria> listarTodasCategorias() throws Exception{
         List<Categoria> listaCategorias = null;
         try {
@@ -89,4 +94,17 @@ public class GestionCategoriasEjb extends DAO implements GestionCategoriasEjbLoc
         
         return listaCategorias;
     }
+     
+     @Override
+     public boolean eliminarCategoria(Categoria categoria) throws Exception {
+        boolean categoriaBorrada = false;
+        try {
+            begin();
+            getSession().delete(categoria);
+            DAO.close();
+            return categoriaBorrada = true;
+        } catch (HibernateException e) {
+            throw new Exception("Error al borrar categoria "+categoria.getIdcategoria());
+        }
+     }
 }

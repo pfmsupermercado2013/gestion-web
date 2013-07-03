@@ -45,7 +45,8 @@ public class GestionCategoriasServlet extends HttpServlet {
             throws ServletException, IOException, BackException {
         response.setContentType("text/html;charset=iso-8859-15");
         HttpSession session = null;
-        boolean hayErrores = false;
+        boolean hayErrores = Boolean.FALSE;
+        boolean operacionCorrecta = Boolean.FALSE;
         Categoria categoria = null;
         String redirectJsp = "";
         String nombreCategoria       = "";
@@ -63,6 +64,8 @@ public class GestionCategoriasServlet extends HttpServlet {
                     if(listaCategorias != null && !listaCategorias.isEmpty()){
                         redirectJsp = "listado_categorias.jsp";
                         session.setAttribute("listaCategorias", listaCategorias);
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -85,11 +88,11 @@ public class GestionCategoriasServlet extends HttpServlet {
                     categoria = gestionCategoriasEjb.crearCategoria(categoria);
                     listaCategorias(request);
                     redirectJsp = "listado_categorias.jsp";
+                    request.setAttribute("operacionCorrecta", Boolean.TRUE);
                 } catch (Exception ex) {
                     hayErrores = true;
                     Logger.getLogger(GestionCategoriasServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
             
             if(cmd.equals(BackConstantes.VER_CATEGORIA)){
@@ -102,6 +105,8 @@ public class GestionCategoriasServlet extends HttpServlet {
                           request.setAttribute("operacion", cmd);
                           redirectJsp = "detalle_categoria.jsp";
                         }
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -118,6 +123,8 @@ public class GestionCategoriasServlet extends HttpServlet {
                           request.setAttribute("readonly", "");
                           request.setAttribute("operacion", cmd);
                           redirectJsp = "detalle_categoria.jsp";
+                        } else {
+                            throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                         }
                     }
                 } catch (Exception ex) {
@@ -135,12 +142,15 @@ public class GestionCategoriasServlet extends HttpServlet {
                     categoria = (Categoria)session.getAttribute("categoria");
                     categoria.setNombreCategoria(nombreCategoria);
                     categoria.setDescripcion(descripcionCategoria);
-                    categoria = gestionCategoriasEjb.guardarSupermercado(categoria);
+                    categoria = gestionCategoriasEjb.guardarCategoria(categoria);
                     if(categoria != null){
                         // Guardamos en sesión la categoria modificada
                         session.setAttribute("categoria", categoria);
                         request.setAttribute("operacion", cmd);
+                        request.setAttribute("operacionCorrecta", Boolean.TRUE);
                         redirectJsp = "detalle_categoria.jsp";
+                    } else {
+                        throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
                     }
                 } catch (Exception ex) {
                     hayErrores = true;
@@ -149,7 +159,24 @@ public class GestionCategoriasServlet extends HttpServlet {
             }
             
             if(cmd.equals(BackConstantes.BORRAR_CATEGORIA)){
-               /*@TODO: */
+               idCategoria = request.getParameter("idCategoria");
+               if(idCategoria != null && !"".equals(idCategoria)){
+                   try {
+                       categoria = gestionCategoriasEjb.buscarCategoria(Integer.parseInt(idCategoria));
+                       operacionCorrecta = gestionCategoriasEjb.eliminarCategoria(categoria);
+                       if(operacionCorrecta){
+                           listaCategorias(request);
+                           request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                           redirectJsp = "listado_categorias.jsp";
+                       } else {
+                             throw new BackException("La eliminación de categoria no se ha completado.");  
+                       }
+                   } catch (Exception ex) {
+                       Logger.getLogger(GestionCategoriasServlet.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+               }else {
+                    throw new BackException("No se han recibido los parámetros para completar la operación"+this.getServletName());
+               } 
             }
             
             if(!hayErrores && !"".equals(redirectJsp)) {
@@ -203,7 +230,7 @@ public class GestionCategoriasServlet extends HttpServlet {
          try {
              List<Categoria> listadoCategorias = null;
              //int numPaginas = gestionEmpleadosEjb.obtenerNumeroPaginas(BackConstantes.NUM_REG_MAX);
-             listadoCategorias = gestionCategoriasEjb.listarCategorias(BackConstantes.NUM_REG_MAX);
+             listadoCategorias = gestionCategoriasEjb.listarTodasCategorias();
              //request.getSession(false).setAttribute("numPaginas", numPaginas);
              request.getSession(false).setAttribute("listaCategorias", listadoCategorias);
          } catch (Exception ex) {

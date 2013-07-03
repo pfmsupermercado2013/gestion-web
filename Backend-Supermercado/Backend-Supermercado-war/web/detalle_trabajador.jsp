@@ -32,6 +32,11 @@
         <c:set var="operacion" value="${operacion}" scope="request"/>
         <c:set var="fotoEmpleado" value="${fotoEmpleado}" scope="request"/>
         <div class="container">
+            <c:if test="${operacionCorrecta}">
+                <div id="alerta" class="alert alert-success">
+                    Operacion realizada correctamente.
+                </div>
+            </c:if>
             <form class="form-horizontal" name="empleadoDetalleForm" method="post">
                 <input type="hidden" id="idEmpleado" name="idEmpleado" value="${empleado.idempleado}"/>
                 <input type="hidden" id="idSupermercado" name="idSupermercado" value=""/>
