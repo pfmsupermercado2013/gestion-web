@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.back.constants.BackConstantes;
 import org.back.ejb.GestionProveedoresEjbLocal;
+import org.back.exceptions.ProveedorExistenteException;
 import org.back.hibernate.model.Proveedor;
 import org.back.utils.EnviarMail;
 import org.back.utils.PasswordAleatorio;
@@ -60,7 +61,12 @@ public class GestionProveedoresServlet extends HttpServlet {
         try {
 
             String nombre = request.getParameter("nombre");
+
             String cif = request.getParameter("cif");
+            if (!ValidadoresCampos.validarCif(cif)) {
+                doError(request, response, "CIF inválido.");
+                return;
+            }
             String localidad = request.getParameter("localidad");
             String provincia = request.getParameter("provincia");
 
@@ -100,6 +106,9 @@ public class GestionProveedoresServlet extends HttpServlet {
             EnviarMail.enviarMail(email, subject, msg);
             request.setAttribute("creado", true);
 
+        }catch(ProveedorExistenteException e){
+            doError(request, response, "El proveedor ya se encuentra dado de alta.");
+            return;
         } catch (Exception e) {
             request.setAttribute("creado", false);
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package org.back.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.back.constants.BackConstantes;
+import org.back.ejb.GestionProveedoresEjbLocal;
 import org.back.ejb.GestionSubastasEjbLocal;
 import org.back.exceptions.NoExisteProveedorException;
+import org.back.exceptions.WrongPasswordProveedorException;
+import org.back.hibernate.model.Proveedor;
 import org.back.hibernate.model.Subasta;
 
 /**
@@ -27,6 +31,7 @@ import org.back.hibernate.model.Subasta;
 @Path("/subastas")
 public class SubastaRestService {
 
+    GestionProveedoresEjbLocal gestionProveedoresEjb = lookupGestionProveedoresEjbLocal();
     GestionSubastasEjbLocal gestionSubastasEjb = lookupGestionSubastasEjbLocal();
 
     @Path("/login")
@@ -34,19 +39,18 @@ public class SubastaRestService {
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, Object> login(@FormParam("username") String username, @FormParam("password") String password) {
         Map<String, Object> userData = new HashMap<String, Object>();
-        //Map<String, String> nameStruct = new HashMap<String, String>();
-        //nameStruct.put("first", "Joe");
-        //nameStruct.put("last", "Sixpack");
         try {
-            Integer proveedorId = gestionSubastasEjb.loginSubastas(username, password);
-            if (proveedorId != -1) {
+            Proveedor proveedor = gestionSubastasEjb.loginSubastas(username, password);
+            if (proveedor.isActivado()) {
                 userData.put("code", BackConstantes.OK);
-                userData.put("proveedor", proveedorId);
             } else {
-                userData.put("code", BackConstantes.BAD_PASSWORD);
+                userData.put("code", BackConstantes.PROVEEDOR_NO_ACTIVADO);
             }
+            userData.put("proveedorId", proveedor.getIdProveedor());
         } catch (NoExisteProveedorException ex) {
             userData.put("code", BackConstantes.PROVEEDOR_NO_ENCONTRADO);
+        } catch (WrongPasswordProveedorException ex) {
+            userData.put("code", BackConstantes.BAD_PASSWORD);
         }
         System.out.println(userData.toString());
         return userData;
@@ -67,17 +71,60 @@ public class SubastaRestService {
         return subasta;
     }
 
+    @Path("/proveedor/{proveedorId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Map<String, Object>> getSubastasByProveedor(@PathParam("proveedorId") Integer proveedorId) {
+        List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
+        List<Subasta> subastas = gestionSubastasEjb.getSubastasByProveedor(proveedorId);
+        for (Subasta s : subastas) {
+            Map<String, Object> subastaData = new HashMap<String, Object>();
+            Map<String, Object> productoData = new HashMap<String, Object>();
+            productoData.put("nombre", s.getProducto().getNombreProducto());
+            productoData.put("imagen", s.getProducto().getImagen());
+            subastaData.put("idsubasta", s.getIdsubasta());
+            subastaData.put("unidades", s.getUnidades());
+            subastaData.put("estado", s.getEstado());
+            subastaData.put("resultado", gestionSubastasEjb.getResultadoSubastaByProveedor(s, proveedorId));
+            subastaData.put("producto", productoData);
+            res.add(subastaData);
+        }
+        return res;
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Subasta setPuja(@FormParam("subasta") String subastaId, @FormParam("cantidad") String cantidad, @FormParam("proveedor") String proveedor) {
-        Subasta subasta = gestionSubastasEjb.realizarPuja(Integer.valueOf(subastaId), Integer.valueOf(proveedor), Float.valueOf(cantidad));
-        return subasta;
+    public Map<String, Object> setPuja(@FormParam("subasta") String subastaId, @FormParam("cantidad") String cantidad, @FormParam("proveedor") String proveedor) {
+        Map<String, Object> userData = new HashMap<String, Object>();
+        Map<String, Object> res = gestionSubastasEjb.realizarPuja(Integer.valueOf(subastaId), Integer.valueOf(proveedor), Float.valueOf(cantidad));
+        userData.put("subasta", res.get("subasta"));
+        userData.put("code", res.get("code"));
+        return userData;
+    }
+
+    @Path("/proveedor/activar")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, Object> activarCuentaProveedor(@FormParam("proveedorId") Integer proveedorId, @FormParam("password") String password) {
+        Map<String, Object> responseData = new HashMap<String, Object>();
+        responseData.put("status", gestionProveedoresEjb.activarCuentaProveedor(proveedorId, password));
+        return responseData;
     }
 
     private GestionSubastasEjbLocal lookupGestionSubastasEjbLocal() {
         try {
             Context c = new InitialContext();
             return (GestionSubastasEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionSubastasEjb!org.back.ejb.GestionSubastasEjbLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private GestionProveedoresEjbLocal lookupGestionProveedoresEjbLocal() {
+        try {
+            Context c = new InitialContext();
+            return (GestionProveedoresEjbLocal) c.lookup("java:global/Backend-Supermercado/Backend-Supermercado-ejb/GestionProveedoresEjb!org.back.ejb.GestionProveedoresEjbLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

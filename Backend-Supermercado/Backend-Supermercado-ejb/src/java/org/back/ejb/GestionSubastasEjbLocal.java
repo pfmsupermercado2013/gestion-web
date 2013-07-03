@@ -1,9 +1,12 @@
 package org.back.ejb;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 import org.back.exceptions.NoExisteProveedorException;
+import org.back.exceptions.WrongPasswordProveedorException;
 import org.back.hibernate.model.Producto;
+import org.back.hibernate.model.Proveedor;
 import org.back.hibernate.model.Subasta;
 
 /**
@@ -21,12 +24,17 @@ public interface GestionSubastasEjbLocal {
 
     List<Subasta> getSubastasActivas();
 
-    boolean esteProductoEnSubasta(Integer productoId);
+    boolean estaProductoEnSubasta(Integer productoId);
 
     Subasta getSubastaById(Integer subastaId);
 
-    Subasta realizarPuja(Integer subastaId, Integer proveedorId, float cantidad);
+    Map<String,Object> realizarPuja(Integer subastaId, Integer proveedorId, float cantidad);
 
-    Integer loginSubastas(String username, String password) throws NoExisteProveedorException;
+    Proveedor loginSubastas(String username, String password) throws NoExisteProveedorException, WrongPasswordProveedorException;
     
+    void comprobarFinDeSubastas();
+
+    List<Subasta> getSubastasByProveedor(Integer proveedorId);
+    
+    String getResultadoSubastaByProveedor(Subasta subasta, Integer proveedorId);
 }

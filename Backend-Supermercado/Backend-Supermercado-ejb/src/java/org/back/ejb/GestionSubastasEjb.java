@@ -1,8 +1,14 @@
 package org.back.ejb;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import org.back.exceptions.NoExisteProveedorException;
+import org.back.exceptions.WrongPasswordProveedorException;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
 import org.back.hibernate.model.Producto;
@@ -11,7 +17,6 @@ import org.back.hibernate.model.ProveedorSubasta;
 import org.back.hibernate.model.ProveedorSubastaPK;
 import org.back.hibernate.model.Subasta;
 import org.back.utils.PasswordEncoder;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 /**
@@ -23,25 +28,28 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
 
     @Override
     public Subasta crearSubasta(Subasta subasta) throws Exception {
-        try {
-            begin();
-            getSession().save(subasta);
-            commit();
-            DAO.close();
-            return subasta;
-        } catch (HibernateException e) {
-            throw new Exception("Error al crear la subasta", e);
-        }
+        begin();
+        getSession().save(subasta);
+        commit();
+        DAO.close();
+        return subasta;
     }
 
     @Override
     public List<Subasta> getSubastasActivas() {
-        begin();
-        Query query = getSession().getNamedQuery("Subasta.findByEstado");
-        query.setParameter("estado", 1);
-        List<Subasta> subastas = query.list();
-        commit();
-        DAO.close();
+        List<Subasta> subastas = new ArrayList<Subasta>();
+        try {
+            begin();
+            Query query = getSession().getNamedQuery("Subasta.findByEstado");
+            query.setParameter("estado", 1);
+            subastas = query.list();
+            commit();
+        } catch (Exception e) {
+            rollback();
+            e.printStackTrace();
+        } finally {
+            DAO.close();
+        }
         return subastas;
     }
 
@@ -57,25 +65,104 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
     }
 
     @Override
-    public synchronized Subasta realizarPuja(Integer subastaId, Integer proveedorId, float cantidad) {
+    public synchronized Map<String, Object> realizarPuja(Integer subastaId, Integer proveedorId, float cantidad) {
+        Map<String, Object> res = new HashMap<String, Object>();
         begin();
         Query query = getSession().getNamedQuery("Subasta.findByIdsubasta");
         query.setParameter("idsubasta", subastaId);
         Subasta subasta = (Subasta) query.uniqueResult();
         float cantidadActual = subasta.getPuja();
         if (cantidad < cantidadActual) {
+            res.put("code", 0);
             subasta.setPuja(cantidad);
             ProveedorSubastaPK pspk = new ProveedorSubastaPK(proveedorId, subastaId);
             ProveedorSubasta proveedorSubasta = new ProveedorSubasta(pspk, cantidad);
             subasta.getProveedorSubastaCollection().add(proveedorSubasta);
+        } else {
+            res.put("code", -1);
         }
+        res.put("subasta", subasta);
         commit();
         DAO.close();
-        return subasta;
+        return res;
     }
 
     @Override
-    public Integer loginSubastas(String username, String password) throws NoExisteProveedorException {
+    public List<Subasta> getSubastasByProveedor(Integer proveedorId) {
+        begin();
+        Query query = getSession().createQuery("Select ps.subasta From ProveedorSubasta ps WHERE ps.proveedor.idProveedor = :idProveedor");
+        query.setParameter("idProveedor", proveedorId);
+        List<Subasta> subastas = query.list();
+        commit();
+        DAO.close();
+        return subastas;
+    }
+
+    @Override
+    public String getResultadoSubastaByProveedor(Subasta subasta, Integer proveedorId) {
+        begin();
+        Query query = getSession().createQuery("Select max(ps.puja) From ProveedorSubasta ps WHERE ps.proveedor.idProveedor = :idProveedor AND ps.subasta.idsubasta = :idSubasta");
+        query.setParameter("idProveedor", proveedorId);
+        query.setParameter("idSubasta", subasta.getIdsubasta());
+        Float cantidad = (Float) query.uniqueResult();
+        commit();
+        DAO.close();
+        if (cantidad > subasta.getPuja()) {
+            if (subasta.getEstado() == 0) {
+                return "Perdida";
+            } else {
+                return "Perdiendo";
+            }
+        } else {
+            if (subasta.getEstado() == 0) {
+                return "Adjudicada";
+            } else {
+                return "Ganando";
+            }
+        }
+    }
+
+    @Schedule(second = "*/10", minute = "*", hour = "*/10")
+    public void comprobarFinDeSubastas() {
+        begin();
+        Query query = getSession().createQuery("FROM Subasta s WHERE s.fechaFin <= :fechaActual AND s.estado = 1");
+        Date ahora = new Date();
+        query.setParameter("fechaActual", ahora);
+        List<Subasta> subastas = (List<Subasta>) query.list();
+        commit();
+        DAO.close();
+        for (Subasta s : subastas) {
+            resolverSubasta(s);
+        }
+    }
+
+    private void resolverSubasta(Subasta subasta) {
+        begin();
+        subasta.setEstado(0);
+        getSession().update(subasta);
+        commit();
+        DAO.close();
+    }
+
+    @Override
+    public boolean estaProductoEnSubasta(Integer productoId) {
+        try {
+            begin();
+            Query query = getSession().createQuery("FROM Subasta s WHERE s.producto.idproducto = :idProducto AND s.estado = 1");
+            query.setParameter("idProducto", productoId);
+            Subasta subasta = (Subasta) query.uniqueResult();
+            commit();
+            return subasta != null;
+        } catch (Exception e) {
+            rollback();
+            return false;
+        } finally {
+            DAO.close();
+        }
+    }
+
+    @Override
+    public Proveedor loginSubastas(String username, String password) throws NoExisteProveedorException, WrongPasswordProveedorException {
         begin();
         Query query = getSession().getNamedQuery("Proveedor.findByCif");
         query.setParameter("cif", username);
@@ -90,26 +177,23 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         try {
             PasswordEncoder passEncoder = PasswordEncoder.getInstance();
             passEncoded = passEncoder.encode(password, "716EA45X34");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         if (proveedor.getPassword().equals(passEncoded)) {
-            return proveedor.getIdProveedor();
+            return proveedor;
+        } else {
+            throw new WrongPasswordProveedorException();
         }
-        
-        return -1;
     }
 
     //TODO: Mover a Productos EJB
     @Override
     public List<Producto> buscarProductos(String str) throws Exception {
-        try {
-            begin();
-            Query query = getSession().createQuery("FROM Producto p WHERE p.nombreProducto like :nombreProducto");
-            query.setParameter("nombreProducto", "%" + str + "%");
-            return query.list();
-        } catch (Exception e) {
-            throw new Exception("Error al buscar productos", e);
-        }
+        begin();
+        Query query = getSession().createQuery("FROM Producto p WHERE p.nombreProducto like :nombreProducto");
+        query.setParameter("nombreProducto", "%" + str + "%");
+        return query.list();
     }
 
     //TODO: Mover a Productos EJB
@@ -125,22 +209,6 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
             return producto;
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    @Override
-    public boolean esteProductoEnSubasta(Integer productoId) {
-        try {
-            begin();
-            Query query = getSession().createQuery("FROM Subasta s WHERE s.producto.idproducto = :idProducto");
-            query.setParameter("idProducto", productoId);
-            Subasta subasta = (Subasta) query.uniqueResult();
-            commit();
-            DAO.close();
-            return subasta != null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
     }
 }

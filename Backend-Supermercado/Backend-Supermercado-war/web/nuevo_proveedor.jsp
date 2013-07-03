@@ -61,7 +61,7 @@
                         <label class="control-label">CIF</label>
                         <div class="controls">
                             <input id="cif" name="cif" type="text" placeholder="CIF del proveedor"
-                                   class="input-xlarge" required pattern="[A-Z0-9]+">
+                                   class="input-xlarge" required pattern="[A-Z][0-9]{8}">
                             <p class="help-block"></p>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                         <label class="control-label">Código postal</label>
                         <div class="controls">
                             <input id="cp" name="cp" type="text" placeholder="CP del proveedor"
-                                   class="input-xlarge" required pattern="[0-9]{5}" oninvalid="setCustomValidity('Introduzca un código postal válido.')">
+                                   class="input-xlarge" required pattern="[0-9]{5}">
                             <p class="help-block"></p>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <label class="control-label">Teléfono</label>
                         <div class="controls">
                             <input id="telefono" name="telefono" type="text" placeholder="Teléfono del proveedor"
-                                   class="input-xlarge" required pattern="[0-9]{9}" oninvalid="setCustomValidity('Introduzca sólo números.')">
+                                   class="input-xlarge" required pattern="[0-9]{9}">
                             <p class="help-block"></p>
                         </div>
                     </div>

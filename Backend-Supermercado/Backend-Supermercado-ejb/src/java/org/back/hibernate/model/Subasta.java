@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.back.serializer.DateSerializer;
 import org.back.serializer.ProductoSerializer;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -48,6 +50,7 @@ public class Subasta implements Serializable {
     @Basic(optional = false)
     @Column(name = "fecha_fin")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonSerialize(using = DateSerializer.class)
     private Date fechaFin;
     @Column(name = "fecha_inicio")
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,7 +68,7 @@ public class Subasta implements Serializable {
     @JsonIgnore
     private Collection<ProveedorSubasta> proveedorSubastaCollection;
     @JoinColumn(name = "producto", referencedColumnName = "idproducto")
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @JsonSerialize(using = ProductoSerializer.class)
     private Producto producto;
 

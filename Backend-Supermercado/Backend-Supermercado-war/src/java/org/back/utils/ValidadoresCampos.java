@@ -16,6 +16,7 @@ public class ValidadoresCampos {
     private static final String TELEFONO_PATTERN = "^[0-9]{9}$";
     private static final String NUMERO_PATTERN = "^[0-9]+$";
     private static final String PUJA_PATTERN = "[0-9]{1,}\\.?[0-9]*";
+    private static final String CIF_PATTERN = "[A-Z][0-9]{8}";
 
     private ValidadoresCampos(){}
     
@@ -46,6 +47,12 @@ public class ValidadoresCampos {
     public static boolean validarPuja(String puja) {
         Pattern pattern = Pattern.compile(PUJA_PATTERN);
         Matcher matcher = pattern.matcher(puja);
+        return matcher.matches();
+    }
+    
+    public static boolean validarCif(String cif) {
+        Pattern pattern = Pattern.compile(CIF_PATTERN);
+        Matcher matcher = pattern.matcher(cif);
         return matcher.matches();
     }
 }

@@ -77,8 +77,8 @@ public class GestionSubastasServlet extends HttpServlet {
             }
             Integer productoId = Integer.valueOf(request.getParameter("producto_id"));
 
-            if (gestionSubastasEjb.esteProductoEnSubasta(productoId)) {
-                doError(request, response, "El producto ya se encuentra en subasta");
+            if (gestionSubastasEjb.estaProductoEnSubasta(productoId)) {
+                doError(request, response, "El producto ya se encuentra en subasta.");
                 return;
             }
 
@@ -146,7 +146,6 @@ public class GestionSubastasServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().write(respuesta.toString());
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Error buscando productos");
         }
     }

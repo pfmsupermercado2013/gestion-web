@@ -46,7 +46,7 @@ public class Proveedor implements Serializable {
     @Column(name = "idProveedor")
     private Integer idProveedor;
     @Basic(optional = false)
-    @Column(name = "CIF")
+    @Column(name = "CIF", unique = true)
     private String cif;
     @Basic(optional = false)
     @Column(name = "nombre_proveedor")

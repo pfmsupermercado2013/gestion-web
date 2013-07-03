@@ -71,6 +71,7 @@ public class BackConstantes {
     
     /* Códigos de respuesta login proveedores*/
     public static final int OK= 0;
+    public static final int PROVEEDOR_NO_ACTIVADO= 1;
     public static final int BAD_PASSWORD= -1;
     public static final int PROVEEDOR_NO_ENCONTRADO= -2;
 }
