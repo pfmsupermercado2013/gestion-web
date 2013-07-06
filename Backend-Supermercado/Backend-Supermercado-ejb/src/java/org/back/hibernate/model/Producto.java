@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author ÓscarJavier
+ * @author Fernando Pabón
  */
 @Entity
 @Table(name = "producto")
@@ -43,6 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Producto.findByMarca", query = "SELECT p FROM Producto p WHERE p.marca = :marca"),
     @NamedQuery(name = "Producto.findByCodigoEAN", query = "SELECT p FROM Producto p WHERE p.codigoEAN = :codigoEAN"),
     @NamedQuery(name = "Producto.findByFechaEntrada", query = "SELECT p FROM Producto p WHERE p.fechaEntrada = :fechaEntrada"),
+    @NamedQuery(name = "Producto.updateProducto", query = "UPDATE Producto SET Cantidad = :cantidad, FechaEntrada = :fechaEntrada WHERE idproducto = :idproducto"),
     @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")})
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;

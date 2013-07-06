@@ -16,7 +16,7 @@ import org.hibernate.Query;
 
 /**
  *
- * @author ÓscarJavier
+ * @author Fernando Pabón
  */
 @Stateless
 public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal {
@@ -31,6 +31,21 @@ public class GestionProductosEjb extends DAO implements GestionProductosEjbLocal
             return producto;
         } catch (HibernateException e) {
             throw new Exception("Error al crear producto",e);
+        }
+    }
+    
+    @Override
+    public void actualizadProducto(Producto p) throws Exception
+    {
+        try
+        {
+          begin();
+          Query query = getSession().getNamedQuery("Producto.updateProducto").setParameter("cantidad",p.getCantidad()).setParameter("fechaEntrada", p.getFechaEntrada()).setParameter("idproducto", p.getIdproducto());
+          query.executeUpdate();
+          DAO.close();
+          
+        } catch (HibernateException e) {
+            throw new Exception("Error al actualizar el producto "+p.getIdproducto());
         }
     }
     

@@ -1,6 +1,9 @@
 package org.back.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -12,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import org.back.ejb.GestionNotificacionesEjbLocal;
 import org.back.hibernate.model.Notificaciones;
+import org.back.hibernate.model.NotificacionesAndroid;
 /**
  *
  * @author Fer
@@ -20,37 +24,40 @@ import org.back.hibernate.model.Notificaciones;
 @Path("/notificaciones")
 public class NotificacionesRestService 
 {
-   /*
-   @GET
-   @Produces(MediaType.APPLICATION_JSON)
-    public List<Producto> getProductos() {
-       //creamos el array de productos
-        ArrayList<Producto> productos = new ArrayList<Producto>();
-        //creamos los productos
-        for (int i = 0; i<5; i++){
-
-            Producto producto = new Producto();
-
-            producto.setIdproducto(i);
-            producto.setNombreProducto("producto " + i);
-            producto.setFechaEntrada(new Date());
-
-            productos.add(producto);
-        }
-        return productos;
-    }
-    */
+   
     GestionNotificacionesEjbLocal gestionNotificacionesEjb = lookupGestionNotificacionessEjbLocal();
-  
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Notificaciones> getNotificacionesActivas() throws Exception {
+    public Map<String, List<NotificacionesAndroid>> getNotificacionesActivas() throws Exception {
         
         List<Notificaciones> notificaciones = gestionNotificacionesEjb.listarNotificaciones();
-        return notificaciones;
+        Map<String,List<NotificacionesAndroid>> productsData = new HashMap<String, List<NotificacionesAndroid>>();
+        
+        //Map<String,List<Categoria>> categoryData = new HashMap<String, List<Categoria>>();
+        
+        List<NotificacionesAndroid> notificacionesAndroid = new ArrayList<NotificacionesAndroid>();
+        
+        int i=0;
+        for (i=0;i<notificaciones.size();i++)
+        {  
+            Notificaciones n = notificaciones.get(i);
+            
+            NotificacionesAndroid nAndroid = new NotificacionesAndroid();
+            nAndroid.setIdnotificaciones(n.getIdnotificaciones());
+            nAndroid.setIdempleado(n.getIdempleado().getIdempleado());
+            nAndroid.setDescripcion(n.getDescripcion());
+            nAndroid.setFechaCreacion(n.getFechaCreacion());
+    
+            notificacionesAndroid.add(nAndroid);
+          
+        }
+        
+        productsData.put("Notificaciones",notificacionesAndroid);
+        
+        return productsData;
     }
-
-
+ 
     private GestionNotificacionesEjbLocal lookupGestionNotificacionessEjbLocal() {
         try {
             Context c = new InitialContext();
@@ -60,4 +67,5 @@ public class NotificacionesRestService
             throw new RuntimeException(ne);
         }
     }
+    
 }
