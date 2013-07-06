@@ -7,6 +7,7 @@ package org.back.ejb;
 
 import javax.ejb.Local;
 import org.back.hibernate.model.UbicacionProducto;
+import org.back.hibernate.model.UbicacionProductoPK;
 
 /**
  *
@@ -15,6 +16,8 @@ import org.back.hibernate.model.UbicacionProducto;
 @Local
 public interface GestionUbicacionProductoEjbLocal {
     
-    UbicacionProducto buscarUbicacionProducto(Integer idProducto) throws Exception;;
+    UbicacionProducto crearUbicacionProducto(UbicacionProducto ubiProducto)throws Exception;
+    
+    UbicacionProducto buscarUbicacionProducto(Integer idProducto) throws Exception;
     
 }

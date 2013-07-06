@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-//import org.apache.commons.fileupload.FileItem;
-//import org.apache.commons.fileupload.FileItemFactory;
-//import org.apache.commons.fileupload.FileUploadException;
-//import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-//import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.back.constants.BackConstantes;
 
 /**
@@ -36,7 +36,7 @@ public class SubirArchivosServlet extends HttpServlet {
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	            throws ServletException, IOException {
 	       
-         /**
+         
             boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 	        boolean archivoGuardado = false;
                 response.setContentType("text/html;charset=iso-8859-15");
@@ -124,7 +124,5 @@ public class SubirArchivosServlet extends HttpServlet {
                         out.close();
                     }
                 }
-
-**/
 	    }
 }

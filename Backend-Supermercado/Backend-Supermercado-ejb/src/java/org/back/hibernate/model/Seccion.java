@@ -37,6 +37,8 @@ public class Seccion implements Serializable {
     @Basic(optional = false)
     @Column(name = "idseccion")
     private Integer idseccion;
+    @Column(name = "maxnumeroproductos")
+    private Integer maxNumeroProductos;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "seccion")
     private Collection<UbicacionProducto> ubicacionProductoCollection;
 
@@ -62,6 +64,14 @@ public class Seccion implements Serializable {
 
     public void setUbicacionProductoCollection(Collection<UbicacionProducto> ubicacionProductoCollection) {
         this.ubicacionProductoCollection = ubicacionProductoCollection;
+    }
+    
+     public Integer getMaxNumeroProductos() {
+        return maxNumeroProductos;
+    }
+
+    public void setMaxNumeroProductos(Integer maxNumeroProductos) {
+        this.maxNumeroProductos = maxNumeroProductos;
     }
 
     @Override

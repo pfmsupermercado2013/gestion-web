@@ -56,6 +56,8 @@ public class BackConstantes {
     public static final String VER_ESTANTERIA      = "ver-estanteria";
     public static final String LISTAR_ESTANTERIAS  = "listar-estanterias";
     public static final String GUARDAR_ESTANTERIA  = "guardar-estanteria";
+    public static final Integer ID_PROD_FICTICIO   = -1;
+    public static final Integer ID_CATEG_FICTICIA  = -1;
     
     /* Roles */
     public static final String ROL_SUPER  = "pas";

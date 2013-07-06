@@ -8,10 +8,9 @@ package org.back.ejb;
 import javax.ejb.Stateless;
 import org.back.hibernate.DAO;
 import static org.back.hibernate.DAO.getSession;
-import org.back.hibernate.model.Producto;
 import org.back.hibernate.model.UbicacionProducto;
+import org.back.hibernate.model.UbicacionProductoPK;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 
 /**
  *
@@ -21,6 +20,18 @@ import org.hibernate.Query;
 @Stateless
 public class GestionUbicacionProductoEjb extends DAO implements GestionUbicacionProductoEjbLocal {
     
+    @Override
+    public UbicacionProducto crearUbicacionProducto(UbicacionProducto ubiProducto)throws Exception{ 
+        try {
+            begin();
+            getSession().save(ubiProducto);
+            commit();
+            DAO.close();
+            return ubiProducto;
+        } catch (HibernateException e) {
+            throw new Exception("Error al crear la ubicacion de producto",e);
+        }
+    }
     
     @Override
     public UbicacionProducto buscarUbicacionProducto(Integer idProducto) throws Exception
