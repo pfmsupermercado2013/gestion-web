@@ -26,7 +26,6 @@ public class SubastasAuthenticator implements PreProcessInterceptor {
         if (request.getPreprocessedPath().startsWith("/subastas")) {
             System.out.println("Peticion a subasta");
             List<String> authorization = request.getHttpHeaders().getRequestHeader("Authorization");
-            System.out.println("AUTHORIZATION SUBASTAS: "+authorization);
         }
         return response;
     }

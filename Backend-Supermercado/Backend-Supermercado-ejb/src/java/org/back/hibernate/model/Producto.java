@@ -7,6 +7,7 @@ package org.back.hibernate.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -69,8 +70,8 @@ public class Producto implements Serializable {
     @Basic(optional = true)
     @Lob @Column(name = "imagen", length = 1048576)
     private byte[] imagen;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "producto") 
-    private Subasta subasta;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "producto") 
+    //private List<Subasta> subastas;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private Collection<UbicacionProducto> ubicacionProductoCollection;
     @JoinColumn(name = "Categoria_Id_Categoria", referencedColumnName = "idcategoria")
@@ -158,13 +159,13 @@ public class Producto implements Serializable {
         this.imagen = imagen;
     }
     
-    public Subasta getSubasta() {
-        return subasta;
-    }
+    //public List<Subasta> getSubastas() {
+      //  return subastas;
+    //}
 
-    public void setSubasta(Subasta subasta) {
-        this.subasta = subasta;
-    }
+    //public void setSubastas(List<Subasta> subastas) {
+      //  this.subastas = subastas;
+    //}
 
     @XmlTransient
     public Collection<UbicacionProducto> getUbicacionProductoCollection() {
