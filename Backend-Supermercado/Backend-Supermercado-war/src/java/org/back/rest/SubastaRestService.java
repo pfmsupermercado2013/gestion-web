@@ -81,7 +81,9 @@ public class SubastaRestService {
             Map<String, Object> subastaData = new HashMap<String, Object>();
             Map<String, Object> productoData = new HashMap<String, Object>();
             productoData.put("nombre", s.getProducto().getNombreProducto());
-            productoData.put("imagen", s.getProducto().getImagen());
+            if(s.getProducto().getImagen() != null){
+                 productoData.put("imagen", s.getProducto().getImagen());
+            }
             subastaData.put("idsubasta", s.getIdsubasta());
             subastaData.put("unidades", s.getUnidades());
             subastaData.put("estado", s.getEstado());
