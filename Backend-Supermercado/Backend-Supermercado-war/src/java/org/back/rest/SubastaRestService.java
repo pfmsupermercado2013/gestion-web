@@ -70,6 +70,13 @@ public class SubastaRestService {
         Subasta subasta = gestionSubastasEjb.getSubastaById(subastaId);
         return subasta;
     }
+    
+    @Path("/resolver")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public void resolverSubastas() {
+        gestionSubastasEjb.comprobarFinDeSubastas();
+    }
 
     @Path("/proveedor/{proveedorId}")
     @GET
