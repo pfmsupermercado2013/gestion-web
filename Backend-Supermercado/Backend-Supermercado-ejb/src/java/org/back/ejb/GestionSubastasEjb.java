@@ -16,6 +16,7 @@ import org.back.hibernate.model.Proveedor;
 import org.back.hibernate.model.ProveedorSubasta;
 import org.back.hibernate.model.ProveedorSubastaPK;
 import org.back.hibernate.model.Subasta;
+import org.back.utils.EnviarMail;
 import org.back.utils.PasswordEncoder;
 import org.hibernate.Query;
 
@@ -122,7 +123,7 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         }
     }
 
-    @Schedule(second = "*/10", minute = "*", hour = "*/10")
+    @Schedule(second = "*", minute = "*", hour = "*/24")
     public void comprobarFinDeSubastas() {
         begin();
         Query query = getSession().createQuery("FROM Subasta s WHERE s.fechaFin <= :fechaActual AND s.estado = 1");
@@ -137,11 +138,34 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
     }
 
     private void resolverSubasta(Subasta subasta) {
-        begin();
-        subasta.setEstado(0);
-        getSession().update(subasta);
-        commit();
-        DAO.close();
+        try {
+
+            begin();
+            subasta.setEstado(0);
+            getSession().update(subasta);
+            Query query = getSession().createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.puja = :puja");
+            query.setParameter("idsubasta", subasta.getIdsubasta());
+            query.setParameter("puja", subasta.getPuja());
+            ProveedorSubasta proveedorSubasta = (ProveedorSubasta) query.uniqueResult();
+            Proveedor ganador = proveedorSubasta.getProveedor();
+
+            if (ganador != null) {
+                //Enviar mail con el password temporal al proveedor
+                String subject = "!Ha ganado una subasta!";
+                String msg = "Ha ganado la subasta de " + subasta.getProducto().getNombreProducto()
+                        + " por la cantidad de " + subasta.getPuja() + "€";
+                EnviarMail.enviarMail(ganador.getEmailProveedor(), subject, msg);
+            }else{
+                System.out.println("SUBSTA SIN PROVEEDOR!!!");
+            }
+
+            commit();
+
+        } catch (Exception e) {
+            rollback();
+        } finally {
+            DAO.close();
+        }
     }
 
     @Override
