@@ -108,7 +108,6 @@
                                                 <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="nueva_subasta.jsp">Nueva subasta</a></li>
                                                 </c:if>
-                                                <li><a href="#">Gestionar subastas</a></li>
                                         </ul>
                                 </li>
                                 <li class="${menu_7}">
@@ -120,7 +119,6 @@
                                                 <c:if test="${usuario.rol == 'pas'}" >
                                                 <li><a href="nuevo_proveedor.jsp">Nuevo proveedor</a></li>
                                                 </c:if>
-                                                <li><a href="#">Gestionar proveedores</a></li>
                                         </ul>
                                 </li>
                         </ul>
