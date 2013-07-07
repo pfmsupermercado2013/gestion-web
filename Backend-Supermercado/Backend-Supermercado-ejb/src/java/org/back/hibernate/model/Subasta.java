@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -68,7 +67,7 @@ public class Subasta implements Serializable {
     @JsonIgnore
     private Collection<ProveedorSubasta> proveedorSubastaCollection;
     @JoinColumn(name = "producto", referencedColumnName = "idproducto")
-    @ManyToMany
+    @ManyToOne
     @JsonSerialize(using = ProductoSerializer.class)
     private Producto producto;
 
