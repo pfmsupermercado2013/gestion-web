@@ -20,6 +20,7 @@ import org.back.hibernate.model.Subasta;
 import org.back.utils.EnviarMail;
 import org.back.utils.PasswordEncoder;
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -142,14 +143,15 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         try {
 
             begin();
-            Query query = getSession().createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.puja = :puja");
+            Session session = getSession();
+            Query query = session.createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.proveedorSubastaPK.puja = :puja");
             query.setParameter("idsubasta", subasta.getIdsubasta());
             query.setParameter("puja", subasta.getPuja());
             ProveedorSubasta proveedorSubasta = (ProveedorSubasta) query.uniqueResult();
 
             if (proveedorSubasta != null) {
                 subasta.setEstado(0);
-                getSession().update(subasta);
+                session.update(subasta);
                 Proveedor ganador = proveedorSubasta.getProveedor();
                 //Enviar mail con el password temporal al proveedor
                 String subject = "!Ha ganado una subasta!";
@@ -162,7 +164,7 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
                 c.setTime(hoy);
                 c.add(Calendar.DATE, 7);
                 subasta.setFechaFin(c.getTime());
-                getSession().update(subasta);
+                session.update(subasta);
             }
 
             commit();
