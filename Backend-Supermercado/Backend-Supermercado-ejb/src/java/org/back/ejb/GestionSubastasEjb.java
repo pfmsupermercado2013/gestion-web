@@ -1,6 +1,7 @@
 package org.back.ejb;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -141,27 +142,33 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
         try {
 
             begin();
-            subasta.setEstado(0);
-            getSession().update(subasta);
             Query query = getSession().createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.puja = :puja");
             query.setParameter("idsubasta", subasta.getIdsubasta());
             query.setParameter("puja", subasta.getPuja());
             ProveedorSubasta proveedorSubasta = (ProveedorSubasta) query.uniqueResult();
-            Proveedor ganador = proveedorSubasta.getProveedor();
 
-            if (ganador != null) {
+            if (proveedorSubasta != null) {
+                subasta.setEstado(0);
+                getSession().update(subasta);
+                Proveedor ganador = proveedorSubasta.getProveedor();
                 //Enviar mail con el password temporal al proveedor
                 String subject = "!Ha ganado una subasta!";
                 String msg = "Ha ganado la subasta de " + subasta.getProducto().getNombreProducto()
                         + " por la cantidad de " + subasta.getPuja() + "€";
                 EnviarMail.enviarMail(ganador.getEmailProveedor(), subject, msg);
-            }else{
-                System.out.println("SUBSTA SIN PROVEEDOR!!!");
+            } else {
+                Date hoy = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(hoy);
+                c.add(Calendar.DATE, 7);
+                subasta.setFechaFin(c.getTime());
+                getSession().update(subasta);
             }
 
             commit();
 
         } catch (Exception e) {
+            e.printStackTrace();
             rollback();
         } finally {
             DAO.close();
