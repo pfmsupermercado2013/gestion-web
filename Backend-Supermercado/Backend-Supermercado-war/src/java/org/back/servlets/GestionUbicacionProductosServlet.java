@@ -84,6 +84,7 @@ public class GestionUbicacionProductosServlet extends HttpServlet {
         String redirectJsp = "";
         String cmd = request.getParameter("cmd");
         String idMenu = request.getParameter("menu");
+        String idProducto = "";
         String idEstanteria = "";
         String longitud = "";
         String idSupermercado = "";
@@ -95,7 +96,11 @@ public class GestionUbicacionProductosServlet extends HttpServlet {
         Categoria categoria = null;
         Producto producto = null;
         Estanteria estanteria = null;
+        Estante estante = null;
+        Seccion seccion = null;
         Supermercado supermercado = null;
+        UbicacionProductoPK ubiProductoPk = null;
+        UbicacionProducto ubiProducto = null;
         List<Estanteria> listadoEstanterias = null;
         try {
             
@@ -122,50 +127,45 @@ public class GestionUbicacionProductosServlet extends HttpServlet {
                     }
                 } 
                 
-                // Invocamos a la operación que crea estantería
-                if(cmd.equals(BackConstantes.CREAR_ESTANTERIA)){
-                    idSupermercado = request.getParameter("idSupermercado");
-                    numeroEstantes = request.getParameter("estantes");
-                    posicionX = request.getParameter("coordenadaX");
-                    posicionY = request.getParameter("coordenadaY");
-                    tipoEstanteria = request.getParameter("tipoEstanteria");
+                // Invocamos a la operación que crea la ubicación del producto
+                if(cmd.equals(BackConstantes.GUARDAR_UBICACION_PRODUCTO)){
+                    idEstanteria = request.getParameter("idEstanteria");
+                    idProducto = request.getParameter("idProducto");
                     // Obtenemos los datos del supermercado asigando al empleado
-                    if(idSupermercado != null && !"".equals(idSupermercado)){
+                    if(idEstanteria != null && !"".equals(idEstanteria)){
                         try {
-                            supermercado = gestionSupermercadoEjb.buscarSupermercado(Integer.parseInt(idSupermercado));
+                            estanteria = gestionEstanteriasEjb.buscarEstanteria(Integer.parseInt(idEstanteria));
+                            if(estanteria != null){
+                                numEstantes = estanteria.getNumeroEstantes();
+                                if(numEstantes > 0){
+                                   estante = new Estante();
+                                   // Asignamos el número máximo de secciones por estante
+                                   estante.setNumeroSecciones(BackConstantes.NUMERO_MAX_SECCIONES);
+                                   estante = gestionEstantesEjb.crearEstante(estante);
+                                   if(estante != null){
+                                      seccion = new Seccion();
+                                      seccion.setMaxNumeroProductos(BackConstantes.NUMERO_MAX_PROD_SECCION);
+                                      seccion = gestionSeccionesEjb.crearSeccion(seccion);
+                                      if(seccion != null){
+                                          ubiProductoPk = new UbicacionProductoPK(estanteria.getIdestanteria(), estante.getIdestante(), seccion.getIdseccion(), producto.getIdproducto());
+                                          ubiProducto = new UbicacionProducto(ubiProductoPk);
+                                          ubiProducto = gestionUbicacionProductoEjb.crearUbicacionProducto(ubiProducto);
+                                          if(ubiProducto != null){
+                                            request.setAttribute("operacionCorrecta", Boolean.TRUE);
+                                          }
+                                      }
+                                   }
+                                }
+                            }
                         } catch (Exception ex) {
                             Logger.getLogger(GestionUbicacionProductosServlet.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                    } else {
+                      throw new BackException("No se han recibido los parámetros para completar la operación.");
                     }
-                    estanteria = new Estanteria();
-                    estanteria.setLongitud(new BigDecimal(0));
-                    estanteria.setPosicion_x(new Double(posicionX));
-                    estanteria.setPosicion_y(new Double(posicionY));
-                    estanteria.setTipoEstanteria(Integer.parseInt(tipoEstanteria));
-                    estanteria.setNumeroEstantes(Integer.parseInt(numeroEstantes));
-                    if(supermercado != null){
-                        estanteria.setSupermercado(supermercado);
-                    }
-                    try {
-                        // Guardamos la estantería en base de datos
-                        estanteria = gestionEstanteriasEjb.crearEstanteria(estanteria);
-                        if(estanteria != null){
-                            numEstantes = estanteria.getNumeroEstantes();
-                            if(numEstantes > 0){
-                               Estante estante = new Estante();
-                               // Asignamos el número máximo de secciones por estante
-                               estante.setNumeroSecciones(BackConstantes.NUMERO_MAX_SECCIONES);
-                               for(int i = 0;i < numEstantes; i++){
-                                   estante = gestionEstantesEjb.crearEstante(estante);
-                               }
-                            }
-                        }
-                        listarEstanterias(Integer.parseInt(idSupermercado), request);
-                        redirectJsp = "listado_estanterias.jsp";
-             
-                    } catch (Exception ex) {
-                        Logger.getLogger(GestionUbicacionProductosServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    
+                    listarEstanterias(Integer.parseInt(idSupermercado), request);
+                    redirectJsp = "listado_estanterias.jsp";
                 }
 
                 if(cmd.equals(BackConstantes.VER_ESTANTERIA)){

@@ -60,9 +60,9 @@ public class BackConstantes {
     public static final Integer ID_CATEG_FICTICIA  = -1;
     
     /* Gestión de Ubicación Producto */
-    public static final String LISTAR_ESTANTERIAS_SUPER = "listar-estanterias-super";
-    public static final String CREAR_UBICACION_PRODUCTO = "crear-ubicacion-producto";
-    public static final String VER_UBICACION_PRODUCTO   = "ver-ubicacion-producto";
+    public static final String LISTAR_ESTANTERIAS_SUPER   = "listar-estanterias-super";
+    public static final String GUARDAR_UBICACION_PRODUCTO = "guardar-ubicacion-producto";
+    public static final String VER_UBICACION_PRODUCTO     = "ver-ubicacion-producto";
     
     /* Roles */
     public static final String ROL_SUPER  = "pas";

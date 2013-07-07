@@ -144,7 +144,7 @@ public class GestionSubastasEjb extends DAO implements GestionSubastasEjbLocal {
 
             begin();
             Session session = getSession();
-            Query query = session.createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.proveedorSubastaPK.puja = :puja");
+            Query query = session.createQuery("SELECT p FROM ProveedorSubasta p WHERE p.proveedorSubastaPK.idsubasta = :idsubasta AND p.puja = :puja");
             query.setParameter("idsubasta", subasta.getIdsubasta());
             query.setParameter("puja", subasta.getPuja());
             ProveedorSubasta proveedorSubasta = (ProveedorSubasta) query.uniqueResult();

@@ -13,7 +13,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script>
             function submitForm(cmd){
-                var formulario = document.ubicacionProductoForm;
+                var formulario = document.forms["ubicacionProductoForm"];
                 formulario.action = "GestionUbicacionProductos?cmd="+cmd;
                 formulario.submit();
             }
