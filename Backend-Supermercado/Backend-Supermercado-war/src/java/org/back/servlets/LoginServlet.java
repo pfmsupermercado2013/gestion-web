@@ -93,7 +93,7 @@ public class LoginServlet extends HttpServlet {
             } else // Si se cierra sesión 
                 if (operacion.equals(BackConstantes.LOGOUT)) {
                   logout(session);
-                  response.sendRedirect("login.jsp");
+                  response.sendRedirect("principal.jsp");
                 }
     }
 
